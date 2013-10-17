@@ -17,74 +17,98 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */ 
 
-/*
- * Primary look and feel styles
- */
+/* primary look and feel styles */
 
 body {
-    color: #333333;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    font-weight: normal;
-    text-align: center;
+  color: #EEEEEE;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 62.5%;
+  font-weight: normal;
+  text-align: center;
+  background-color: #333333;
 }
 
+h1, h2 {
+  color: #ccc;
+  font-weight: bold;
+}
+ 
 h1 {
-    font-family: inherit;
-    font-size: 120%;
-    color: #000066;
-    font-weight: bold;
-    text-align: center;
+  font-size: 24px;
+  font-size: 2.4rem;
 }
 
 h2 {
-    font-family: inherit;
-    font-size: 125%;
-    color: #000066;
-    font-weight: bold;
+  font-size: 22px;
+  font-size: 2.2rem;
 }
 
 h3 {
-    font-family: inherit;
-    font-size: 100%;
-    color: #016A9d;
-    font-weight: bold;
+  font-size: 20px;
+  font-size: 2rem;
+  color: #016A9d;
+  font-weight: bold;
 }
 
 h4 {
-    font-family: inherit;
-    font-size: 100%;
-    color: #016A9d;
+  font-size: 18px;
+  font-size: 1.8rem;
+  color: #016A9d;
 }
 
 p {
-    font-family: inherit;
-    font-size: 100%;
+  font-size: 12px;
+  font-size: 1.2rem;  
 }
 
 th {
-    font-weight: bold;
-    color: #016A9d;
+  font-weight: bold;
+  color: #8899AA;
 }
 
-a:link {
-    color: #7f7fb2;
-    text-decoration: none;
+tbody tr:nth-child(odd){
+  background-color: #222222;
 }
 
-a:visited {
-    color: #7f7fb2;
+tbody tr:active, tbody tr:hover {
+  background-color: #555;
+}
+
+tbody td {
+    padding: 0.5rem 0 0.5rem 0.4rem;
+}
+
+thead tr th{
+  padding:1rem 0.4rem 0.6rem 0;
+  font-size: 0.9rem;
+}
+
+tfoot tr td{
+  padding:1rem 0.4rem 0.6rem 0;
+  font-size: 0.8rem;
+}
+
+#logSummary tbody tr:nth-child(odd){
+  background-color: transparent;
+}
+
+#header .floating {
+  float: left;
+  display: block;
+}
+
+a, a:link, a:active, a:visited {
+    color: #99AABB;
     text-decoration: none;
 }
 
 a:hover {
     color: #666699;
-    text-decoration: underline;
 }
 
 input,textarea,select {
     border: 1px #7f7fb2 solid;
-    font-family: inherit;
+    /*font-family: inherit;*/
     font-size: 100%;
     color: #333333;
 }
@@ -117,9 +141,7 @@ hr {
     background-color: #7f7fb2;
 }
 
-/*
- * Tabbed headings
- */
+/* tabbed headings */
 ul.tabList {
     float: left;
     list-style: none;
@@ -131,14 +153,10 @@ ul.tabList {
 
 ul.tabList li {
     float: left;
-    border: 1px solid;
-    color: #333333;
-    border: #7f7fb2 solid 1px;
-    border-bottom-width: 0;
-    margin: 0 2px 0 0;
-    background: #dddddd;
+    margin-right: 0.2rem;
+    background: #444444;
     text-align: center;
-    padding: 3px 4px;
+    padding: 0.5rem 1rem;
 }
 
 ul.tabList li a {
@@ -158,10 +176,7 @@ ul.tabList li.active a {
     font-weight: bold;
 }
 
-/*
- * Major league table for multiple inputs or presentation
- */
-
+/* major league table for multiple inputs or presentation */
 
 #content table.major {
     margin: 4px auto;
@@ -186,9 +201,6 @@ ul.tabList li.active a {
 }
 
 #content table.major th, #content table.major td {
-    border: 1px solid #7f7fb2;
-    padding: 3px;
-    text-align: left;
 }
 
 #content table.major th {
@@ -207,9 +219,8 @@ ul.tabList li.active a {
 #content table.major .colMark, #content table.major .colSelect {
     text-align: center;
 }
-/*
- * Lesser table for very simple forms
- */
+
+/* lesser table for very simple forms */
 
 #content table.minor {
     width: 200px;
@@ -237,9 +248,7 @@ ul.tabList li.active a {
     font-size: 120%;
 }
 
-/*
- * Behavior classes
- */
+/* behavior classes */
 .errorText {
     color: #dc143c;
 }
@@ -256,9 +265,7 @@ ul.tabList li.active a {
     font-style: italic;
 }
 
-/*
- * Generic useful classes, especially with mootools
- */
+/* generic useful classes, especially with mootools */
 
 .hidden {
     display: none;
@@ -276,121 +283,130 @@ div.clear {
     clear: both;
 }
 
-/*
- * Primary layout styles
- */
+/* primary layout styles */
 
 #header {
-    background-color:#cccccc;
-    border-bottom:2px solid #336699;
-    line-height: 24px;
-    margin:0 auto;
-    padding:0 10px;
+    background-color: #444444;
+    border-bottom: 2px solid #666666;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
     text-align: left;
+    /* using height isn't advisable */
+    height: 2rem; */
 }
 
 #header h2 {
-    left: 0;
+  left: 0;
+  padding: 0.5rem 1rem 0 0;
+  font-size: 1rem;
 }
 
 #headerControl {
-    width: 50%;
-    text-align: center;
-    margin: 0 auto;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #headerButtons {
-    float: right;
+  float: right;
+  margin-top: 0.2rem;
 }
 
 #headerButtons a {
-    margin-left: 8px;
+  margin-left: 8px;
+}
+
+#headerButtons input{
+  padding: 0.3rem;
 }
 
 #content {
- padding:0 5px;
+  padding:0 5px;
 }
 
 #content #infobar {
- margin:5px 0;
+  margin:5px 0;
 }
 
 #content p {
-    margin-top: 4px;
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  text-align:left;
 }
 
 #content p.textblock {
-    text-align: justify;
-    padding: 4px;
+  text-align: justify;
+  padding: 4px;
 }
 
-/*
 #contentDiv {
-    margin: 0 auto 8px;
-    line-height: 140%;
-    text-align: center;
+  margin: 0 auto 8px;
+  line-height: 140%;
+  text-align: center;
 }
-*/
 
 #content > input[type=submit], #content > input[type=button] {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 #content table input[type=submit], #content table input[type=button] {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #contentButtons {
-    margin-top: 8px;
-    float: right;
+  margin-top: 8px;
+  float: right;
 }
 
 #contentButtons input {
-    margin-left: 8px;
-    margin-bottom: 4px;
+  margin-left: 8px;
+  margin-bottom: 4px;
 }
 
 #footer {
- background-color:#cccccc;
- border-top:2px solid #336699;
- border-bottom:2px solid #336699;
- clear:both;
- margin-top:10px;
- padding:4px 8px;
- text-align:right;
+  background-color:#cccccc;
+  border-top:1px solid #ccc;
+  clear:both;
+  margin-top:10px;
+  padding:4px 8px;
+  text-align:right;
+  color:#444;
 }
 
-/* TABS */
+/* begin tabs */
 #yui-b{
- float:right;
- margin-left:-25em;
- width:100%;
+  float:right;
+  margin-left:-25em;
+  width:100%;
 }
 #tabs_events{
- margin-left:14.8461em;
- float:none;
- width:auto;
- position: static;
+  margin-left: 14.8461em;
+  float:none;
+  width:auto;
+  position: static;
 }
 .pagemark{
- background-color:#FAD42E;
- font-weight:bold;
- padding:3px 0;
+  background-color: #555555;
+  font-weight: bold;
+  padding: 3px 0;
+  border: 1px solid #888888;
 }
-/* END TABS */
+/* end tabs */
 
 #monitors{
- margin:0 auto;
+  margin:0 auto;
 }
 
 #monitors li{
- background-color:#eeeeee;
- -moz-border-radius:5px;
- -webkit-border-radius:5px;
- border:2px solid #336699;
- margin:10px;
- padding:4px 0;
- float:left;
+  background-color: #EEEEEE;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 2px solid #CCCCCC;
+  margin: 10px;
+  padding: 4px 0;
+  float: left;
+  /* need to add -ms -o prefixes */
+  -webkit-box-shadow: 0px 0px 10px  rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 0px 10px  rgba(255, 255, 255, 0.4);
 }
 
 #monitors p{
@@ -420,7 +436,7 @@ div.clear {
  width:70px;
 }
 
-/* Clearfix */
+/* clearfix */
  .clearfix:after {
     content: ".";
     display: block;
@@ -431,24 +447,23 @@ div.clear {
 
 .clearfix {display: inline-block;}  /* for IE/Mac */
 
-/* Navigation bar */
+/* navigation bar */
 
 #nav{
- background-color:#036;
- border-bottom:2px solid #336699;
- width:100%;
- font-size:120%;
- margin-bottom:10px;
+ background-color: #333333;
+ border-bottom: 1px solid #AAAAAA;
+ width: 100%;
+ margin-bottom: 0.5rem;
 }
 
 #nav ul{
- background-color:#036;
- color:#fff;
- float:left;
- margin-left:100px;
+ color: #FFFFFF;
+ float: left;
 }
 
 #nav ul li{display:inline;}
+
+/*
 #nav li a#dashboard{
  background-image:url('../graphics/dashboard.png');
 }
@@ -464,124 +479,126 @@ div.clear {
 #nav li a#performance{
  background-image:url('../graphics/performance.png');
 }
+*/
+
 #nav li a{
- padding:20px 1em 20px 50px;
- background-color:#036;
- background-repeat:no-repeat;
- background-position:5px 50%;
- color:#fff;
- text-decoration:none;
- float:left;
- border-right:1px solid #fff;
+  padding: 5px 16px;
+  padding: 0.3rem 1rem;
+  background-color: #334455;
+  color: #FFFFFF;
+  text-decoration: none;
+  float: left;
+  border-right: 1px solid #AAAAAA;
 }
 
 #nav ul li a:hover, #nav ul li a.active {
- background-color:#369;
- color:#fff;
+  background-color: #336699;
+  color: #FFFFFF;
 }
 
-
-
-/* Monitor History */
+/* monitor history */
 #monitorHistory{
-clear:both;
-padding:0 10px;
+  clear:both;
+  padding:0 10px;
 }
 #monitorHistory li{
- float:left;
- padding:10px;
+  float:left;
+  padding:10px;
 }
 
 #sidebar{
-float:left;
-width:14.8461em;
-position:relative;
+  float:left;
+  width:14.8461em;
+  position:relative;
+}
+
+#sidebar li {
+  line-height: 1.5rem;
 }
 
 #sidebarHistory{
- text-align:left;
+  text-align:left;
 }
 
 #sidebarHistory h2 {
- text-align:center;
+  margin: 1rem 0 0.5rem 0.2rem;
 }
 
 #sidebarHistory fieldset {
- border-top:1px solid #000;
+  border-top:1px solid #000;
 }
 
 #sidebarHistory fieldset legend {
- color:#000066;
- font-weight:bold;
- padding:2px 3px;
+  color: #89a;
+  font-weight: bold;
+  padding: 0.4rem 0.2rem;
 }
 
 #contentcolumn{
- margin-left:200px;
+  margin-left:200px;
 }
 
 #loading {
- width: 100%;
- position: absolute;
+  width: 100%;
+  position: absolute;
 }
 .pagination{
- clear:both;
- margin:0px auto;
- width:500px;
+  clear:both;
+  margin:0px auto;
+  width:500px;
 }
 .pagination li {
- padding:5px;
- margin:2px;
- list-style: none;
- float: left;
- border:solid 1px #dddddd;
- color:#0063DC;
+  padding:5px;
+  margin:2px;
+  list-style: none;
+  float: left;
+  border:solid 1px #dddddd;
+  color:#0063DC;
 }
 .pagination li:hover {
- color:#FF0084;
- cursor: pointer;
+  color:#FF0084;
+  cursor: pointer;
 }
 
 .pagination li.curPage {
- font-weight:bold;
- background-color:#0063DC;
- color:#ffffff;
+  font-weight:bold;
+  background-color:#0063DC;
+  color:#ffffff;
 }
 
 .pages {
- margin-top:10px;
- text-align:center;
- font-size:115%;
+  margin-top:10px;
+  text-align:center;
+  /*font-size:115%;*/
 }
 
 #tblMonitors {
- width:800px;
- margin:0 auto;
+  width:800px;
+  margin:0 auto;
 }
 
-.mon{
-}
+/*.mon{
+}*/
 .mon_header{
- border-bottom:1px solid #000;
- margin-bottom:5px;
- text-align:left;
- padding:0 5px 5px 5px;
+  border-bottom:1px solid #000;
+  margin-bottom:5px;
+  text-align:left;
+  padding:0 5px 5px 5px;
 }
 .mon_header .right{
- text-align:right;
- float:right;
+  text-align:right;
+  float:right;
 }
 .mon_header .spinner{
- display:inline;
+  display:inline;
 }
-.mon_header .minimize, .mon_header .maximize
-{
- display:inline;
+.mon_header .minimize, .mon_header .maximize {
+  display:inline;
 }
 
-/* Filter Sidebar */
+/* filter sidebar */
 #sidebarHistory fieldset {
- margin-bottom:10px;
+ margin:0.5rem 0;
 }
 #monitors_search input{
  margin-left:5px;
@@ -605,7 +622,7 @@ position:relative;
  text-align:center;
 }
 
-/* Filter Sidebar */
+/* filter sidebar */
 
 .eventImage{
 display:block;
@@ -673,38 +690,71 @@ padding:10px;
 
 .thumb{
  background-color:#EEEEEE;
- border:2px solid #336699;
+ border:2px solid #ccc;
  display:inline-block;
  margin:5px;
  padding:4px;
 }
 
 .clearfix:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
  
 .clearfix {
-	display: inline-block;
+  display: inline-block;
 }
  
 html[xmlns] .clearfix {
-	display: block;
+  display: block;
 }
  
 * html .clearfix {
-	height: 1%;
+  height: 1%;
 }
 
 .nameleft {
-	white-space:nowrap;
-	float:left;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	-o-text-overflow: ellipsis;
-	-moz-binding:url('ellipsis.xml#ellipsis');
+  white-space:nowrap;
+  float:left;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow: ellipsis;
+  -moz-binding:url('ellipsis.xml#ellipsis');
+}
+
+body .ui-widget-header {
+    background-image: initial;
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+
+body .ui-widget-content {
+    border: none;
+    background: initial;
+    color: #DDDDDD;
+}
+
+body .ui-widget-content .thumb{
+    color: #333333;
+    text-align: left;
+}
+
+body .ui-widget-content .thumb input{
+  margin: 0.5rem;
+}
+
+body #tabs .ui-tabs, body #tabs .ui-tabs-nav {
+  padding: 0.2rem 0 0.3rem 0;
+}
+
+body #tabs .ui-button-text {
+  padding: 0.2rem 1rem;
+}
+
+#filters {
+    margin:0.8rem 0;
 }
