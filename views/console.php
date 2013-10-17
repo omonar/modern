@@ -30,7 +30,7 @@ $cycleHeight = $maxHeight;
 xhtmlHeaders( __FILE__, $SLANG['Console'] );
 ?>
 <body>
-<style>
+<style type="text/css" scoped>
 #monitors .alarm {
     color: #ff0000;
 }
@@ -148,7 +148,7 @@ function Monitor( index, id, connKey ) {
 
 
 
-<input type="hidden" id="inptRefresh" value="<?= ZM_WEB_REFRESH_MAIN ?>"></input>
+<input type="hidden" id="inptRefresh" value="<?= ZM_WEB_REFRESH_MAIN ?>">
 <?php require("header.php");  $monitors2 = $monitors?>
 <!--<div id="widget_actions" style="position:absolute;top:61px;right:14px;z-index:100">
 	<ul>
@@ -182,21 +182,21 @@ function Monitor( index, id, connKey ) {
 
 <div style="display:none;">
 	<div id="viewcontrol" >
-		<style>.btngridsize, .btnmonitor { width:125px; }</style>
-		<table width="100%"><tr valign="top"><td>
+		<style type="text/css" scoped>.btngridsize, .btnmonitor { width:125px; }</style>
+		<table><tr><td>
 			<h2>Views</h2><hr>
-			<div align="center">
-				<div style="float:left;"><a href="javascript:loadcameraview(1)"><img id="id-console-views-img-1" src="<?=getSkinFile('graphics/view_buttons/view_1_unpressed.png')?>" border="0" ></a></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(4)"><img id="id-console-views-img-4" src="<?=getSkinFile('graphics/view_buttons/view_4_unpressed.png')?>" border="0"></a></div>
+			<div>
+				<div style="float:left;"><a href="javascript:loadcameraview(1)"><img id="id-console-views-img-1" alt="" src="<?=getSkinFile('graphics/view_buttons/view_1_unpressed.png')?>"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(4)"><img id="id-console-views-img-4" alt="" src="<?=getSkinFile('graphics/view_buttons/view_4_unpressed.png')?>"></a></div>
 				<div style="clear:both;"></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(6)"><img id="id-console-views-img-6" src="<?=getSkinFile('graphics/view_buttons/view_6_unpressed.png')?>" border="0"></a></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(8)"><img id="id-console-views-img-8" src="<?=getSkinFile('graphics/view_buttons/view_8_unpressed.png')?>" border="0"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(6)"><img id="id-console-views-img-6" alt="" src="<?=getSkinFile('graphics/view_buttons/view_6_unpressed.png')?>"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(8)"><img id="id-console-views-img-8" alt="" src="<?=getSkinFile('graphics/view_buttons/view_8_unpressed.png')?>"></a></div>
 				<div style="clear:both;"></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(9)"><img id="id-console-views-img-9" src="<?=getSkinFile('graphics/view_buttons/view_9_unpressed.png')?>" border="0"></a></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(10)"><img id="id-console-views-img-10" src="<?=getSkinFile('graphics/view_buttons/view_10_unpressed.png')?>" border="0"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(9)"><img id="id-console-views-img-9" alt="" src="<?=getSkinFile('graphics/view_buttons/view_9_unpressed.png')?>"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(10)"><img id="id-console-views-img-10" alt="" src="<?=getSkinFile('graphics/view_buttons/view_10_unpressed.png')?>"></a></div>
 				<div style="clear:both;"></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(13)"><img id="id-console-views-img-13" src="<?=getSkinFile('graphics/view_buttons/view_13_unpressed.png')?>" border="0"></a></div>
-				<div style="float:left;"><a href="javascript:loadcameraview(16)"><img id="id-console-views-img-16" src="<?=getSkinFile('graphics/view_buttons/view_16_unpressed.png')?>" border="0"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(13)"><img id="id-console-views-img-13" alt="" src="<?=getSkinFile('graphics/view_buttons/view_13_unpressed.png')?>"></a></div>
+				<div style="float:left;"><a href="javascript:loadcameraview(16)"><img id="id-console-views-img-16" alt="" src="<?=getSkinFile('graphics/view_buttons/view_16_unpressed.png')?>"></a></div>
 				<div style="clear:both;"></div>
 			</div>
 			<br><br><br>
@@ -205,9 +205,9 @@ function Monitor( index, id, connKey ) {
 
 			<h2>Columns</h2><hr>
 			<div>
-				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,2);" number="2">2 Columns</button></div>
-				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,3);" number="3" DISABLED>3 Columns</button></div>
-				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,4);" number="4">4 Columns</button></div>
+				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,2);">2 Columns</button></div>
+				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,3);" DISABLED>3 Columns</button></div>
+				<div><button class="btngridsize" type="button" onclick="loadcameragrid(this,4);">4 Columns</button></div>
 			</div>
 
 			<br><br><br>
@@ -217,7 +217,7 @@ function Monitor( index, id, connKey ) {
 			<div>
 				<?php
 				foreach( $displayMonitors as $monitor ) {
-					echo '<div><button class="btnmonitor" type="button" onclick="loadcameramonitor(this,'.$monitor['Id'].');return false;" number="'.$monitor['Id'].'">'.$monitor['Name'].'</button></div>';
+					echo '<div><button class="btnmonitor" type="button" onclick="loadcameramonitor(this,'.$monitor['Id'].');return false;">'.$monitor['Name'].'</button></div>';
 				}
 				?>
 			</div>	

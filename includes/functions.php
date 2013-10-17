@@ -19,45 +19,45 @@
 // 
 
 function outputlivestream($monitor,$inwidth=0,$inheight=0) {
-	$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
+  $scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
 //echo $monitor['Id']." $scale ".$monitor['Width'];
 
 
-	//$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : (!defined(ZM_WEB_DEFAULT_SCALE) ? 40 : ZM_WEB_DEFAULT_SCALE);
+  //$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : (!defined(ZM_WEB_DEFAULT_SCALE) ? 40 : ZM_WEB_DEFAULT_SCALE);
 
-	
-	$connkey = $monitor['connKey']; // Minor hack
-	if ( ZM_WEB_STREAM_METHOD == 'mpeg' && ZM_MPEG_LIVE_FORMAT ) {
-		$streamMode = "mpeg";
-		$streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale, "bitrate=".ZM_WEB_VIDEO_BITRATE, "maxfps=".ZM_WEB_VIDEO_MAXFPS, "format=".ZM_MPEG_LIVE_FORMAT, "buffer=".$monitor['StreamReplayBuffer'] ) );
-	}
-	elseif ( canStream() ) {
-		$streamMode = "jpeg";
-		$streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale, "maxfps=".ZM_WEB_VIDEO_MAXFPS, "buffer=".$monitor['StreamReplayBuffer'] ) );
-	}
-	else {
-		$streamMode = "single";
-		$streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale ) );
-	}
+  
+  $connkey = $monitor['connKey']; // Minor hack
+  if ( ZM_WEB_STREAM_METHOD == 'mpeg' && ZM_MPEG_LIVE_FORMAT ) {
+    $streamMode = "mpeg";
+    $streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale, "bitrate=".ZM_WEB_VIDEO_BITRATE, "maxfps=".ZM_WEB_VIDEO_MAXFPS, "format=".ZM_MPEG_LIVE_FORMAT, "buffer=".$monitor['StreamReplayBuffer'] ) );
+  }
+  elseif ( canStream() ) {
+    $streamMode = "jpeg";
+    $streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale, "maxfps=".ZM_WEB_VIDEO_MAXFPS, "buffer=".$monitor['StreamReplayBuffer'] ) );
+  }
+  else {
+    $streamMode = "single";
+    $streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale ) );
+  }
 
-	
-	$width = !empty($inwidth) ? $inwidth : 150;
-	$height = empty($inheight) ? $width * $monitor['Height'] / $monitor['Width'] : $inheight;
+  
+  $width = !empty($inwidth) ? $inwidth : 150;
+  $height = empty($inheight) ? $width * $monitor['Height'] / $monitor['Width'] : $inheight;
 
-	//$height = 180;
-	//$width = $height * $monitor['Width'] / $monitor['Height'];
-	//$width = "100%";
+  //$height = 180;
+  //$width = $height * $monitor['Width'] / $monitor['Height'];
+  //$width = "100%";
 
-	$width = (int)$width;
-	$height = (int)$height;
-	
-	// output image
-	if ( $streamMode === "mpeg" ) outputVideoStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), ZM_MPEG_LIVE_FORMAT, $monitor['Name'] );
-	elseif ( $streamMode == "jpeg" ) {
-		if ( canStreamNative() ) outputImageStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
-		elseif ( canStreamApplet() ) outputHelperStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
-	}
-	else outputImageStill( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
+  $width = (int)$width;
+  $height = (int)$height;
+  
+  // output image
+  if ( $streamMode === "mpeg" ) outputVideoStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), ZM_MPEG_LIVE_FORMAT, $monitor['Name'] );
+  elseif ( $streamMode == "jpeg" ) {
+    if ( canStreamNative() ) outputImageStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
+    elseif ( canStreamApplet() ) outputHelperStream( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
+  }
+  else outputImageStill( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
 }
 
 
@@ -81,6 +81,7 @@ function xhtmlHeaders( $file, $title )
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+ <meta charset="UTF-8">
  <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
  <link rel="icon" type="image/ico" href="graphics/favicon.ico"/>
  <link rel="shortcut icon" href="graphics/favicon.ico"/>
@@ -91,8 +92,8 @@ function xhtmlHeaders( $file, $title )
  <script type="text/javascript" src="skins/modern/js/jquery-1.4.2.min.js"></script>
  <script type="text/javascript" src="skins/modern/js/jquery-ui-1.8.4.custom.min.js"></script>
 <?php } ?>
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css"></link>
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css"></link>
+ <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css">
+ <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css">
 <?php if ($title == "Console") { ?>
  <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
  <script type="text/javascript" src="skins/modern/js/console.colorbox.js"></script>
