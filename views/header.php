@@ -34,8 +34,9 @@ if(empty($_view)) $_view = 'console';
 <div id="nav" class="clearfix" style="margin-bottom:1px;position:relative;min-width:750px;">
 	<ul>
 		<li><a id="dashboard" href="?view=console" class="<?php if($_view=='console') echo 'active';?>">Dashboard</a></li>
+        <li><a id="playback" href="?view=playback" class="<?php if($_view=='playback') echo 'active';?>">Playback</a></li>
 		<li><a id="events" href="?view=events" class="<?php if($_view=='events') echo 'active';?>">Events</a></li>
-		<li><a id="administration" href="?view=admin" class="<?php if($_view=='admin') echo 'active';?>">Admin.</a></li>
+		<li><a id="administration" href="?view=admin" class="<?php if($_view=='admin') echo 'active';?>">Admin</a></li>
 		<li><a id="options" href="?view=options" class="<?php if($_view=='options') echo 'active';?>">Options</a></li>
 		<!--<li><a id="performance" href="?view=system" class="<?php if($_view=='system') echo 'active';?>">Logs</a></li>-->
 		<li><a id="performance" href="?view=log"    class="<?php if($_view=='log') echo 'active';?>">Logs</a></li>
