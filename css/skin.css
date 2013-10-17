@@ -292,7 +292,7 @@ div.clear {
     padding: 0.5rem 1rem;
     text-align: left;
     /* using height isn't advisable */
-    height: 2rem; */
+    height: 2rem;
 }
 
 #header h2 {
@@ -757,4 +757,11 @@ body #tabs .ui-button-text {
 
 #filters {
     margin:0.8rem 0;
+}
+
+/* begin hacks */
+
+#tabs li {
+  /* yes, important makes me sad too - overriding jqueryui inline styles */
+  height: auto !important;
 }
