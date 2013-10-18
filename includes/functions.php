@@ -20,12 +20,8 @@
 
 function outputlivestream($monitor,$inwidth=0,$inheight=0) {
   $scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
-//echo $monitor['Id']." $scale ".$monitor['Width'];
-
-
+  //echo $monitor['Id']." $scale ".$monitor['Width'];
   //$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : (!defined(ZM_WEB_DEFAULT_SCALE) ? 40 : ZM_WEB_DEFAULT_SCALE);
-
-  
   $connkey = $monitor['connKey']; // Minor hack
   if ( ZM_WEB_STREAM_METHOD == 'mpeg' && ZM_MPEG_LIVE_FORMAT ) {
     $streamMode = "mpeg";
@@ -60,179 +56,45 @@ function outputlivestream($monitor,$inwidth=0,$inheight=0) {
   else outputImageStill( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
 }
 
-
-
-function xhtmlHeaders( $file, $title )
-{
-    $skinCssFile = getSkinFile( 'css/skin.css' );
-    $skinCssPhpFile = getSkinFile( 'css/skin.css.php' );
-    $skinJsFile = getSkinFile( 'js/skin.js' );
-    $skinJsPhpFile = getSkinFile( 'js/skin.js.php' );
-
-    $basename = basename( $file, '.php' );
-    $viewCssFile = getSkinFile( 'views/css/'.$basename.'.css' );
-    $viewCssPhpFile = getSkinFile( 'views/css/'.$basename.'.css.php' );
-    $viewJsFile = getSkinFile( 'views/js/'.$basename.'.js' );
-    $viewJsPhpFile = getSkinFile( 'views/js/'.$basename.'.js.php' );
-
-    extract( $GLOBALS, EXTR_OVERWRITE );
-
-?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
- <meta charset="UTF-8">
- <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
- <link rel="icon" type="image/ico" href="graphics/favicon.ico"/>
- <link rel="shortcut icon" href="graphics/favicon.ico"/>
- <link rel="stylesheet" href="css/reset.css" type="text/css"/>
- <link rel="stylesheet" href="<?= $skinCssFile ?>" type="text/css" media="screen"/>
- <link rel="stylesheet" href="skins/modern/css/header.css" type="text/css" media="screen"/>
-<?php if($title != 'Zone' && !preg_match("/Feed/", $title)) { ?>
- <script type="text/javascript" src="skins/modern/js/jquery-1.4.2.min.js"></script>
- <script type="text/javascript" src="skins/modern/js/jquery-ui-1.8.4.custom.min.js"></script>
-<?php } ?>
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css">
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css">
-<?php if ($title == "Console") { ?>
- <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
- <script type="text/javascript" src="skins/modern/js/console.colorbox.js"></script>
- <script type="text/javascript" src="skins/modern/js/console.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-<?php } ?>
-<?php
- if ($title == "Monitor") {
-?>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-  <script type="text/javascript" src="js/mootools.ext.js"></script>
-<?php
- }
+function xhtmlHeaders( $file, $title ) {
+  /* begin paths init */
+  $skinCssFile = getSkinFile( 'css/skin.css' );
+  $skinCssPhpFile = getSkinFile( 'css/skin.css.php' );
+  $skinJsFile = getSkinFile( 'js/skin.js' );
+  $skinJsPhpFile = getSkinFile( 'js/skin.js.php' );
+  $basename = basename( $file, '.php' );
+  $viewCssFile = getSkinFile( 'views/css/'.$basename.'.css' );
+  $viewCssPhpFile = getSkinFile( 'views/css/'.$basename.'.css.php' );
+  $viewJsFile = getSkinFile( 'views/js/'.$basename.'.js' );
+  $viewJsPhpFile = getSkinFile( 'views/js/'.$basename.'.js.php' );
+  extract( $GLOBALS, EXTR_OVERWRITE );
+  /* end paths init */
 ?>
 
-
-<?php
- if ($title == "System Log") {
-?>
-<script type="text/javascript">var $j = jQuery.noConflict();</script>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-  <script type="text/javascript" src="js/mootools.ext.js"></script>
-<?php
- }
-?>
-
-
-
-
-<?php
- if ($title == "Zone") { ?>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-  <script type="text/javascript" src="js/mootools.ext.js"></script> 
-<?php
- }
-?>
-
-
-
-<?php if (preg_match("/Feed/", $title)) { ?>
-  <link media="screen" type="text/css" href="skins/classic/views/css/watch.css" rel="stylesheet">
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Admin") {
-?>
-  <script type="text/javascript" src="skins/modern/js/admin.js"></script>
-  <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Events") {
-?>
-<script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
-<script type="text/javascript" src="skins/modern/js/events.js"></script>
-<script type="text/javascript" src="skins/modern/js/events_search.js"></script>
-
-<!--[if IE]><script type="text/javascript" src="skins/modern/js/excanvas.min.js"></script><![endif]-->
-<script type="text/javascript" src="skins/modern/js/jquery.flot.min.js"></script>
-<script type="text/javascript" src="skins/modern/js/jquery.flot.selection.min.js"></script>
-<script type="text/javascript" src="skins/modern/js/jquery.tooltip.pack.js"></script>
-<script type="text/javascript" src="skins/modern/js/dateFormat.js"></script>
-
-<?php
- }
-?>
-<?php
- if ($title == "Full") {
-?>
-<script type="text/javascript" src="skins/modern/js/full.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Event") {
-?>
-<script type="text/javascript" src="skins/modern/js/event.js"></script>
-<script type="text/javascript" src="skins/modern/js/preloadImage.js"></script>
-<?php
- }
-?>
-<?php
-    if ( $viewCssFile )
-    {
-?>
-  <link rel="stylesheet" href="<?= $viewCssFile ?>" type="text/css" media="screen"/>
-<?php
-    }
-    if ( $viewCssPhpFile )
-    {
-?>
-  <style type="text/css">
-<?php
-        require_once( $viewCssPhpFile );
-?>
-  </style>
-<?php
-    }
-?>
-<?php
-    if ( $skinJsPhpFile )
-    {
-?>
-  <script type="text/javascript">
-<?php
-    require_once( $skinJsPhpFile );
-?>
-  </script>
-<?php
-    }
-    if ( $viewJsPhpFile )
-    {
-?>
-  <script type="text/javascript">
-<?php
-        require_once( $viewJsPhpFile );
-?>
-  </script>
-<?php
-    }
-?>
-  <script type="text/javascript" src="<?= $skinJsFile ?>"></script>
-<?php
-    if ( $viewJsFile )
-    {
-?>
-  <script type="text/javascript" src="<?= $viewJsFile ?>"></script>
-<?php
-    }
-?>
-</head>
-<?php
-}
+  <!DOCTYPE html>
+  <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+  <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+  <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+  <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="skins/<?=$skin?>/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="skins/<?=$skin?>/assets/css/vendor/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="skins/<?=$skin?>/assets/css/main.css">
+    <!-- begin zm -->
+    <?php
+      if($viewCssFile) { echo "<link rel=\"stylesheet\" href=\"{$viewCssFile}\" type=\"text/css\" media=\"screen\">"; }
+      if($viewCssPhpFile) { echo "<style type=\"text/css\">"; require_once($viewCssPhpFile); echo "</style>"; }
+      if($viewJsFile) { echo "<script type=\"text/javascript\" src=\"{$viewJsFile}\"></script>"; }
+      if($viewJsPhpFile) { echo "<script type=\"text/javascript\">"; require_once($viewJsPhpFile); echo "</script>"; }
+    ?>
+    <!-- end zm -->
+  </head>
+<?php 
+  }
 ?>
