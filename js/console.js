@@ -1,7 +1,7 @@
 $(document).ready(function(){
- var refresh = $("#inptRefresh").val();
- refresh = (refresh * 1000);
- $("#add_widget").button();
+	var refresh = $("#inptRefresh").val();
+	refresh = (refresh * 1000);
+	$("#add_widget").button();
 
 	$("#tabs").tabs({ // First, Initialize tabs and the tab template
 		tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
@@ -33,9 +33,6 @@ $(document).ready(function(){
 		});
 	};
 
-
-
-
 	function init_delete_tab() {
 	// close icon: removing the tab on click
 	// note: closable tabs gonna be an option in the future - see http://dev.jqueryui.com/ticket/3924
@@ -49,121 +46,131 @@ $(document).ready(function(){
 		});
 	}
 
- function add_features() {
-  // This function is called whenever cameras are loaded (via the tab load event)
-  // It setups up Minimize, Sortable, Colorbox features for the newly-loaded monitors
-  $(".minimize").click(function() { // Minimize
-   $(this).parent().parent().parent().find('.mon').toggle('blind');
-  });
-
-  $(".maximize").click(function() {
-  	if($(this).parent().parent().parent().find('.mon').is(":visible")) {
-		//alert($(this).attr('url'));
-		$.fn.colorbox({
-			href:$(this).attr('url'),
-			iframe:true,
-			width:'85%',
-			height:'95%',
-			open:true
+	function add_features() {
+		// This function is called whenever cameras are loaded (via the tab load event)
+		// It setups up Minimize, Sortable, Colorbox features for the newly-loaded monitors
+		$(".minimize").click(function() { // Minimize
+		$(this).parent().parent().parent().find('.mon').toggle('blind');
 		});
-	} else {
-   $(this).parent().parent().parent().find('.mon').toggle('blind');
-	}
-  });
 
-  $("#monitors").sortable({ opacity: 0.6, cursor: 'move', update: function() { // Sortable
-   var order = $(this).sortable("serialize") + '&action=sequence';
-   $.post("skins/modern/includes/updateSequence.php", order);
-  }});
+		$(".maximize").click(function() {
+			if($(this).parent().parent().parent().find('.mon').is(":visible")) {
+			//alert($(this).attr('url'));
+			jQuery.colorbox({
+				href:$(this).attr('url'),
+				iframe:true,
+				width:'85%',
+				height:'95%',
+				open:true
+			});
+		} else {
+		$(this).parent().parent().parent().find('.mon').toggle('blind');
+		}
+		});
 
-  $("a[rel='monitor']").colorbox({ // Colorbox
-   iframe:true,
-   preloading:false,
-   current:'{current} of {total}',
-   width:'85%',
-   height:'95%'
-  });
- };  // END ADD_FEATURES //
+		$("#monitors").sortable({ opacity: 0.6, cursor: 'move', update: function() { // Sortable
+		var order = $(this).sortable("serialize") + '&action=sequence';
+		$.post("skins/modern/includes/updateSequence.php", order);
+		}});
 
- function add_tab_click() { // Call this last
-  // This whole shabang is used for adding tabs.
-  // We get the tab title and contents, setup the dialog box, create the functions
-  // for adding the tab, deleting tab, closing and opening dialog box, etc.
+		$("a[rel='monitor']").colorbox({ // Colorbox
+			iframe:true,
+			preloading:false,
+			current:'{current} of {total}',
+			width:'85%',
+			height:'95%'
+		});
+	 };  // END ADD_FEATURES //
 
-  var $tab_title_input = $('#tab_title'), $tab_content_input = $('#tab_content');
+	 function add_tab_click() { // Call this last
+	  // This whole shabang is used for adding tabs.
+	  // We get the tab title and contents, setup the dialog box, create the functions
+	  // for adding the tab, deleting tab, closing and opening dialog box, etc.
 
-  // modal dialog init: custom buttons and a "close" callback reseting the form inside
-  var $dialog = $('#dialog').dialog({
-   autoOpen: false,
-   modal: true,
-   buttons: {
-    'Add': function() {
-      addTab();
-      $(this).dialog('close');
-     },
-    'Cancel': function() {
-     $(this).dialog('close');
-    }
-   },
-   open: function() {
-    tab_title_input.focus();
-   }
-  }); // END DIALOG //
+	  var $tab_title_input = $('#tab_title'), $tab_content_input = $('#tab_content');
 
-  // addTab form: calls addTab function on submit and closes the dialog
-  var $form = $('form',$dialog).submit(function() {
-  addTab();
-  $dialog.dialog('close');
-  return false;
- });
+	  // modal dialog init: custom buttons and a "close" callback reseting the form inside
+	  var $dialog = $('#dialog').dialog({
+	   autoOpen: false,
+	   modal: true,
+	   buttons: {
+	    'Add': function() {
+	      addTab();
+	      $(this).dialog('close');
+	     },
+	    'Cancel': function() {
+	     $(this).dialog('close');
+	    }
+	   },
+	   open: function() {
+	    tab_title_input.focus();
+	   }
+	  }); // END DIALOG //
 
-  // actual addTab function: adds new tab using the title input from the form above
-  function addTab() {
-   tab_title = $tab_title_input.val(); // groupName
-   var arysel  = []; // An array for the monitorIds
-   $("#selMonitors :selected").each(function(i, selected) { // For each selected MonitorId
-    arysel[i] = $(selected).val(); // Put it into the array
-   });
-   var mids = arysel.toString(); // Make a comman-separated list of the select MonitorsIds
-   $.post("skins/modern/includes/updateGroups.php?groupName=" + tab_title + "&mids=" + mids + "&action=insert"); // Add the new Group
-   $("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+tab_title, tab_title); // Add the actual tab
-   init_delete_tab();
-  }
+	  // addTab form: calls addTab function on submit and closes the dialog
+	  var $form = $('form',$dialog).submit(function() {
+	  addTab();
+	  $dialog.dialog('close');
+	  return false;
+	 });
 
-  // addTab button: just opens the dialog
-  $('#add_tab').button().click(function() {
-   $dialog.dialog('open');
-  });
-  
-	$('#change_view').button().click(function() {
-		$.colorbox({inline:true, innerWidth:800, innerHeight:520, href:'#viewcontrol'});
+	  // actual addTab function: adds new tab using the title input from the form above
+	  function addTab() {
+	   tab_title = $tab_title_input.val(); // groupName
+	   var arysel  = []; // An array for the monitorIds
+	   $("#selMonitors :selected").each(function(i, selected) { // For each selected MonitorId
+	    arysel[i] = $(selected).val(); // Put it into the array
+	   });
+	   var mids = arysel.toString(); // Make a comman-separated list of the select MonitorsIds
+	   $.post("skins/modern/includes/updateGroups.php?groupName=" + tab_title + "&mids=" + mids + "&action=insert"); // Add the new Group
+	   $("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+tab_title, tab_title); // Add the actual tab
+	   init_delete_tab();
+	  }
+
+	  // addTab button: just opens the dialog
+	  $('#add_tab').button().click(function() {
+	   $dialog.dialog('open');
+	  });
+	  
+		$('#change_view').button().click(function() {
+			$.colorbox({inline:true, innerWidth:800, innerHeight:520, href:'#viewcontrol'});
+		});
+
+		$('#refresh_monitors').button().click(function() {
+			loadcameras()
+		});
+
+	 } // END ADD_TAB_CLICK() //
+
+	/* setInterval(function() {
+		$("#monitors li").each(function() {
+		var _this = $(this);
+		$(".spinner",_this).html("<img width='15px' src='skins/modern/graphics/spinner.gif' />");
+		var mid = $(this).attr("id");
+		mid = mid.split("_");
+		$(".mon",this).load("skins/modern/views/monitors.php?mid=" + mid[1] + " .mon", function () { 
+		$(".spinner",_this).fadeOut('slow');
+		});
+		});
+		}, refresh);
+	*/
+
+	$.ajax({
+		url: 'skins/modern/views/monitors-view.php?width='+$("#monitors").width(),
+		success: function(data) {
+			//console.log(data);
+			$("ul#monitors").replaceWith(data);
+		},
+		async: false
 	});
 
-	$('#refresh_monitors').button().click(function() {
-		loadcameras()
-	});
-
- } // END ADD_TAB_CLICK() //
-
- /* setInterval(function() {
-   $("#monitors li").each(function() {
-   var _this = $(this);
-   $(".spinner",_this).html("<img width='15px' src='skins/modern/graphics/spinner.gif' />");
-   var mid = $(this).attr("id");
-   mid = mid.split("_");
-   $(".mon",this).load("skins/modern/views/monitors.php?mid=" + mid[1] + " .mon", function () { 
-    $(".spinner",_this).fadeOut('slow');
-   });
-  });
- }, refresh);
-*/
-
- });
+}); /* end document ready */
 
 
-function tab_all_load(url) { 
-	index = 0;//$( '#tabs' ).tabs('option', 'selected');
-	$( '#tabs' ).tabs( "url" , index , url ).tabs('load', index).tabs({ cache: true }); 
+function tab_all_load(url) {
+	console.log("tab_all_load()"); 
+	//index = 0;//$( '#tabs' ).tabs('option', 'selected');
+	//$( '#tabs' ).tabs( "url" , index , url ).tabs('load', index).tabs({ cache: true });
 }
 
 var camera_saved_state;

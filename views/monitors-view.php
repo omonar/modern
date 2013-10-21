@@ -215,7 +215,8 @@ foreach( $displayMonitors as $monitor ) {
 	$display_name = strlen($monitor['Name'])>10 ? substr($monitor['Name'],0,10).'...' : $monitor['Name'];
 	$display_name = $monitor['Name'];
 	?>
-	<li id="monitor_<?php echo $monitor['Id'] ?>" style="float:left;width:<?php echo ($mycontentwidth+20) ?>px;height:<?php echo ($mymaxheight+50); ?>px;">
+	<!-- style="float:left;width:<?php echo ($mycontentwidth+20) ?>px;height:<?php echo ($mymaxheight+50); ?>px;" -->
+	<li id="monitor_<?php echo $monitor['Id'] ?>">
 		<div class="mon_header">
 			<div class="nameleft" style=" width:<?php echo ($mycontentwidth-50) ?>px;"><h3 style="display:inline;"><?php echo $display_name ?></h3></div>
 			<div class="right" style="width:60px;">

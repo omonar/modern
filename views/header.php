@@ -1,28 +1,43 @@
 <?php
-  $_view = $_REQUEST['view'];
-  if(empty($_view)) $_view = 'live';
+
+$running = daemonCheck();
+$status = $running?$SLANG['Running']:$SLANG['Stopped'];
+
+
+if ( $group = dbFetchOne( "select * from Groups where Id = '".(empty($_COOKIE['zmGroup'])?0:dbEscape($_COOKIE['zmGroup']))."'" ) )
+    $groupIds = array_flip(split( ',', $group['MonitorIds'] ));
+
+$monitors = dbFetchAll( "select * from Monitors order by Sequence asc" );
+
+$displayMonitors = array();
+for ( $i = 0; $i < count($monitors); $i++ )
+{
+    if ( !visibleMonitor( $monitors[$i]['Id'] ) )
+    {
+        continue;
+    }
+    if ( $group && !empty($groupIds) && !array_key_exists( $monitors[$i]['Id'], $groupIds ) )
+    {
+        continue;
+    }
+    $monitors[$i]['zmc'] = zmcStatus( $monitors[$i] );
+    $monitors[$i]['zma'] = zmaStatus( $monitors[$i] );
+    $monitors[$i]['ZoneCount'] = dbFetchOne( "select count(Id) as ZoneCount from Zones where MonitorId = '".$monitors[$i]['Id']."'", "ZoneCount" );
+    $displayMonitors[] = $monitors[$i];
+}
+
+$_view = $_REQUEST['view'];
+if(empty($_view)) $_view = 'console';
+
 ?>
-
-<button type="button" id="mainnav-btn"class="btn btn-default dropdown-toggle btn-fixedpos mainnav-btn">
-  Menu
-  <span class="glyphicon glyphicon-chevron-right">
-</button>
-
-<nav class="main-nav"> <!-- begin main nav -->
-  <ul class="main-nav-list">
-    <li class="main-nav-item">
-      <a href="?view=live" class="main-nav-link <?php if($_view=='live') echo 'active';?>">Live View</a>
-    </li>
-    <li class="main-nav-item">
-      <a href="?view=playback" class="main-nav-link <?php if($_view=='playback') echo 'active';?>">Playback</a>
-    </li>
-    <li class="main-nav-item">
-      <a href="?view=admin" class="main-nav-link <?php if($_view=='admin') echo 'active';?>">Admin</a>
-    </li>
+<!-- inline styling stops mootools taking over - yes, inline-styles are bad -->
+<div class="btn-group" style="display: inline-block !important;">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    Action <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="?view=live">Live View</a></li>
+    <li><a href="?view=playback">Playback</a></li>
+    <li><a href="?view=admin">Admin</a></li>
   </ul>
-</nav> <!-- end main nav -->
-
-<button type="button" id="preset-btn" class="btn btn-default dropdown-toggle btn-fixedpos preset-btn">
-  Presets
-  <span class="glyphicon glyphicon-chevron-right"></span>
-</button>
+</div>

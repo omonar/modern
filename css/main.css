@@ -1,0 +1,116 @@
+/* begin reset */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+/* end reset */
+
+/* begin typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+/*h1 {
+  font-size: 26px;
+  font-size: 2.6rem;
+}
+
+h2 {
+  font-size: 24px;
+  font-size: 2.4rem;
+}
+
+h3 {
+  font-size: 22px;
+  font-size: 2.2rem;
+}
+
+h4 {
+  font-size: 20px;
+  font-size: 2rem;
+}
+
+h5 {
+  font-size: 18px;
+  font-size: 1.8rem;
+}
+
+h6 {
+  font-size: 16px;
+  font-size: 1.6rem;
+}
+
+.view-wrapper, #footer, p, li, label, a {
+  font-size: 14px;
+  font-size: 1.4rem;
+} */
+/* end typography */
+
+/* begin general */
+html body {
+  /*font-size: 62.5%;*/
+  background-color: #333;
+  color: #EEE;
+  letter-spacing: 0.1rem;
+}
+
+body .view-wrapper {
+  max-width: 100%;
+  font-size: 11px;
+  font-size: 1.1rem;
+  line-height: 20px;
+  line-height: 2rem;
+}
+
+.btn-fixedpos, .controls {
+  position: fixed;
+  width: 80px;
+  width: 8rem;
+  height: 80px;
+  height: 8rem;
+}
+
+.mainnav-btn, .preset-btn, .controls-timeline { left: 0; }
+
+.mainnav-btn { top: 0; }
+
+.preset-btn { top: 90px; top: 9rem; }
+
+.controls {
+  background-color: #CCC;
+  bottom: 0;
+}
+
+.timeline {
+  left: 80px;
+  left: 8rem;
+  right: 80px;
+  right: 8rem;
+  bottom: 0;
+  position: fixed;
+  min-height: 100px;
+  min-height: 10rem;
+  background-color: #89a;
+}
+
+.controls-misc { right: 0; }
+
+/* end general */
+
+/* temporary styles */
+
+#content { margin-left: 100px; }
+
+#add_tab, #change_view, #refresh_monitors {
+  padding: 1px 10px;
+  margin-top: -2px;
+}
+
+
+/* override - shouldn't be needed */
+.dropdown-menu {
+  text-align: left;
+}
