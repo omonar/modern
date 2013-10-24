@@ -57,7 +57,12 @@ function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 	else outputImageStill( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
 }
 
-
+function outputImageStillWithClass( $id, $src, $width, $height, $title="", $class="" )
+{
+?>
+<img id="<?= $id ?>" class="<?= $class ?>" src="<?= $src ?>" alt="<?= $title ?>" width="<?= $width ?>" height="<?= $height ?>"/>
+<?php
+}
 
 function xhtmlHeaders( $file, $title )
 {
