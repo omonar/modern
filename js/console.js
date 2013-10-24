@@ -27,8 +27,14 @@ $(document).ready(function(){
 			var x = saved_tabs.length;
 			for (var i=0;i<x;i++) {
 				var name = saved_tabs[i];
-				$("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+name, name); // Add the tab
+				//$("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+name, name); // Add the tab
+				$("<li><a href=\"skins/modern/views/monitors.php?groupName=" + name + "\">" + name + "</a></li>").appendTo("#tabs .ui-tabs-nav");
+				$("#tabs").tabs("refresh");
+
 			}
+
+			$("<a href=\"#\" class=\"ui-icon-close\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-circle-close\"></span></a>").appendTo(".ui-state-default:last-child");
+
 			init_delete_tab();
 		});
 	};
@@ -36,12 +42,18 @@ $(document).ready(function(){
 	function init_delete_tab() {
 	// close icon: removing the tab on click
 	// note: closable tabs gonna be an option in the future - see http://dev.jqueryui.com/ticket/3924
+	// kjvarley: closing tabs will not be implemented by the official jqueryui team
+	// kjvarley: I have implemented a close button feature with some code in this file
 		$('#tabs .ui-icon-close').click(function() {
 			var index = $('li',$("#tabs")).index($(this).parent());
-			alert(index);
+			//alert(index);
 			if(index != 0) {
 				$.post("skins/modern/includes/updateGroups.php?action=delete&groupName=" + $(this).parent().find('a').text());
-				$("#tabs").tabs('remove', index);
+				var tab = $("#tabs").find(".ui-tabs-nav li:eq("+index+")").remove();
+				var panelId = tab.attr("aria-controls");
+				$("#"+panelId).remove();
+				$("#tabs").tabs("refresh");
+				//$("#tabs").tabs('remove', index);
 			}
 		});
 	}
@@ -116,20 +128,28 @@ $(document).ready(function(){
 
 	  // actual addTab function: adds new tab using the title input from the form above
 	  function addTab() {
-	   tab_title = $tab_title_input.val(); // groupName
+	   tab_title = $("#tab_title").val(); // groupName
 	   var arysel  = []; // An array for the monitorIds
 	   $("#selMonitors :selected").each(function(i, selected) { // For each selected MonitorId
 	    arysel[i] = $(selected).val(); // Put it into the array
 	   });
 	   var mids = arysel.toString(); // Make a comman-separated list of the select MonitorsIds
 	   $.post("skins/modern/includes/updateGroups.php?groupName=" + tab_title + "&mids=" + mids + "&action=insert"); // Add the new Group
-	   $("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+tab_title, tab_title); // Add the actual tab
+	   
+	   //$("#tabs").tabs('add', 'skins/modern/views/monitors.php?groupName='+tab_title, tab_title); // Add the actual tab
+
+	   $("<li><a href=\"skins/modern/views/monitors.php?groupName=" + tab_title + "\">" + tab_title + "</a></li>").appendTo("#tabs .ui-tabs-nav");
+		$("#tabs").tabs("refresh");
+
+
+
+		init_close_tab();
 	   init_delete_tab();
 	  }
 
 	  // addTab button: just opens the dialog
 	  $('#add_tab').button().click(function() {
-	   $dialog.dialog('open');
+	    $dialog.dialog('open');
 	  });
 	  
 		$('#change_view').button().click(function() {
@@ -166,6 +186,16 @@ $(document).ready(function(){
 
 }); /* end document ready */
 
+function init_close_tab() {
+	$(".ui-tabs-anchor").each(function() {
+		if($(this).text()!="All") {
+			console.log($(this));
+			if(($(this) + " > .ui-icon-close").length != 0) {
+				$("<a href=\"#\" class=\"ui-icon-close\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-circle-close\"></span></a>").appendTo($(this).parent());
+			}
+		}
+	});
+}
 
 function tab_all_load(url) {
 	console.log("tab_all_load()"); 
