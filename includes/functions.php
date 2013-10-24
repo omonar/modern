@@ -22,10 +22,8 @@ function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 	$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
 //echo $monitor['Id']." $scale ".$monitor['Width'];
 
-
 	//$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : (!defined(ZM_WEB_DEFAULT_SCALE) ? 40 : ZM_WEB_DEFAULT_SCALE);
 
-	
 	$connkey = $monitor['connKey']; // Minor hack
 	if ( ZM_WEB_STREAM_METHOD == 'mpeg' && ZM_MPEG_LIVE_FORMAT ) {
 		$streamMode = "mpeg";
@@ -40,7 +38,6 @@ function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 		$streamSrc = getStreamSrc( array( "mode=".$streamMode, "monitor=".$monitor['Id'], "scale=".$scale ) );
 	}
 
-	
 	$width = !empty($inwidth) ? $inwidth : 150;
 	$height = empty($inheight) ? $width * $monitor['Height'] / $monitor['Width'] : $inheight;
 
@@ -92,17 +89,17 @@ function xhtmlHeaders( $file, $title )
  <link rel="stylesheet" href="css/reset.css" type="text/css"/>
  <link rel="stylesheet" href="<?= $skinCssFile ?>" type="text/css" media="screen"/>
  <link rel="stylesheet" href="skins/modern/css/header.css" type="text/css" media="screen"/>
-<?php if($title != 'Zone' && $title != 'Timeline' && !preg_match("/Feed/", $title)) { ?>
+<?php if($title != 'Zone' && !preg_match("/Feed/", $title)) { ?>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
+<link rel="stylesheet" href="skins/<?=$skin?>/css/jquery/dark/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all" />
  <script src="skins/<?=$skin?>/js/bootstrap.min.js"></script>
  <link rel="stylesheet" href="skins/<?=$skin?>/css/bootstrap.min.css">
  <link rel="stylesheet" href="skins/<?=$skin?>/css/bootstrap-theme.min.css">
  <link rel="stylesheet" href="skins/<?=$skin?>/css/main.css">
 <?php } ?>
  <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css"></link>
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css"></link>
+ <!--<link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css"></link>-->
 <?php if ($title == "Console") { ?>
  <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
  <!--<script type="text/javascript" src="skins/modern/js/console.colorbox.js"></script>-->
@@ -193,11 +190,17 @@ function xhtmlHeaders( $file, $title )
  }
 ?>
 <?php
- if ($title == "Timeline") {
+ if ($title == "Playback") {
 ?>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
+<script src="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+<link rel="stylesheet" href="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="skins/<?=$skin?>/views/js/timeline/timeline.css" type="text/css" media="screen"/>
+<script src="skins/<?=$skin?>/views/js/noty/jquery.noty.js"></script>
+<script src="skins/<?=$skin?>/views/js/noty/themes/default.js"></script>
+<script src="skins/<?=$skin?>/views/js/noty/layouts/top.js"></script>
+<script src="skins/<?=$skin?>/views/js/noty/layouts/topRight.js"></script>
+<script src="skins/<?=$skin?>/views/js/timeline/timeline-min.js"></script>
+<script src="skins/<?=$skin?>/views/js/moment.min.js"></script>
 <?php
  }
 ?>
