@@ -65,17 +65,15 @@ body .view-wrapper {
   line-height: 2rem;
 }
 
-.btn-fixedpos, .controls {
+.controls {
   position: fixed;
-  width: 80px;
-  width: 8rem;
-  height: 80px;
-  height: 8rem;
+  width: 200px;
+  width: 20rem;
+  height: 200px;
+  height: 20rem;
 }
 
 .mainnav-btn, .preset-btn, .controls-timeline { left: 0; }
-
-.mainnav-btn { top: 0; }
 
 .preset-btn { top: 90px; top: 9rem; }
 
@@ -85,10 +83,10 @@ body .view-wrapper {
 }
 
 .timeline {
-  left: 80px;
-  left: 8rem;
-  right: 80px;
-  right: 8rem;
+  left: 200px;
+  left: 20rem;
+  right: 200px;
+  right: 20rem;
   bottom: 0;
   position: fixed;
   min-height: 100px;
@@ -114,3 +112,7 @@ body .view-wrapper {
 .dropdown-menu {
   text-align: left;
 }
+
+/* temp styles - may need changing */
+
+.btn-group { left: 5px; left: 0.5rem; top: 5px; top: 0.5rem; position: fixed; z-index: 20; }
