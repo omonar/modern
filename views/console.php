@@ -29,7 +29,7 @@
 
   xhtmlHeaders( __FILE__, $SLANG['Console'] );
 ?>
-  <body class="zm">
+  <body class="zm"> <!-- begin body -->
     <script>
     var $moo = document.id; //mootools no conflict;
     var thisUrl = "<?= ZM_BASE_URL.$_SERVER['PHP_SELF'] ?>";
@@ -73,6 +73,7 @@
 
       
       this.getStreamCmdResponse = function( respObj, respText ) {
+        // kjvarley: throws a not defined error in dev tools
         if ( this.streamCmdTimer ) this.streamCmdTimer = $clear( this.streamCmdTimer );
 
         if ( respObj.result == 'Ok' ) {
