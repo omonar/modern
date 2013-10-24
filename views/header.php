@@ -32,11 +32,11 @@ if(empty($_view)) $_view = 'console';
 ?>
 <!-- inline styling stops mootools taking over - yes, inline-styles are bad -->
 <div class="btn-group" style="display: inline-block !important;">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Action <span class="caret"></span>
+  <button type="button" class="btn btn-default dropdown-toggle mainnav-btn btn-fixedpos" data-toggle="dropdown">
+    Menu <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li><a href="?view=live">Live View</a></li>
+    <li><a href="?view=console">Live View</a></li>
     <li><a href="?view=playback">Playback</a></li>
     <li><a href="?view=admin">Admin</a></li>
   </ul>
