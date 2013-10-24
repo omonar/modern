@@ -1,0 +1,443 @@
+/*#header {
+    width: 99%;
+}*/
+
+#layout {
+    margin-right: 10px;
+}
+
+#content {
+    /*width: 99%;*/
+    width: 100%;
+    margin: 0;
+}
+
+#monitors {
+    display: inline-block;
+}
+
+#monitors .alarm {
+    color: #ff0000;
+}
+
+#monitors .alert {
+    color: #ffa500;
+}
+
+#monitors .imageFeed {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#monitors .imageFeed img.idle {
+    border: 2px solid #ffffff;
+}
+
+#monitors .imageFeed img.alarm {
+    border: 2px solid #ff0000;
+}
+
+#monitors .imageFeed img.alert {
+    border: 2px solid #ffa500;
+}
+
+#monitors .monitorState {
+    margin: 2px auto;
+    text-align: center;
+}
+
+.page-header {
+    min-height: 21rem;
+}
+
+.page-content {
+    padding: 0 0 5rem;
+}
+
+#headerControl {
+    margin-bottom: 2rem;
+}
+
+.page-content-inner-wrap.container {
+    max-width: 100%;
+}
+
+.monitor-stream {
+    border: 1px solid;
+    
+}
+
+.montage-controls {
+    margin-bottom: 2rem;
+}
+
+.monitor-stream.double {
+    width: 1220px;
+    height: 960px;
+}
+
+.monitor-stream.default {
+    width: 640px;
+    height: 480px;
+}
+
+.monitor-stream.half {
+    width: 320px;
+    height: 240px;
+}
+
+.align-right.unit.one-of-five {
+}
+
+.page-header .container {
+    max-width: 100%;
+}
+
+.monitor-thumbnails-wrap ul li {
+    display: inline-block;
+}
+
+.monitor-stream-image {
+    width: 100%;
+}
+
+.header-middle {
+    margin-left: 0;
+}
+
+.camera-activity-filters {
+    text-align: left;
+}
+
+/*#dvrControls {
+    padding-top: 1.3rem;
+}*/
+
+.page-footer .container {
+    padding-top: 1.5rem;
+}
+
+/* EVENT.CSS */
+
+#dataBar {
+    width: 100%;
+    margin: 2px auto;
+    text-align: center;
+}
+
+#dataBar #dataTable {
+    width: 100%;
+}
+
+#dataBar #dataTable td {
+    text-align: center;
+    padding: 2px;
+}
+
+#menuBar1 {
+    width: 100%;
+    height: 1.5em;
+    padding: 3px 0;
+    text-align: center;
+    clear: both;
+}
+
+#menuBar1 #nameControl {
+    float: left;
+}
+
+#menuBar1 #nameControl #eventName {
+    margin-right: 4px;
+}
+
+#menuBar1 #replayControl {
+    float: right;
+    margin-left: 8px;
+}
+
+#menuBar1 #scaleControl {
+    float: right;
+    margin-left: 8px;
+}
+
+#menuBar2 {
+    width: 100%;
+    height: 1.2em;
+    padding: 3px 0;
+    margin-bottom: 4px;
+}
+
+#menuBar2 div {
+    text-align: left;
+    float: left;
+    padding: 0 12px;
+}
+
+#menuBar2 #closeWindow {
+    float: right;
+    text-align: right;
+}
+
+#imageFeed {
+    text-align: center;
+}
+
+#monitorStatus {
+    width: 100%;
+    margin-top: 3px;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+#monitorStatus #enableAlarms {
+    position: absolute;
+    left: 4px;
+}
+
+#monitorStatus #forceAlarm {
+    position: absolute;
+    right: 4px;
+}
+
+#monitorStatus #monitorState {
+}
+
+#dvrControls {
+    /*margin-top: 3px;
+    margin-bottom: 2px;*/
+    text-align: center;
+}
+
+#dvrControls input {
+    height: 20px;
+    width: 28px;
+    padding-bottom: 3px;
+    margin: 0 3px;
+}
+
+#dvrControls input[disabled=disabled] {
+    color: #aaaaaa;
+}
+
+#dvrControls input.active {
+    border: 1px solid blue;
+}
+
+#dvrControls input.inactive {
+    border: 1px solid green;
+}
+
+#dvrControls input.unavail {
+    border: 1px solid red;
+}
+
+#replayStatus {
+    margin: 3px 0 2px;
+    text-align: center;
+    clear: both;
+}
+
+#replayStatus > span {
+    padding: 0 4px;
+}
+
+#progressBar {
+    position: relative;
+    border: 1px solid #666666;
+    height: 17px;
+    margin: 0 auto;
+}
+
+#progressBar .progressBox {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 15px;
+    background: #eeeeee;
+    border-left: 1px solid #999999;
+}
+
+#progressBar .complete {
+    background: #aaaaaa;
+}
+
+#eventStills {
+    width: 100%;
+    position: relative;
+}
+
+#eventThumbsPanel {
+    position: relative;
+    width: 100%;
+    margin: 4px auto;
+    z-index: 1;
+}
+
+#eventThumbs {
+    margin: 0 auto;
+    width: 100%;
+    overflow: hidden;
+    height: 300px;
+}
+
+#eventThumbs img {
+    height: 25px; /* HACK - Although this is pixels it will be interpreted as a scale %ge, so 25px = 25% scaling for thumbnails */
+    margin: 2px;
+    background-color: #dddddd;
+}
+
+#eventThumbs img.placeholder {
+    /* width: 100px; */
+}
+
+#eventThumbs img.selected {
+}
+
+#eventImagePanel {
+    position: absolute;
+    z-index: 10;
+}
+
+#eventImageFrame {
+    border: 2px solid gray;
+    background-color: white;
+    padding: 4px;
+}
+
+#eventImage {
+}
+
+#eventImageBar {
+    margin-top: 2px;
+}
+
+#eventImageStats {
+    float: left;
+}
+
+#eventImageData {
+    margin: 0 auto;
+    padding-top: 2px;
+}
+
+#eventImageClose {
+    float: right;
+}
+
+#eventImageNav {
+    position: relative;
+}
+
+#eventImageNav input {
+    width: 32px;
+    font-size: 16px;
+}
+
+#thumbsSliderPanel {
+    width: 400px;
+    margin: 4px auto 0;
+    background: #888888;
+    padding: 1px;
+}
+
+#thumbsSlider {
+    width: 400px;
+    height: 10px;
+    background: #dddddd;
+}
+
+#thumbsKnob {
+    width: 8px;
+    height: 10px;
+    background-color: #444444;
+}
+
+.page-footer {
+    padding-top: 1.4rem;
+}
+.playback-periods {
+    float: left;
+    position: relative;
+    top: -4px;
+    padding-left: 1rem;
+}
+
+.playback-periods p {
+    color: white;
+}
+
+.playback-buttons {
+    display: inline-block;
+}
+
+#dashboard {
+    width: 100%;
+    max-width: 100%;
+}
+
+/*.timeline-event {
+    min-width: 50px;
+}*/
+
+/* timeline styling */
+
+.timeline-event.monitor1 {
+  background-color: red;
+  color: white;
+}
+.timeline-event.monitor2 {
+  background-color: blue;
+  color: white;
+}
+
+/* begin toast */
+.grid {
+    margin-left: -3%;
+    max-width: 105%;
+}
+
+.unit {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    /* Clearfix */
+    overflow: hidden;
+    *overflow: visible;
+}
+
+.span-grid {
+    width: 97%;
+}
+
+.one-of-two { width: 47%; }
+
+.one-of-three { width: 30.36%; }
+.two-of-three { width: 63.666666666%; }
+
+.one-of-four { width: 22.05%; }
+.three-of-four { width: 72%; }
+
+.one-of-five { width: 17.07%; }
+.two-of-five { width: 37%; }
+.three-of-five { width: 63%; }
+.four-of-five { width: 77%; }
+
+@media screen and (max-width: 650px) {
+    .grid {
+        margin-left: 0;
+        max-width: none;
+    }
+
+    .unit {
+        width: auto;
+        margin-left: 0;
+        display: block;
+    }
+}
+
+/* end toast */
+
+/* shouldn't be needed */
+
+#ui-datepicker-div, .dialog-modal { display: none; }
