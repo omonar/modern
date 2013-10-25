@@ -218,7 +218,7 @@ foreach( $displayMonitors as $monitor ) {
 	<!-- style="float:left;width:<?php echo ($mycontentwidth+20) ?>px;height:<?php echo ($mymaxheight+50); ?>px;" -->
 	<li id="monitor_<?php echo $monitor['Id'] ?>">
 		<div class="mon_header">
-			<div class="nameleft" style=" width:<?php echo ($mycontentwidth-50) ?>px;"><h3 style="display:inline;"><?php echo $display_name ?></h3></div>
+			<div class="nameleft" style=" width:<?php echo ($mycontentwidth-50) ?>px;"><h2 class="monitor-title"><?php echo $display_name ?></h2></div>
 			<div class="right" style="width:60px;">
 				<div class="spinner"></div>
 				<div class="minimize"><img src="skins/modern/graphics/minimize.png" style="width:15px;" alt="minimize" /></div>
