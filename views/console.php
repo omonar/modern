@@ -153,12 +153,10 @@
           </div>
           <div id="tabs">
             <ul>
-              <li><a href="skins/modern/views/monitors-view.php">All</a></li>
               <li style="float:right;"><button id="refresh_monitors" class="btn btn-default">Refresh</button></li>
               <li style="float:right;"><button id="change_view" class="btn btn-default">Views</button></li>
               <li style="float:right;"><button id="add_tab" class="btn btn-default">Add Tab</button></li>
             </ul>
-            <div id="all"><ul id="monitors" class="clearfix"></ul></div>
           </div>
         </div>
 
