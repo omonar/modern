@@ -438,6 +438,10 @@
 
 /* end toast */
 
+.monitor-stream-info-close a {
+    float: right;
+}
+
 /* shouldn't be needed */
 
 #ui-datepicker-div, .dialog-modal { display: none; }
