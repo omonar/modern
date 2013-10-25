@@ -82,6 +82,10 @@ body .view-wrapper {
   bottom: 0;
 }
 
+ul.controls-list li {
+  margin:1.5rem 0;
+}
+
 .timeline {
   left: 200px;
   left: 20rem;
@@ -96,11 +100,29 @@ body .view-wrapper {
 
 .controls-misc { right: 0; }
 
+.playback-date, .playback-time, .controls-list label {
+font-size: 1.7rem;
+color: #567;
+}
+
+.controls-list label {
+font-size: 1.3rem;
+color: #567;
+}
+
+.controls-list input {
+  letter-spacing:1px;
+}
+
+.timeline div.timeline-axis-text {
+  color:#fff;
+}
+
 /* end general */
 
 /* temporary styles */
 
-#content { margin-left: 100px; }
+#content { margin: 45px; }
 
 #add_tab, #change_view, #refresh_monitors {
   padding: 1px 10px;
