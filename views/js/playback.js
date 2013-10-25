@@ -398,8 +398,46 @@ jQuery(document).ready(function() {
   end = new Date();
   start.setDate(end.getDate()-1);
 
-  $('#rangestart').datetimepicker({dateFormat: "dd/mm/yy"});
-  $('#rangeend').datetimepicker({dateFormat: "dd/mm/yy"});
+  $('#rangestart').datetimepicker({
+    dateFormat: "dd/mm/yy",
+    onClose: function(dateText, inst) {
+      setTimeout(function() {
+        if( moment($("#rangestart").val(), 'D/M/YYYY h:mm').isBefore($("#rangeend").val())) {
+          if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+            start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+            end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+            requeryTimeline();
+          }
+        }
+        else {
+          var temprangestart = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+          temprangestart.setDate(temprangestart.getDate() - 1);
+          $("#rangestart").val(moment(temprangestart).format('D/M/YYYY h:mm'));
+          noty({text: 'Range start cannot be after range end!', type: 'error'});
+        }
+      }, 200);
+    }
+  });
+  $('#rangeend').datetimepicker({
+    dateFormat: "dd/mm/yy",
+    onClose: function(dateText, inst) {
+      setTimeout(function() {
+        if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isAfter($("#rangestart").val())) {
+          if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+            start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+            end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+            requeryTimeline();
+          }
+        }
+        else {
+          var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+          temprangeend.setDate(temprangeend.getDate() + 1);
+          $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
+          noty({text: 'Range end cannot be before range start!', type: 'error'});
+        }
+      }, 200);
+    }
+  });
 
   $('#rangestart').val(moment(end).format('DD/MM/YYYY') + ' 00:01');
   $('#rangeend').val(moment(end).format('DD/MM/YYYY' + ' 23:59'));
@@ -410,7 +448,7 @@ jQuery(document).ready(function() {
         this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
         e.preventDefault();
     });
-  jQuery(".monitor-thumbnail").click(function() {
+  /*jQuery(".monitor-thumbnail").click(function() {
     liveview = true;
     var monitorClass = jQuery(this).attr("id");
     var monitorId = monitorClass.substr(monitorClass.length - 1);
@@ -418,7 +456,7 @@ jQuery(document).ready(function() {
     if(jQuery('#monitor-stream-' + monitorId).length == 0) {
       jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
     }
-  });
+  });*/
   jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
     event.preventDefault();
     window.stop();
@@ -473,13 +511,13 @@ jQuery(document).ready(function() {
   jQuery(document).on("click", "#play", function(event) {
     event.preventDefault();
     window.stop();
-    $("#play").html("<img src=\"skins/modern/views/images/playback/pause.png\" alt=\"pause\">");
-    $("#play").attr("id", "pause");
     if (paused === true) {
       resumePlayback();
+      $("#play").html("<img src=\"skins/modern/views/images/playback/pause.png\" alt=\"pause\">");
+      $("#play").attr("id", "pause");
     }
   });
-  jQuery('#rangestart').change(function() {
+  /*jQuery('#rangestart').change(function() {
     console.log("changed");
     if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
       start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
@@ -489,12 +527,17 @@ jQuery(document).ready(function() {
   });
   jQuery('#rangeend').change(function() {
     console.log("changed");
-    if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-      start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-      end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-      requeryTimeline();
+    if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isAfter($("#rangestart").val())) {
+      if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+        start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+        end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+        requeryTimeline();
+      }
     }
-  });
+    else {
+      noty({text: 'Range end cannot be before range start!', type: 'error'});
+    }
+  });*/
   jQuery(document).on("click", "#requeryTimeline", function(event) {
     event.preventDefault();
     start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
@@ -587,12 +630,19 @@ jQuery(document).ready(function() {
   });
 
   jQuery(".monitor-thumbnail").click(function() {
-    liveview = true;
     var monitorClass = jQuery(this).attr("id");
     var monitorId = monitorClass.substr(monitorClass.length - 1);
-    chosencameras.push(monitorId);
     if(jQuery('#monitor-stream-' + monitorId).length == 0) {
+      liveview = true;
+      chosencameras.push(monitorId);
       jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
+    }
+    else {
+      jQuery("#monitor-stream-" + monitorId).remove();
+      chosencameras.splice(chosencameras.indexOf(monitorId), 1);
+      if(!jQuery(".monitor-stream")[0]) {
+        liveview = false;
+      }
     }
   });
 
