@@ -55,7 +55,7 @@ define( "ZM_BASE_URL", $protocol.'://'.$_SERVER['HTTP_HOST'] ); ?> <ul id="monit
 	$width = ($monitor['Width'] * ('.' . $scale) + 20); ?> <li id="monitor_<?php echo $monitor['Id'] ?>" style="width:<?php echo 
 $width ?>px;">
  <div class="mon_header">
-  <h3 style="display:inline;"><?php echo $monitor['Name'] ?></h3>
+  <h2 style="display:inline;"><?php echo $monitor['Name'] ?></h2>
   <div class="right">
    <div class="spinner"></div>
    <div class="minimize"><img src="skins/new/graphics/minimize.png" style="width:15px;" alt="minimize" /></div>
