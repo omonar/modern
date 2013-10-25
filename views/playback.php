@@ -38,19 +38,35 @@
         <div id="monitor-streams" class="monitor-streams grid"></div>
 
         <div class="controls-timeline controls"> <!-- begin controls-timeline -->
-          <a href="#" class="playback-button" id="play"><img src="skins/emergent/views/images/playback/play.png" alt="play"></a>
-          <label for="rangestart">Start</label>
-          <input id="rangestart" type="text" class="hasDatePicker">
-          <label for="rangeend">End</label>
-          <input id="rangeend" type="text" class="hasDatePicker">
+          <ul class="controls-list">
+            <li>
+              <a href="#" class="playback-button" id="play"><img src="skins/emergent/views/images/playback/play.png" alt="play"></a>
+            </li>
+            <li>
+              <label for="rangestart">Start</label>
+              <input id="rangestart" type="text" class="hasDatePicker">
+            </li>
+            <li>
+              <label for="rangeend">End</label>
+              <input id="rangeend" type="text" class="hasDatePicker">
+          </li>
+          </ul>
         </div> <!-- end controls-timeline -->
 
         <div id="timeline" class="timeline"></div>
 
         <div class="controls-misc controls">
-          <button id="choose-cameras-opener" class="btn btn-default">Choose Cameras</button>
-          <button id="preset-selection-opener" class="btn btn-default">Choose Preset</button>
-          <p class="playback-date">0000-00-00</p><p class="playback-time">00:00:00</p>
+          <ul class="controls-list">
+            <li>
+              <button id="choose-cameras-opener" class="btn btn-default">Choose Cameras</button>
+            </li>
+            <li>
+              <button id="preset-selection-opener" class="btn btn-default">Choose Preset</button>
+            </li>
+            <li>
+              <p class="playback-date">0000-00-00</p><p class="playback-time">00:00:00</p>
+            </li>
+          <ul>
         </div>
 
         <div id="choose-cameras" class="dialog-modal" title="Camera Selection">
