@@ -15,12 +15,16 @@ $(document).ready(function(){
 		}
 	});
 
+	//tab_all_load('skins/modern/views/monitors-view.php?width='+$("#monitors").width() );
+	//$("#tabs").tabs("refresh");
 	load_tabs(); // Then load the tabs into #tabs
 	add_tab_click(); // Finally, setup the add tab feature
 
 	function load_tabs() {
-		tab_all_load('skins/modern/views/monitors-view.php?width='+$("#monitors").width() ); 
-		
+		$("<li id=\"alltab\"><a href=\"skins/modern/views/monitors-view.php?width=" + parseInt($("#tabs").width()) + "\">All</a></li>").appendTo("#tabs .ui-tabs-nav");
+		$("#tabs").tabs("refresh");
+		$("#tabs").tabs("option", "active", 0);
+
 		$.post("skins/modern/includes/updateGroups.php?action=select", function(data) { // Load tabs (groups)
 			saved_tabs = data.split(",");
 			saved_tabs.pop();
@@ -175,15 +179,6 @@ $(document).ready(function(){
 		}, refresh);
 	*/
 
-	$.ajax({
-		url: 'skins/modern/views/monitors-view.php?width='+$("#monitors").width(),
-		success: function(data) {
-			//console.log(data);
-			$("ul#monitors").replaceWith(data);
-		},
-		async: false
-	});
-
 }); /* end document ready */
 
 function init_close_tab() {
@@ -197,11 +192,18 @@ function init_close_tab() {
 	});
 }
 
-function tab_all_load(url) {
-	console.log("tab_all_load()"); 
+/*function tab_all_load(url) {
+	$.ajax({
+		url: 'skins/modern/views/monitors-view.php?width='+$("#monitors").width(),
+		success: function(data) {
+			console.log(data);
+			$("#monitors").replaceWith(data);
+		},
+		async: false
+	});
 	//index = 0;//$( '#tabs' ).tabs('option', 'selected');
 	//$( '#tabs' ).tabs( "url" , index , url ).tabs('load', index).tabs({ cache: true });
-}
+}*/
 
 var camera_saved_state;
 function loadcameras(options,callback) {
@@ -215,7 +217,7 @@ function loadcameras(options,callback) {
 	options['width'] = $("#monitors").width();
 	options['aspectratio'] = ''; //$("#id-console-views-aspect-ratio").val()==undefined ? '' : $("#id-console-views-aspect-ratio").val();
 
-	tab_all_load('skins/modern/views/monitors-view.php?'+$.param(options));
+	//tab_all_load('skins/modern/views/monitors-view.php?'+$.param(options));
 	$.colorbox.close()
 }
 function loadcameragrid(elem,size) {
