@@ -27,6 +27,9 @@
   $cycleWidth = $maxWidth;
   $cycleHeight = $maxHeight;
 
+  // workaround so we don't have to have modified /usr/share/zoneminder/lang/*.php files
+  $SLANG['Playback'] = "Playback";
+
   xhtmlHeaders( __FILE__, $SLANG['Playback'] );
 ?>
   <body class="zm" onload="drawVisualization();"> <!-- begin body -->
@@ -37,7 +40,7 @@
 
         <div id="monitor-streams" class="monitor-streams grid"></div>
 
-        <div class="controls-timeline controls"> <!-- begin controls-timeline -->
+        <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li>
               <a href="#" class="playback-button" id="play"><img src="skins/emergent/views/images/playback/play.png" alt="play"></a>
@@ -55,7 +58,7 @@
 
         <div id="timeline" class="timeline"></div>
 
-        <div class="controls-misc controls">
+        <div class="controls-misc controls ui-corner-tl">
           <ul class="controls-list">
             <li>
               <button id="choose-cameras-opener" class="btn btn-default">Choose Cameras</button>
@@ -76,7 +79,7 @@
               $streamMode = "single";
               $sql = "SELECT * FROM Monitors";
               foreach(dbFetchAll( $sql ) as $row) {
-                echo "<li>";
+                echo "<li class=\"floatleft\">";
                 outputImageStillWithClass( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail" );
                 echo "</li>";
               }
