@@ -195,7 +195,7 @@ function xhtmlHeaders( $file, $title )
  }
 ?>
 <?php
- if ($title == "Playback") {
+ if ((isset($_REQUEST['view']))&&($_REQUEST['view']=="playback")) {
 ?>
 <script src="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
 <link rel="stylesheet" href="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
