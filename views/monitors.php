@@ -73,7 +73,7 @@ function displayMonitor($monitor, $bandwidth){
 ?>
 	<li id="monitor_<?php echo $monitor['Id'] ?>" style="width:<?php echo $width ?>px;">
 		<div class="mon_header">
-			<div style="float:left;overflow:hidden;width:100px;"><h3 style="display:inline;"><?php echo $display_name ?></h3></div>
+			<div style="float:left;overflow:hidden;width:100px;"><h2 class="monitor-title"><?php echo $display_name ?></h2></div>
 			<div class="right">
 				<div class="spinner"></div>
 				<div class="minimize"><img src="skins/modern/graphics/minimize.png" style="width:15px;" alt="minimize" /></div>
