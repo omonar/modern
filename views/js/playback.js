@@ -402,7 +402,7 @@ jQuery(document).ready(function() {
     dateFormat: "dd/mm/yy",
     onClose: function(dateText, inst) {
       setTimeout(function() {
-        if( moment($("#rangestart").val(), 'D/M/YYYY h:mm').isBefore($("#rangeend").val())) {
+        if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
           if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
             start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
             end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
@@ -422,7 +422,7 @@ jQuery(document).ready(function() {
     dateFormat: "dd/mm/yy",
     onClose: function(dateText, inst) {
       setTimeout(function() {
-        if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isAfter($("#rangestart").val())) {
+        if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
           if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
             start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
             end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
@@ -430,10 +430,12 @@ jQuery(document).ready(function() {
           }
         }
         else {
-          var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-          temprangeend.setDate(temprangeend.getDate() + 1);
-          $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
-          noty({text: 'Range end cannot be before range start!', type: 'error'});
+          if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isSame($("#rangestart").val())) {
+            var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+            temprangeend.setDate(temprangeend.getDate() + 1);
+            $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
+            noty({text: 'Range end cannot be before range start!', type: 'error'});
+          }
         }
       }, 200);
     }
