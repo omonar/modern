@@ -133,6 +133,7 @@ Date.createFromMysql = function(mysql_string) {
 }
 
 jQuery.fn.exists = function(){return this.length>0;}
+
 function imgError(image) {
   image.onerror = "";
   image.src = "skins/modern/views/images/onerror.png";
@@ -185,27 +186,30 @@ function clearTimer(eventId) {
 }
 
 function requeryTimeline() {
-  jQuery("#timeline").css("background-color","red");
-  var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
-  var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
-  console.log(startformatted);
-  console.log(endformatted);
-  jQuery.ajax({
-    type: "POST",
-    url: 'index.php?view=onefiletorulethemall',
-    data: {timeline: 'ok', start: startformatted, end: endformatted},
-    success: function(data) {
-      timelinedata = [];
-      activity = [];
-      activity = JSON.parse(data);
-      processTimelineData();
-      timeline.draw(timelinedata, options);
-      timeline.applyRange(start, end);
-      timeline.redraw();
-      getFrames();
-      jQuery("#timeline").css("background-color","");
-    }
-  });
+  if(chosencameras.length > 0) {
+    jQuery("#timeline").css("background-color","red");
+    var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
+    var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
+    //console.log(startformatted);
+    //console.log(endformatted);
+    console.log("requeryTimeline with ... " + chosencameras.join(",") + " / " + startformatted + " / " + endformatted)
+    jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=onefiletorulethemall',
+      data: {timeline: 'ok', cameras: chosencameras.join(","), start: startformatted, end: endformatted},
+      success: function(data) {
+        timelinedata = [];
+        activity = [];
+        activity = JSON.parse(data);
+        processTimelineData();
+        timeline.draw(timelinedata, options);
+        timeline.applyRange(start, end);
+        timeline.redraw();
+        getFrames();
+        jQuery("#timeline").css("background-color","");
+      }
+    });
+  }
 }
 
 function playbackFrames(monitorId, eventId, imgarray) {
@@ -469,6 +473,7 @@ jQuery(document).ready(function() {
     jQuery(".monitor-stream-image").each(function() {
       jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
     });
+    requeryTimeline();
   });
   jQuery(document).on("click", ".show-all-cameras", function(event) {
     event.preventDefault();
@@ -638,10 +643,12 @@ jQuery(document).ready(function() {
       liveview = true;
       chosencameras.push(monitorId);
       jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
+      requeryTimeline();
     }
     else {
       jQuery("#monitor-stream-" + monitorId).remove();
       chosencameras.splice(chosencameras.indexOf(monitorId), 1);
+      requeryTimeline();
       if(!jQuery(".monitor-stream")[0]) {
         liveview = false;
       }
