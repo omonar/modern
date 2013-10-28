@@ -420,6 +420,10 @@ div.clear {
  width:70px;
 }
 
+.zm #add_tab, .zm #change_view, .zm #refresh_monitors {
+padding: 2px 10px;
+margin: 1px 3px;
+}
 /* Clearfix */
  .clearfix:after {
     content: ".";
