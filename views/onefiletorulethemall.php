@@ -67,15 +67,11 @@
 			}
 		}
     echo json_encode($frames);
-    //echo "<pre>"; print_r(f$rames); echo "</pre>";
 	}
 
 	if (isset($_REQUEST['timeline'])) {
-		//echo $_REQUEST['start'];
-		//echo ", ";
-		//echo $_REQUEST['end'];
-		//echo "SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND StartTime >= '" . $_REQUEST['start'] . "' AND EndTime >= '" . $_REQUEST['end'] . "' ORDER BY EndTime";
-		//echo "<br/>";
-		echo json_encode(dbFetchAll("SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "'"));
+		$cameras = "'" . implode("','", explode(",", $_REQUEST['cameras'])) . "'";
+		//echo json_encode(dbFetchAll("SELECT Events.Id, Events.MonitorId, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "'"));
+		echo json_encode(dbFetchAll("SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "'"));
 	}
 ?>
