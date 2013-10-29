@@ -70,6 +70,38 @@ jQuery.noty.defaults = {
   buttons: false // an array of buttons
 };
 
+/* begin third party code */
+/* http://www.unseenrevolution.com/jquery-ajax-error-handling-function/ */
+$(function() {
+  $.ajaxSetup({
+    error: function(jqXHR, exception) {
+      if (jqXHR.status === 0) {
+        noty({text: 'Network error: Check internet connection', type: 'error'});
+        console.log('Not connect.\n Verify Network.');
+      } else if (jqXHR.status == 404) {
+        noty({text: 'Network error: 404', type: 'error'});
+        console.log('Requested page not found. [404]');
+      } else if (jqXHR.status == 500) {
+        noty({text: 'Network error: 500', type: 'error'});
+        console.log('Internal Server Error [500].');
+      } else if (exception === 'parsererror') {
+        noty({text: 'Parse error', type: 'error'});
+        console.log('Requested JSON parse failed.');
+      } else if (exception === 'timeout') {
+        noty({text: 'Network error: Timeout', type: 'error'});
+        console.log('Time out error.');
+      } else if (exception === 'abort') {
+        noty({text: 'Network error: Request aborted', type: 'error'});
+        console.log('Ajax request aborted.');
+      } else {
+        noty({text: 'Network error: Uncaught error', type: 'error'});
+        console.log('Uncaught Error.\n' + jqXHR.responseText);
+      }
+    }
+  });
+});
+/* end third party code */
+
 function eventInstance(monitorId, eventId, currentFrame) {
   this.monitorId=monitorId;
   this.eventId=eventId;
@@ -120,6 +152,8 @@ function resumePlayback() {
   timeline.setCustomTime(new Date().getTime());
 }
 
+
+/* begin third party code */
 // Andy E
 // http://stackoverflow.com/users/94197/andy-e
 // http://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
@@ -131,6 +165,7 @@ Date.createFromMysql = function(mysql_string) {
   }
   return null;
 }
+/* end third party code */
 
 jQuery.fn.exists = function(){return this.length>0;}
 
@@ -207,8 +242,13 @@ function requeryTimeline() {
         timeline.redraw();
         getFrames();
         jQuery("#timeline").css("background-color","");
+        noty({text: 'Timeline refreshed', type: 'success'});
       }
     });
+  }
+  else {
+    timeline.draw(null, options);
+    noty({text: 'No cameras selected', type: 'info'});
   }
 }
 
@@ -485,12 +525,14 @@ jQuery(document).ready(function() {
       jQuery('<div id=\"monitor-stream-' + (i+1) + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[i].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[i].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[i].Protocol + '://' + cameras[i].Host + ':' + cameras[i].Port + cameras[i].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
       i++;
     });
+    requeryTimeline();
   });
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
     window.stop();
     jQuery("#monitor-streams").empty();
     chosencameras = [];
+    requeryTimeline();
   });
   jQuery(document).on("click", ".monitor-stream", function() {
     jQuery(".copyright").hide();
@@ -613,9 +655,7 @@ jQuery(document).ready(function() {
     });
 
     jQuery("#editPresets").click(function(event) {
-      console.log("OK");
       event.preventDefault();
-      console.log("OK");
       $("#editPresets-dialog").dialog( "open" );
     });
 
@@ -633,7 +673,21 @@ jQuery(document).ready(function() {
   });
 
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
-    $("#choose-cameras").dialog( "open" );
+    if($("#choose-cameras").dialog("isOpen")!==true) {
+      $("#choose-cameras").dialog("open");
+    }
+    else {
+      $("#choose-cameras").dialog("close");
+    }
+  });
+
+  jQuery(document).on("click", "#preset-selection-opener", function(event) {
+    if($("#preset-selection").dialog("isOpen")!==true) {
+      $("#preset-selection").dialog("open");
+    }
+    else {
+      $("#preset-selection").dialog("close");
+    }
   });
 
   jQuery(".monitor-thumbnail").click(function() {
