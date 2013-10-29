@@ -85,6 +85,8 @@
               }
             ?>
           </ul>
+          <a href="#" class="show-all-cameras">Show All</a>
+          <a href="#" class="hide-all-cameras">Hide All</a>
         </div>
 
       </div> <!-- end view-wrapper -->
