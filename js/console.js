@@ -37,8 +37,7 @@ $(document).ready(function(){
 
 			}
 
-			$("<a href=\"#\" class=\"ui-icon-close\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-circle-close\"></span></a>").appendTo(".ui-state-default:last-child");
-
+			init_close_tab();
 			init_delete_tab();
 		});
 	};
@@ -48,7 +47,8 @@ $(document).ready(function(){
 	// note: closable tabs gonna be an option in the future - see http://dev.jqueryui.com/ticket/3924
 	// kjvarley: closing tabs will not be implemented by the official jqueryui team
 	// kjvarley: I have implemented a close button feature with some code in this file
-		$('#tabs .ui-icon-close').click(function() {
+		$('#tabs .ui-icon-close').click(function(event) {
+			event.preventDefault();
 			var index = $('li',$("#tabs")).index($(this).parent());
 			//alert(index);
 			if(index != 0) {
@@ -117,9 +117,6 @@ $(document).ready(function(){
 	    'Cancel': function() {
 	     $(this).dialog('close');
 	    }
-	   },
-	   open: function() {
-	    tab_title_input.focus();
 	   }
 	  }); // END DIALOG //
 
@@ -152,15 +149,18 @@ $(document).ready(function(){
 	  }
 
 	  // addTab button: just opens the dialog
-	  $('#add_tab').button().click(function() {
+	  $('#add_tab').button().click(function(event) {
+	  	event.preventDefault();
 	    $dialog.dialog('open');
 	  });
 	  
-		$('#change_view').button().click(function() {
+		$('#change_view').button().click(function(event) {
+			event.preventDefault();
 			$.colorbox({inline:true, innerWidth:800, innerHeight:520, href:'#viewcontrol'});
 		});
 
-		$('#refresh_monitors').button().click(function() {
+		$('#refresh_monitors').button().click(function(event) {
+			event.preventDefault();
 			loadcameras()
 		});
 
@@ -182,12 +182,9 @@ $(document).ready(function(){
 }); /* end document ready */
 
 function init_close_tab() {
-	$(".ui-tabs-anchor").each(function() {
-		if($(this).text()!="All") {
-			console.log($(this));
-			if(($(this) + " > .ui-icon-close").length != 0) {
-				$("<a href=\"#\" class=\"ui-icon-close\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-circle-close\"></span></a>").appendTo($(this).parent());
-			}
+	$("#tabs .ui-state-default").each(function() {
+		if((!$(this).hasClass('ui-state-active'))&&($(this).find(".ui-icon-close").length == 0)) {
+			$("<a href=\"#\" class=\"ui-icon-close\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-circle-close\"></span></a>").appendTo($(this));
 		}
 	});
 }
