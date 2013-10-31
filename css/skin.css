@@ -799,6 +799,18 @@ border-width: 0 1px;
   border-radius: 6px;
 }
 
+.zm .ui-dialog .ui-dialog-title {
+margin: .1em 0 0 1rem;
+width: 85%;
+}
+
+.zm.ui-dialog .ui-dialog-titlebar-close, .zm .show-all-cameras {
+  width: 26px;
+  margin: -13px 0 0 0;
+  padding: 2px;
+  height: 26px;
+}
+
 @media (min-width: 1500px) {
   .zm .monitor-streams .monitor-stream {
     margin: 2rem 1rem;
