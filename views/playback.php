@@ -43,7 +43,7 @@
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li>
-              <a href="#" class="playback-button" id="play"><img src="skins/emergent/views/images/playback/play.png" alt="play"></a>
+              <button class="playback-button" id="play"><span class="glyphicon glyphicon-play"></span></button>
             </li>
             <li>
               <label for="rangestart">Start</label>
@@ -83,10 +83,6 @@
         </div>
 
         <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection">
-          <div class="show-hide-cameras floatleft">
-            <a href="#" class="show-all-cameras">Show All</a>
-            <a href="#" class="hide-all-cameras">Hide All</a>
-          </div>
           <ul>
             <?php
               $connkey = generateConnKey();
