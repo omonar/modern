@@ -3,6 +3,21 @@ $(document).ready(function(){
 	refresh = (refresh * 1000);
 	$("#add_widget").button();
 
+	$( "#dialog-confirm" ).dialog({
+	  autoOpen: false,
+      resizable: false,
+      height:140,
+      modal: true,
+      buttons: {
+        "Yes": function() {
+          $( this ).dialog( "close" );
+        },
+        "No": function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+
 	$("#tabs").tabs({ // First, Initialize tabs and the tab template
 		tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
 		load: function(event, ui){ // When the tab is loaded
