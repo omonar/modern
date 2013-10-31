@@ -375,23 +375,10 @@
     max-width: 100%;
 }
 
-/*.timeline-event {
-    min-width: 50px;
-}*/
-
 /* timeline styling */
 
-.timeline-event.monitor1 {
-  background-color: #990033;
-  color: white;
-}
-.timeline-event.monitor2 {
-  background-color: #134A9C;
-  color: white;
-}
-.timeline-event.monitor3 {
-  background-color: #29AB87;
-  color: white;
+body.zm .timeline-event {
+    color: #FFF;
 }
 
 /* begin toast */
