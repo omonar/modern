@@ -6,9 +6,10 @@ I plan on removing many of the extra (read: usually unused) features of the WebU
 To use this skin, check it out into a new zm/skins directory (I.e. zm/skins/new), then browse to http://yourzm/?skin=new
 
 FEATURES
- * While supporting non-standards compliant browsers is not a goal of the project, it may be done in the future
+ * While supporting non-standards compliant browsers is not a goal of the project, it may be polyfilled in the future
  * Event playback on multiple cameras at once
  * Timeline of events for playback
+ * Single page for live view and playback
  * Filtering is currently only availble by Monitor Name and Date Range
  * Monitors on Console view will ajax refresh at your WEB_REFRESH_IMAGE variable if in Low or Medium bandwidth.
  * Monitors will stream live if in High bandwidth.
