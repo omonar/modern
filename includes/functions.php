@@ -66,9 +66,6 @@ function outputImageStillWithClass( $id, $src, $width, $height, $title="", $clas
 
 function xhtmlHeaders( $file, $title )
 {
-  if($title == "Console") {
-    header('Location: /zm/index.php?view=playback');
-  }
     $skinCssFile = getSkinFile( 'css/skin.css' );
     $skinCssPhpFile = getSkinFile( 'css/skin.css.php' );
     $skinJsFile = getSkinFile( 'js/skin.js' );
@@ -198,7 +195,7 @@ function xhtmlHeaders( $file, $title )
  }
 ?>
 <?php
- if ((isset($_REQUEST['view']))&&($_REQUEST['view']=="playback")) {
+ if ($view=="playback") {
 ?>
 <script src="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
 <link rel="stylesheet" href="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
