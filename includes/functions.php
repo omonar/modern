@@ -66,6 +66,9 @@ function outputImageStillWithClass( $id, $src, $width, $height, $title="", $clas
 
 function xhtmlHeaders( $file, $title )
 {
+  if($title == "Console") {
+    header('Location: /zm/index.php?view=playback');
+  }
     $skinCssFile = getSkinFile( 'css/skin.css' );
     $skinCssPhpFile = getSkinFile( 'css/skin.css.php' );
     $skinJsFile = getSkinFile( 'js/skin.js' );
