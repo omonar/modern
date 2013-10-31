@@ -103,6 +103,7 @@ $(function() {
 /* end third party code */
 
 function addMonitor(monitorId) {
+  noty({text: 'Adding camera', type: 'info'});
   if(liveview == false) {
     liveview = true;
   }
@@ -114,7 +115,7 @@ function addMonitor(monitorId) {
       success: function(data) {
         liveview = true;
         chosencameras.push(monitorId);
-        jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p>' + data + '</div>').appendTo('#monitor-streams');
+        jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div>').appendTo('#monitor-streams');
         requeryTimeline();
       }
     });
@@ -472,12 +473,10 @@ jQuery(document).ready(function() {
         e.preventDefault();
     });
   jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
-    event.preventDefault();
-    window.stop();
-    var monitorClass = jQuery(this).parent().parent().attr("id");
+    var monitorClass = jQuery(this).parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
-    jQuery(this).parent().parent().remove();
+    jQuery(this).parent().parent().parent().remove();
     jQuery(".monitor-stream-image").each(function() {
       jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
     });
@@ -487,9 +486,9 @@ jQuery(document).ready(function() {
     event.preventDefault();
     window.stop();
     jQuery("#monitor-streams").empty();
-    jQuery(cameras).each(function(i) {
-      chosencameras.push(i+1);
-      addMonitor(i+1);
+    var i = 1;
+    jQuery(cameras).each(function() {
+      addMonitor(i);
       i++;
     });
     $(".show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
