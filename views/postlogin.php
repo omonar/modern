@@ -20,14 +20,12 @@
 
 xhtmlHeaders(__FILE__, $SLANG['LoggingIn'] );
 ?>
-<body>
-  <div id="page">
-    <div id="header">
-      <h1>ZoneMinder <?= $SLANG['Login'] ?></h1>
-    </div>
-    <div id="content">
+<body class="zm">
+  <div class="view-wrapper"> <!-- begin view-wrapper -->
+
+    <div class="container"> <!-- begin container -->
       <h2><?= $SLANG['LoggingIn'] ?></h2>
-    </div>
-  </div>
+    </div>	<!-- end container -->
+  </div> <!-- end view-wrapper -->
 </body>
 </html>
