@@ -769,11 +769,16 @@ letter-spacing: 2px;
   border-width: 4px 0 0 4px;
 }
 
+.currently-playing {
+  color: #789;
+  font-weight: bold;
+  margin: 0 0 0.4rem;
+}
 .zm .timeline-currenttime {
-background-color: #89a;
-width: 6px;
-border: 1px dashed #cde;
-border-width: 0 1px;
+  background-color: #89a;
+  width: 6px;
+  border: 1px dashed #cde;
+  border-width: 0 1px;
 }
 
 .zm .choose-cameras li {
@@ -799,6 +804,10 @@ border-width: 0 1px;
   border-radius: 6px;
 }
 
+.zm .ui-dialog .ui-dialog-titlebar {
+padding: .12em 1em;
+}
+
 .zm .ui-dialog .ui-dialog-title {
 margin: .1em 0 0 1rem;
 width: 85%;
@@ -809,6 +818,33 @@ width: 85%;
   margin: -13px 0 0 0;
   padding: 2px;
   height: 26px;
+}
+
+.zm .controls .controls-timeline-playback-buttons {
+  border: 1px #ddd solid;
+  padding: 0.4rem 1rem;
+  -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-width: 1px 0;
+  background-color: #aaa;
+}
+
+.controls-list label {
+font-size: 1.3rem;
+color: #567;
+width: 100%;
+text-align: left;
+padding-left: 1.1rem;
+}
+
+.zm .controls input {
+  border: 1px #aaa solid;
+  padding: 0.2rem 1rem;
+  -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  border-width: 1px 0;
 }
 
 @media (min-width: 1500px) {
