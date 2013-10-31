@@ -1,4 +1,5 @@
 <?php
+	/* begin functions */
 	function addPreset($name) {
 		$query = "INSERT INTO Presets (prestID, presetName) VALUES(NULL, {$name})";
 		$result = dbQuery($query);
@@ -20,6 +21,8 @@
 	function removeCameraFromPreset($cameraID, $presetID) {
 		$query = "DELETE FROM PresetsLink WHERE presetMonitorId = " . $cameraID;
 	}
+
+	/* end functions */
 
 	if(isset($_REQUEST['addPreset'])) {
 		echo addPreset($_REQUEST['presetName']);
@@ -51,7 +54,7 @@
 
 		$results = dbFetchAll($query);
 
-    $scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
+    	$scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
 
 		foreach ($results as $result) {
 			for($counter = 1; $counter <= $result['Frames']; $counter++) {
@@ -66,7 +69,7 @@
 		        $frames[$result['MonitorId']][$result['Id']][] = "/zm/" . viewImagePath($imagePath);
 			}
 		}
-    echo json_encode($frames);
+    	echo json_encode($frames);
 	}
 
 	if (isset($_REQUEST['timeline'])) {
