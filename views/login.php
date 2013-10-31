@@ -20,30 +20,24 @@
 
 xhtmlHeaders(__FILE__, $SLANG['Login'] );
 ?>
-<body>
-  <div id="page">
-    <div id="header">
-	<h1>ZoneMinder</h1>
-    </div>
-    <div id="content">
-      <form name="loginForm" id="loginForm" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
+<body class="zm">
+  <?php require_once("header.php"); ?>
+  
+  <div class="view-wrapper"> <!-- begin view-wrapper -->
+
+    <div class="container">
+    <form name="loginForm" id="loginForm" method="post" class="form-signin" action="<?= $_SERVER['PHP_SELF'] ?>">
         <input type="hidden" name="action" value="login"/>
         <input type="hidden" name="view" value="postlogin"/>
-        <table id="loginTable" class="minor" cellspacing="0">
-          <tbody>
-            <tr>
-              <td class="colLeft"><?= $SLANG['Username'] ?></td>
-              <td class="colRight"><input type="text" name="username" value="<?= isset($_REQUEST['username'])?validHtmlStr($_REQUEST['username']):"" ?>" size="12"/></td>
-            </tr>
-            <tr>
-              <td class="colLeft"><?= $SLANG['Password'] ?></td>
-              <td class="colRight"><input type="password" name="password" value="" size="12"/></td>
-            </tr>
-          </tbody>
-        </table>
-        <input type="submit" value="<?= $SLANG['Login'] ?>"/>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input name="username" type="text" class="form-control" placeholder="<?= $SLANG['Username'] ?>" autofocus="">
+        <input name="password" type="password" class="form-control" placeholder="<?= $SLANG['Password'] ?>">
+        <button name="login" class="btn btn-lg btn-primary btn-block" type="submit">
+          <span class="glyphicon glyphicon-log-in"></span> 
+          <?= $SLANG['Login'] ?>
+        </button>
       </form>
     </div>
-  </div>
-</body>
-</html>
+  </div> <!-- end view-wrapper -->
+
+  <?php require_once("footer.php"); ?>
