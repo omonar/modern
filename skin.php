@@ -34,7 +34,7 @@ foreach ( getSkinIncludes( 'includes/functions.php' ) as $includeFile )
     require_once $includeFile;
 
 if ( empty($view) )
-    $view = isset($user)?'console':'login';
+    $view = isset($user)?'playback':'login';
 
 if ( !isset($user) && ZM_OPT_USE_AUTH )
 {
