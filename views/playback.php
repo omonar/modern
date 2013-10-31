@@ -74,26 +74,11 @@
 
         <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
           <?php
-            $presetString = file_get_contents('http://' . $_SERVER['HTTP_HOST'] . '/zm/skins/modern/views/monitors.php?getpresets');
-            $presetsPartialArray = explode("#", $presetString);
-
-            foreach($presetsPartialArray as $presetPartial) {
-              $tmp = explode("/", $presetPartial);
-              $presetsArray[$tmp[0]] = $tmp[1];
-            }
-            array_pop($presetsArray);
-
             echo "<ul class=\"preset-list\">";
-            foreach($presetsArray as $index => $cameras) {
-              echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"{$cameras}\">{$index}</a></li>";
+            foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
+              echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
             }
             echo "<ul>";
-
-            // HERE
-
-            // split preset string by #
-            // then by ,
-            // then make list with data-value attribute for storing the monitor id's
           ?>
         </div>
 
