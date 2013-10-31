@@ -22,140 +22,140 @@
  */
 
 body {
-    color: #333333;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    font-weight: normal;
-    text-align: center;
+  color: #333333;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: center;
 }
 
 h1 {
-    font-family: inherit;
-    font-size: 120%;
-    color: #000066;
-    font-weight: bold;
-    text-align: center;
+  font-family: inherit;
+  font-size: 120%;
+  color: #000066;
+  font-weight: bold;
+  text-align: center;
 }
 
 h2 {
-    font-family: inherit;
-    font-size: 125%;
-    color: #000066;
-    font-weight: bold;
+  font-family: inherit;
+  font-size: 125%;
+  color: #000066;
+  font-weight: bold;
 }
 
 h3 {
-    font-family: inherit;
-    font-size: 100%;
-    color: #016A9d;
-    font-weight: bold;
+  font-family: inherit;
+  font-size: 100%;
+  color: #016A9d;
+  font-weight: bold;
 }
 
 h4 {
-    font-family: inherit;
-    font-size: 100%;
-    color: #016A9d;
+  font-family: inherit;
+  font-size: 100%;
+  color: #016A9d;
 }
 
 p {
-    font-family: inherit;
-    font-size: 100%;
+  font-family: inherit;
+  font-size: 100%;
 }
 
 th {
-    font-weight: bold;
-    color: #016A9d;
+  font-weight: bold;
+  color: #016A9d;
 }
 
 a:link {
-    color: #7f7fb2;
-    text-decoration: none;
+  color: #7f7fb2;
+  text-decoration: none;
 }
 
 a:visited {
-    color: #7f7fb2;
-    text-decoration: none;
+  color: #7f7fb2;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #666699;
-    text-decoration: underline;
+  color: #666699;
+  text-decoration: underline;
 }
 
 input,textarea,select {
-    border: 1px #7f7fb2 solid;
-    font-family: inherit;
-    font-size: 100%;
-    color: #333333;
+  border: 1px #7f7fb2 solid;
+  font-family: inherit;
+  font-size: 100%;
+  color: #333333;
 }
 
 input[type=text], input[type=password], textarea {
-    padding: 1px;
+  padding: 1px;
 }
 
 input.noborder {
-    border: 0;
+  border: 0;
 }
 
 input[disabled] {
-    color: #888888;
+  color: #888888;
 }
 
 img.normal {
-    border: white solid 1px;
+  border: white solid 1px;
 }
 
 img.alarm {
-    border: red solid 1px;
+  border: red solid 1px;
 }
 
 hr {
-    height: 1px;
-    width: 100%;
-    border: 0;
-    color: #7f7fb2;
-    background-color: #7f7fb2;
+  height: 1px;
+  width: 100%;
+  border: 0;
+  color: #7f7fb2;
+  background-color: #7f7fb2;
 }
 
 /*
  * Tabbed headings
  */
 ul.tabList {
-    float: left;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 -4px 0;
-    white-space: nowrap;
-    text-align: left;
+  float: left;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 -4px 0;
+  white-space: nowrap;
+  text-align: left;
 }
 
 ul.tabList li {
-    float: left;
-    border: 1px solid;
-    color: #333333;
-    border: #7f7fb2 solid 1px;
-    border-bottom-width: 0;
-    margin: 0 2px 0 0;
-    background: #dddddd;
-    text-align: center;
-    padding: 3px 4px;
+  float: left;
+  border: 1px solid;
+  color: #333333;
+  border: #7f7fb2 solid 1px;
+  border-bottom-width: 0;
+  margin: 0 2px 0 0;
+  background: #dddddd;
+  text-align: center;
+  padding: 3px 4px;
 }
 
 ul.tabList li a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 ul.tabList li:hover {
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
 
 ul.tabList li.active {
-    background-color: #ffffff;
-    border-bottom: #7f7fb2 dotted 1px;
+  background-color: #ffffff;
+  border-bottom: #7f7fb2 dotted 1px;
 }
 
 ul.tabList li.active a {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /*
@@ -164,96 +164,96 @@ ul.tabList li.active a {
 
 
 #content table.major {
-    margin: 4px auto;
-    width: 100%;
-    border-collapse: collapse;
+  margin: 4px auto;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 #content table.major tr.highlight {
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
 
 #content table.major thead tr th {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    vertical-align: middle;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  vertical-align: middle;
 }
 
 #content table.major tfoot td {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    vertical-align: middle;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  vertical-align: middle;
 }
 
 #content table.major th, #content table.major td {
-    border: 1px solid #7f7fb2;
-    padding: 3px;
-    text-align: left;
+  border: 1px solid #7f7fb2;
+  padding: 3px;
+  text-align: left;
 }
 
 #content table.major th {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 #content table.major td {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 #content table.major th[scope=row] {
-    padding: 4px 3px 3px;
-    vertical-align: top;
+  padding: 4px 3px 3px;
+  vertical-align: top;
 }
 
 #content table.major .colMark, #content table.major .colSelect {
-    text-align: center;
+  text-align: center;
 }
 /*
  * Lesser table for very simple forms
  */
 
 #content table.minor {
-    width: 200px;
-    margin: 0 auto;
+  width: 200px;
+  margin: 0 auto;
 }
 
 #content table.minor td {
-    padding: 4px;
+  padding: 4px;
 }
 
 #content table.minor .colLeft {
-    width: 50%;
-    text-align: right;
+  width: 50%;
+  text-align: right;
 }
 
 #content table.minor .colRight {
-    width: 50%;
-    text-align: left;
+  width: 50%;
+  text-align: left;
 }
 
 #content table.minor input[type=submit]
 {
-    margin-top: 8px;
-    padding: 0 2px;
-    font-size: 120%;
+  margin-top: 8px;
+  padding: 0 2px;
+  font-size: 120%;
 }
 
 /*
  * Behavior classes
  */
 .errorText {
-    color: #dc143c;
+  color: #dc143c;
 }
 
 .warnText {
-    color: #ff8c00;
+  color: #ff8c00;
 }
 
 .infoText {
-    color: #688e23;
+  color: #688e23;
 }
 
 .disabledText {
-    font-style: italic;
+  font-style: italic;
 }
 
 /*
@@ -261,19 +261,19 @@ ul.tabList li.active a {
  */
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .invisible {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .nowrap {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 div.clear {
-    clear: both;
+  clear: both;
 }
 
 /*
@@ -281,30 +281,30 @@ div.clear {
  */
 
 #header {
-    background-color:#cccccc;
-    border-bottom:2px solid #336699;
-    line-height: 24px;
-    margin:0 auto;
-    padding:0 10px;
-    text-align: left;
+  background-color:#cccccc;
+  border-bottom:2px solid #336699;
+  line-height: 24px;
+  margin:0 auto;
+  padding:0 10px;
+  text-align: left;
 }
 
 #header h2 {
-    left: 0;
+  left: 0;
 }
 
 #headerControl {
-    width: 50%;
-    text-align: center;
-    margin: 0 auto;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #headerButtons {
-    float: right;
+  float: right;
 }
 
 #headerButtons a {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 #content {
@@ -316,38 +316,38 @@ div.clear {
 }
 
 #content p {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 #content p.textblock {
-    text-align: justify;
-    padding: 4px;
+  text-align: justify;
+  padding: 4px;
 }
 
 /*
 #contentDiv {
-    margin: 0 auto 8px;
-    line-height: 140%;
-    text-align: center;
+  margin: 0 auto 8px;
+  line-height: 140%;
+  text-align: center;
 }
 */
 
 #content > input[type=submit], #content > input[type=button] {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 #content table input[type=submit], #content table input[type=button] {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #contentButtons {
-    margin-top: 8px;
-    float: right;
+  margin-top: 8px;
+  float: right;
 }
 
 #contentButtons input {
-    margin-left: 8px;
-    margin-bottom: 4px;
+  margin-left: 8px;
+  margin-bottom: 4px;
 }
 
 #footer {
@@ -426,12 +426,12 @@ margin: 1px 3px;
 }
 /* Clearfix */
  .clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-    }
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  }
 
 .clearfix {display: inline-block;}  /* for IE/Mac */
 
@@ -569,7 +569,6 @@ position:relative;
  border-bottom:1px solid #000;
  margin-bottom:5px;
  text-align:left;
- padding:0 5px 5px 5px;
 }
 .mon_header .right{
  text-align:right;
@@ -684,31 +683,136 @@ padding:10px;
 }
 
 .clearfix:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
  
 .clearfix {
-	display: inline-block;
+  display: inline-block;
 }
  
 html[xmlns] .clearfix {
-	display: block;
+  display: block;
 }
  
 * html .clearfix {
-	height: 1%;
+  height: 1%;
 }
 
 .nameleft {
-	white-space:nowrap;
-	float:left;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	-o-text-overflow: ellipsis;
-	-moz-binding:url('ellipsis.xml#ellipsis');
+  white-space:nowrap;
+  float:left;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow: ellipsis;
+  -moz-binding:url('ellipsis.xml#ellipsis');
+}
+
+.zm .ui-tabs .ui-tabs-panel {
+  padding: 1em 0;
+}
+
+.zm #monitors .monitor-title {
+font-size: 1.2rem;
+margin: 0.2rem 0 0 0.5rem;
+color: #ccc;
+letter-spacing: 2px;
+}
+
+.zm .one-of-three {
+  margin: 0.2rem 0 0 0.5rem;
+  width: 32%;
+}
+
+.zm .monitor-stream-info-name {
+  text-align:left;
+}
+
+/* wtf */
+.zm .grid {
+  margin-left:0;
+  max-width:100%;
+}
+.zm .timeline {
+  background: #556677; /* Old browsers */
+  background: -moz-linear-gradient(top,  #556677 0%, #667788 20%, #556677 80%, #445566 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#556677), color-stop(20%,#667788), color-stop(80%,#556677), color-stop(100%,#445566)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #556677 0%,#667788 20%,#556677 80%,#445566 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #556677 0%,#667788 20%,#556677 80%,#445566 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #556677 0%,#667788 20%,#556677 80%,#445566 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #556677 0%,#667788 20%,#556677 80%,#445566 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#556677', endColorstr='#445566',GradientType=0 ); /* IE6-9 */
+
+}
+
+.controls {
+  background: rgb(221,221,221); /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(221,221,221,1) 0%, rgba(204,204,204,1) 47%, rgba(153,153,153,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(221,221,221,1)), color-stop(47%,rgba(204,204,204,1)), color-stop(100%,rgba(153,153,153,1))); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover,  rgba(221,221,221,1) 0%,rgba(204,204,204,1) 47%,rgba(153,153,153,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(center, ellipse cover,  rgba(221,221,221,1) 0%,rgba(204,204,204,1) 47%,rgba(153,153,153,1) 100%); /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover,  rgba(221,221,221,1) 0%,rgba(204,204,204,1) 47%,rgba(153,153,153,1) 100%); /* IE10+ */
+  background: radial-gradient(ellipse at center,  rgba(221,221,221,1) 0%,rgba(204,204,204,1) 47%,rgba(153,153,153,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#999999',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  border: 4px solid #ccc;
+  }
+
+.controls-timeline {
+  border-width: 4px 4px 0 0;
+}
+
+.controls-misc {
+  border-width: 4px 0 0 4px;
+}
+
+.zm .timeline-currenttime {
+background-color: #89a;
+width: 6px;
+border: 1px dashed #cde;
+border-width: 0 1px;
+}
+
+.zm .choose-cameras li {
+  margin: 0.8rem;
+  -webkit-box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, 0.5);
+}
+
+.zm .show-hide-cameras {
+  width:100%;
+  font-size:1.2rem;
+}
+
+.zm .show-hide-cameras a{
+   margin:0 3rem;
+}
+
+.zm .monitor-streams .monitor-stream {
+  background-color: #333;
+  border: 1px solid #777;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+}
+
+@media (min-width: 1500px) {
+  .zm .monitor-streams .monitor-stream {
+    margin: 2rem 1rem;
+  }
+}
+
+@media (max-width: 750px) {
+  .zm .monitor-streams .monitor-stream {
+    margin:1rem 0;
+  }
+}
+
+@media (min-width:751px) and(max-width: 1500px) {
+  .zm .monitor-streams .monitor-stream {
+    margin:1rem 0.5rem;
+  }
 }
