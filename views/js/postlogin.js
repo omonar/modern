@@ -1,1 +1,1 @@
-$(function () { window.location.replace( thisUrl ); }).delay( 500 );
+window.location.replace( thisUrl );
