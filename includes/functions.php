@@ -197,6 +197,13 @@ function xhtmlHeaders( $file, $title )
 <?php
  if ($view=="playback") {
 ?>
+<style type="text/css" scoped>
+<?php
+  foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
+    echo ".timeline-event.monitor" . $monitor['Id'] . "{ background-color: " . $monitor['WebColour'] . "; }\n";
+  }
+?>
+</style>
 <script src="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
 <link rel="stylesheet" href="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
 <link rel="stylesheet" href="skins/<?=$skin?>/views/js/timeline/timeline.css" type="text/css" media="screen"/>
