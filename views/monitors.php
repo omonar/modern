@@ -1,4 +1,4 @@
- <?php
+<?php
 require_once("../../../includes/config.php");
 require_once("../includes/config.php");
 require_once("../../../includes/database.php");
@@ -18,20 +18,6 @@ if ( isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' ){
 } else {
  $protocol = 'http';
 }
-
-if(isset($_REQUEST['getpresets'])) {
-	$presetNames = explode(",", file_get_contents("http://" . $_SERVER['HTTP_HOST'] . "/zm/skins/modern/includes/updateGroups.php?action=select"));
-    array_pop($presetNames);
-
-    if(sizeof($presetNames)>0) {
-    	$query = "SELECT * FROM Groups WHERE Name IN ('" . implode("','", $presetNames) . "')";
-	    foreach(dbFetchAll($query) as $row) {
-	    	$presets .= $row['Name'] . "/" . str_replace(" ", "", $row['MonitorIds']) . "#";
-	    }
-	    echo $presets;
-    }
-}
-
 define( "ZM_BASE_URL", $protocol.'://'.$_SERVER['HTTP_HOST'] );
 ?>
  <ul id="monitors" class="clearfix">
@@ -53,17 +39,13 @@ if ($mid) {
  }
 }
 } else {
-	if(!isset($_REQUEST['getpresets'])) {
-		 $monitors = dbFetchAll( "select Id, Name, Width, Height from Monitors order by Sequence asc" );
-		 foreach( $monitors as $monitor ){
-		  displayMonitor($monitor, $bandwidth);
-		 }
-	}
+ $monitors = dbFetchAll( "select Id, Name, Width, Height from Monitors order by Sequence asc" );
+ foreach( $monitors as $monitor ){
+  displayMonitor($monitor, $bandwidth);
+ }
 }
 ?>
-<?if(!isset($_REQUEST['getpresets'])) {?>
  </ul>
-<?}?>
  
 <?php
 function displayMonitor($monitor, $bandwidth){
