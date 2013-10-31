@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 
 function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 	$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
@@ -85,7 +85,6 @@ function xhtmlHeaders( $file, $title )
   <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
   <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
   <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
  <meta charset="UTF-8">
  <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
@@ -103,8 +102,8 @@ function xhtmlHeaders( $file, $title )
  <link rel="stylesheet" href="skins/<?=$skin?>/css/bootstrap-theme.min.css">
  <link rel="stylesheet" href="skins/<?=$skin?>/css/main.css">
 <?php } ?>
- <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css"></link>
- <!--<link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css"></link>-->
+ <link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/colorbox.css">
+ <!--<link type="text/css" media="screen" rel="stylesheet" href="skins/modern/css/jquery/jquery-ui-1.8.custom.css">-->
 <?php if ($title == "Console") { ?>
  <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
  <!--<script type="text/javascript" src="skins/modern/js/console.colorbox.js"></script>-->
@@ -197,7 +196,7 @@ function xhtmlHeaders( $file, $title )
 <?php
  if ($view=="playback") {
 ?>
-<style type="text/css" scoped>
+<style type="text/css">
 <?php
   foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
     echo ".timeline-event.monitor" . $monitor['Id'] . "{ background-color: " . $monitor['WebColour'] . "; }\n";
