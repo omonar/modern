@@ -102,6 +102,24 @@ $(function() {
 });
 /* end third party code */
 
+function addCamera(monitorId) {
+  chosencameras.push(monitorId);
+  if(jQuery('#monitor-stream-' + monitorId).length == 0) {
+    jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
+  }
+}
+
+function addMonitor(monitorId) {
+  if(liveview == false) {
+    liveview = true;
+  }
+  if(jQuery.inArray(monitorId, chosencameras) === -1) {
+    chosencameras.push(monitorId);
+    jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
+    requeryTimeline();
+  }
+}
+
 function eventInstance(monitorId, eventId, currentFrame) {
   this.monitorId=monitorId;
   this.eventId=eventId;
@@ -281,13 +299,6 @@ function playbackFrames(monitorId, eventId, imgarray) {
   },200);
 }
 
-function addCamera(monitorId) {
-  chosencameras.push(monitorId);
-  if(jQuery('#monitor-stream-' + monitorId).length == 0) {
-    jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
-  }
-}
-
 function resumeLiveView() {
   jQuery(chosencameras).each(function(i) {
     addCamera(cameras[i].Id);
@@ -301,6 +312,7 @@ function playEvent(monitorId, eventId) {
   currentevent = eventId;
   currentevents.push(eventId);
   console.log("PLAYING: " + monitorId + " " + eventId);
+  liveview = false;
   shouldbeplaying = true;
   var tempframes = new Array();
   if(frames[monitorId][eventId]) {
@@ -386,18 +398,10 @@ function drawVisualization() {
 jQuery(document).ready(function() {
 
   $("#choose-cameras").dialog({
-    autoOpen: false,
-    show: {
-      effect: "blind",
-      duration: 1000
-    },
-    hide: {
-      effect: "explode",
-      duration: 1000
-    }
+    autoOpen: false
   });
 
-  $("#editPresets-dialog").dialog({
+  $("#preset-selection").dialog({
     autoOpen: false
   });
 
@@ -533,6 +537,19 @@ jQuery(document).ready(function() {
     jQuery("#monitor-streams").empty();
     chosencameras = [];
     requeryTimeline();
+  });
+  jQuery(document).on("click", ".preset-list-link", function(event) {
+    event.preventDefault();
+    shouldbeplaying = false;
+    playing = false;
+    $("#monitor-streams").empty();
+    if(liveview === false) {
+      liveview = true;
+    }
+    var monitorIds = $(this).attr("data-value").split(",");
+    jQuery.each(monitorIds, function(index, value) {
+      addMonitor(value);
+    });
   });
   jQuery(document).on("click", ".monitor-stream", function() {
     jQuery(".copyright").hide();

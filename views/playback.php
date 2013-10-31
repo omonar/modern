@@ -72,7 +72,36 @@
           <ul>
         </div>
 
-        <div id="choose-cameras" class="dialog-modal" title="Camera Selection">
+        <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
+          <?php
+            $presetString = file_get_contents('http://' . $_SERVER['HTTP_HOST'] . '/zm/skins/modern/views/monitors.php?getpresets');
+            $presetsPartialArray = explode("#", $presetString);
+
+            foreach($presetsPartialArray as $presetPartial) {
+              $tmp = explode("/", $presetPartial);
+              $presetsArray[$tmp[0]] = $tmp[1];
+            }
+            array_pop($presetsArray);
+
+            echo "<ul class=\"preset-list\">";
+            foreach($presetsArray as $index => $cameras) {
+              echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"{$cameras}\">{$index}</a></li>";
+            }
+            echo "<ul>";
+
+            // HERE
+
+            // split preset string by #
+            // then by ,
+            // then make list with data-value attribute for storing the monitor id's
+          ?>
+        </div>
+
+        <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection">
+          <div class="show-hide-cameras floatleft">
+            <a href="#" class="show-all-cameras">Show All</a>
+            <a href="#" class="hide-all-cameras">Hide All</a>
+          </div>
           <ul>
             <?php
               $connkey = generateConnKey();
@@ -85,8 +114,7 @@
               }
             ?>
           </ul>
-          <a href="#" class="show-all-cameras">Show All</a>
-          <a href="#" class="hide-all-cameras">Hide All</a>
+
         </div>
 
       </div> <!-- end view-wrapper -->
