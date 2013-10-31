@@ -382,7 +382,7 @@ function drawVisualization() {
     if (sel.length) {
       if(sel[0].row != undefined) {
         var itemobj = timeline.getItem(sel[0].row);
-        $("#play").html("<img src=\"skins/modern/views/images/playback/pause.png\" alt=\"pause\">");
+        $("#play").html("<span class\"glyphicon glyphicon-pause\"></span>");
         $("#play").attr("id", "pause");
         timeline.setCurrentTime(itemobj.start);
         timeline.repaintCurrentTime();
@@ -406,45 +406,13 @@ jQuery(document).ready(function() {
   $("#preset-selection").dialog({
     autoOpen: false,
     resizable: true,
-    width: 'auto'
+    minWidth: 400
   });
 
-  $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 300,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Create an account": function() {
-          var bValid = true;
-          allFields.removeClass( "ui-state-error" );
- 
-          bValid = bValid && checkLength( name, "username", 3, 16 );
-          bValid = bValid && checkLength( email, "email", 6, 80 );
-          bValid = bValid && checkLength( password, "password", 5, 16 );
- 
-          bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/i, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
-          // From jquery.validate.js (by joern), contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
-          bValid = bValid && checkRegexp( email, /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i, "eg. ui@jquery.com" );
-          bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
- 
-          if ( bValid ) {
-            $( "#users tbody" ).append( "<tr>" +
-              "<td>" + name.val() + "</td>" +
-              "<td>" + email.val() + "</td>" +
-              "<td>" + password.val() + "</td>" +
-            "</tr>" );
-            $( this ).dialog( "close" );
-          }
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        }
-      },
-      close: function() {
-        allFields.val( "" ).removeClass( "ui-state-error" );
-      }
-    });
+  $("#ui-id-1").parent()
+
+  $("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
+  $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
   start = new Date();
   end = new Date();
@@ -502,15 +470,6 @@ jQuery(document).ready(function() {
         this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
         e.preventDefault();
     });
-  /*jQuery(".monitor-thumbnail").click(function() {
-    liveview = true;
-    var monitorClass = jQuery(this).attr("id");
-    var monitorId = monitorClass.substr(monitorClass.length - 1);
-    chosencameras.push(monitorId);
-    if(jQuery('#monitor-stream-' + monitorId).length == 0) {
-      jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
-    }
-  });*/
   jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
     event.preventDefault();
     window.stop();
@@ -534,6 +493,7 @@ jQuery(document).ready(function() {
       i++;
     });
     requeryTimeline();
+    $(".show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
   });
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
@@ -541,6 +501,7 @@ jQuery(document).ready(function() {
     jQuery("#monitor-streams").empty();
     chosencameras = [];
     requeryTimeline();
+    $(".hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
   });
   jQuery(document).on("click", ".preset-list-link", function(event) {
     event.preventDefault();
@@ -574,7 +535,7 @@ jQuery(document).ready(function() {
   jQuery(document).on("click", "#pause", function(event) {
     event.preventDefault();
     window.stop();
-    $("#pause").html("<img src=\"skins/modern/views/images/playback/play.png\" alt=\"play\">");
+    $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
     $("#pause").attr("id", "play");
     pausePlayback();
   });
@@ -583,7 +544,7 @@ jQuery(document).ready(function() {
     window.stop();
     if (paused === true) {
       resumePlayback();
-      $("#play").html("<img src=\"skins/modern/views/images/playback/pause.png\" alt=\"pause\">");
+      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
       $("#play").attr("id", "pause");
     }
   });
@@ -743,7 +704,7 @@ jQuery(document).ready(function() {
       var offset = $(this).offset();
       timeline.recalcConversion();
       jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
-      $("#play").html("<img src=\"skins/modern/views/images/playback/pause.png\" alt=\"pause\">");
+      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
       $("#play").attr("id", "pause");
     }
   });
