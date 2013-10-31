@@ -398,11 +398,15 @@ function drawVisualization() {
 jQuery(document).ready(function() {
 
   $("#choose-cameras").dialog({
-    autoOpen: false
+    autoOpen: false,
+    resizable: true,
+    width: 'auto'
   });
 
   $("#preset-selection").dialog({
-    autoOpen: false
+    autoOpen: false,
+    resizable: true,
+    width: 'auto'
   });
 
   $( "#dialog-form" ).dialog({
