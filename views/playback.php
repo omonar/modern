@@ -17,7 +17,6 @@
   // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   //
 
-
   noCacheHeaders();
 
   $maxWidth = 0;
@@ -42,14 +41,16 @@
 
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
-            <li>
+            <li class="controls-timeline-playback-buttons">
+              <button class="playback-button" id="rewind"><span class="glyphicon glyphicon-backward"></span></button>
               <button class="playback-button" id="play"><span class="glyphicon glyphicon-play"></span></button>
+              <button class="playback-button" id="fastforward"><span class="glyphicon glyphicon-forward"></span></button>
             </li>
-            <li>
+            <li class="controls-timeline-playback-rangestart">
               <label for="rangestart">Start</label>
               <input id="rangestart" type="text" class="hasDatePicker">
             </li>
-            <li>
+            <li class="controls-timeline-playback-rangeend">
               <label for="rangeend">End</label>
               <input id="rangeend" type="text" class="hasDatePicker">
           </li>
@@ -67,9 +68,11 @@
               <button id="preset-selection-opener" class="btn btn-default">Choose Preset</button>
             </li>
             <li>
-              <p class="playback-date">0000-00-00</p><p class="playback-time">00:00:00</p>
+               <p class="currently-playing">currently playing</p>
+              <p class="playback-date">0000-00-00</p>
+              <p class="playback-time">00:00:00</p>
             </li>
-          <ul>
+          </ul>
         </div>
 
         <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
@@ -78,7 +81,7 @@
             foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
               echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
             }
-            echo "<ul>";
+            echo "</ul>";
           ?>
         </div>
 
