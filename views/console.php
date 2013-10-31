@@ -141,7 +141,7 @@
 
       <!-- begin zm -->
         <div id="content" class="clearfix">
-          <div id="dialog" title="Tab Data">
+          <div id="dialog" title="Add Preset">
             <fieldset class="ui-helper-reset">
               <label for="tab_title">Title:</label> <input type="text" name="tab_title" id="tab_title" value="" class="ui-widget-content ui-corner-all" />
               <br />
@@ -153,9 +153,9 @@
           </div>
           <div id="tabs">
             <ul>
-              <li style="float:right;"><button id="refresh_monitors" class="btn btn-default">Refresh</button></li>
-              <li style="float:right;"><button id="change_view" class="btn btn-default">Views</button></li>
-              <li style="float:right;"><button id="add_tab" class="btn btn-default">Add Tab</button></li>
+              <li style="float:right;"><button id="refresh_monitors" class="btn btn-default">Force Refresh</button></li>
+              <!--<li style="float:right;"><button id="change_view" class="btn btn-default">Views</button></li>-->
+              <li style="float:right;"><button id="add_tab" class="btn btn-default">Add Preset</button></li>
             </ul>
           </div>
         </div>
