@@ -102,21 +102,22 @@ $(function() {
 });
 /* end third party code */
 
-function addCamera(monitorId) {
-  chosencameras.push(monitorId);
-  if(jQuery('#monitor-stream-' + monitorId).length == 0) {
-    jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
-  }
-}
-
 function addMonitor(monitorId) {
   if(liveview == false) {
     liveview = true;
   }
   if(jQuery.inArray(monitorId, chosencameras) === -1) {
-    chosencameras.push(monitorId);
-    jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
-    requeryTimeline();
+    jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=framefetcher',
+      data: {monitor: monitorId, width: cameras[monitorId-1].Width, height: cameras[monitorId-1].Height, scale: 100},
+      success: function(data) {
+        liveview = true;
+        chosencameras.push(monitorId);
+        jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p>' + data + '</div>').appendTo('#monitor-streams');
+        requeryTimeline();
+      }
+    });
   }
 }
 
@@ -188,9 +189,9 @@ Date.createFromMysql = function(mysql_string) {
 jQuery.fn.exists = function(){return this.length>0;}
 
 function imgError(image) {
-  image.onerror = "";
-  image.src = "skins/modern/views/images/onerror.png";
-  return true;
+  //image.onerror = "";
+  //image.src = "skins/modern/views/images/onerror.png";
+  //return true;
 }
 function setTime(element, refresh, formatting) {
   setInterval(function(){
@@ -301,13 +302,13 @@ function playbackFrames(monitorId, eventId, imgarray) {
 
 function resumeLiveView() {
   jQuery(chosencameras).each(function(i) {
-    addCamera(cameras[i].Id);
+    addMonitor(cameras[i].Id);
   });
 }
 
 function playEvent(monitorId, eventId) {
   if(jQuery.inArray(monitorId, chosencameras) == -1) {
-    addCamera(monitorId);
+    addMonitor(monitorId);
   }
   currentevent = eventId;
   currentevents.push(eventId);
@@ -486,13 +487,11 @@ jQuery(document).ready(function() {
     event.preventDefault();
     window.stop();
     jQuery("#monitor-streams").empty();
-    liveview = true;
     jQuery(cameras).each(function(i) {
       chosencameras.push(i+1);
-      jQuery('<div id=\"monitor-stream-' + (i+1) + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[i].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[i].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[i].Protocol + '://' + cameras[i].Host + ':' + cameras[i].Port + cameras[i].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
+      addMonitor(i+1);
       i++;
     });
-    requeryTimeline();
     $(".show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
   });
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
@@ -676,10 +675,7 @@ jQuery(document).ready(function() {
     var monitorClass = jQuery(this).attr("id");
     var monitorId = monitorClass.substr(monitorClass.length - 1);
     if(jQuery('#monitor-stream-' + monitorId).length == 0) {
-      liveview = true;
-      chosencameras.push(monitorId);
-      jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-close unit one-of-three\"><a href=\"#\">X</a></p><img class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].Protocol + '://' + cameras[monitorId-1].Host + ':' + cameras[monitorId-1].Port + cameras[monitorId-1].Path + '\" onerror=\"imgError(this);\"></div>').appendTo('#monitor-streams');
-      requeryTimeline();
+      addMonitor(monitorId);
     }
     else {
       jQuery("#monitor-stream-" + monitorId).remove();
