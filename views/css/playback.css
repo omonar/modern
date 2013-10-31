@@ -436,3 +436,5 @@ body.zm .timeline-event {
 /* shouldn't be needed */
 
 #ui-datepicker-div, .dialog-modal { display: none; }
+
+body.zm .ui-dialog .ui-dialog-content { padding: 0; }
