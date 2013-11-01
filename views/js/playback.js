@@ -29,13 +29,13 @@ var data;
 var liveview = false;
 var shouldbeplaying = false;
 var timerstimers = new Array();
-var currentevent = null;
-var currentevents = new Array();
+var currenteventarrays = new Array();
 var paused = false;
 var breakplayback = false;
 var start = null;
 var end = null;
 var times = "";
+var gaplessPlayback = true;
 var options = {
   'width':  '100%',
   'height': '170px',
@@ -103,6 +103,8 @@ $(function() {
 /* end third party code */
 
 function addMonitor(monitorId) {
+  window["currentevents" + monitorId] = new Array();
+  currenteventarrays.push("currentevents" + monitorId);
   noty({text: 'Adding camera', type: 'info'});
   if(liveview == false) {
     liveview = true;
@@ -135,13 +137,6 @@ function clearTimers() {
   }
   currentlyplaying = null;
   timers = null;
-}
-
-function clearCurrentEvent() {
-  shouldbeplaying = false;
-  playing = false;
-  clearTimer(currentevent);
-  console.log("cleared current event " + currentevent);
 }
 
 function stopPlayback() {
@@ -190,9 +185,9 @@ Date.createFromMysql = function(mysql_string) {
 jQuery.fn.exists = function(){return this.length>0;}
 
 function imgError(image) {
-  //image.onerror = "";
-  //image.src = "skins/modern/views/images/onerror.png";
-  //return true;
+  image.onerror = "";
+  image.src = "skins/modern/views/images/onerror.png";
+  return true;
 }
 function setTime(element, refresh, formatting) {
   setInterval(function(){
@@ -234,10 +229,10 @@ function displayFrame(monitorId, img) {
     jQuery("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }
 
-function clearTimer(eventId) {
+function clearTimer(eventId, monitorId) {
   clearInterval(timers[eventId]);
   timers[eventId] = 0;
-  console.log("Cleared timer " + eventId);
+  //console.log("Cleared timer " + eventId);
 }
 
 function requeryTimeline() {
@@ -247,7 +242,7 @@ function requeryTimeline() {
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
     //console.log(startformatted);
     //console.log(endformatted);
-    console.log("requeryTimeline with ... " + chosencameras.join(",") + " / " + startformatted + " / " + endformatted)
+    //console.log("requeryTimeline with ... " + chosencameras.join(",") + " / " + startformatted + " / " + endformatted)
     jQuery.ajax({
       type: "POST",
       url: 'index.php?view=onefiletorulethemall',
@@ -275,28 +270,51 @@ function requeryTimeline() {
 function playbackFrames(monitorId, eventId, imgarray) {
   var x = 0;
   timers[eventId] = setInterval(function(){
+      // prevent stuttering
+      if(window["currentevents" + monitorId].length > 1) {
+        console.log("Current events > 1 /// " + window["currentevents" + monitorId]);
+        //get the item before this item in the array
+        var previousEventIndex = window["currentevents" + monitorId].length-2;
+        var previousEventId = window["currentevents" + monitorId][previousEventIndex];
+        console.log("Removing event /// " + previousEventIndex);
+        window["currentevents" + monitorId].splice(previousEventIndex, 1);
+        clearTimer(previousEventId, monitorId);
+      }
+      // if an event should be being played
       if (shouldbeplaying === true) {
+        // if there are still frames to play
         if (x < imgarray.length) {
           playing = true;
           displayFrame(monitorId, imgarray[x]);
         }
+        // if there are no more frames to play
         else {
-          clearTimer(eventId);
+          clearTimer(eventId, monitorId);
           displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
-          currentevents.splice(currentevents.indexOf(eventId), 1);
-          currentevent=null;
+          window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+          if(gaplessPlayback === true) {
+            jumpToNearestEvent(timeline.getCurrentTime());
+          }
         }
         x++;
       }
+      // if an event shouldn't be playing
       else {
+        // if an event has come to an end neatly
         if(paused === false) {
-          clearTimer(eventId);
+          clearTimer(eventId, monitorId);
           displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
         }
-        playing = false;
-        shouldbeplaying = false;
-        currentevents.splice(currentevents.indexOf(eventId), 1);
-        currentevent = null;
+        // if an event has come to an end tidily we should no longer be playing
+        if(window["currentevents" + monitorId].length === 1) {
+          playing = false;
+          shouldbeplaying = false;
+        }
+        // remove the event from the relevant array 
+        window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+        if(gaplessPlayback === true) {
+          jumpToNearestEvent(timeline.getCurrentTime());
+        }
       }
   },200);
 }
@@ -311,9 +329,8 @@ function playEvent(monitorId, eventId) {
   if(jQuery.inArray(monitorId, chosencameras) == -1) {
     addMonitor(monitorId);
   }
-  currentevent = eventId;
-  currentevents.push(eventId);
-  console.log("PLAYING: " + monitorId + " " + eventId);
+  window["currentevents" + monitorId].push(eventId);
+  console.log("playing event: " + eventId + " on monitor " + monitorId);
   liveview = false;
   shouldbeplaying = true;
   var tempframes = new Array();
@@ -344,7 +361,7 @@ function getFrames() {
 
 function jumpToNearestEvent(datetime, direction) {
   direction = (typeof direction === "undefined") ? "forward" : direction;
-  console.log("jumpToNearestEvent called with " + datetime);
+  //console.log("jumpToNearestEvent called with " + datetime);
   var matchFound = false;
   jQuery.each(activity, function(i, v) {
     if(matchFound === false) {
@@ -463,8 +480,8 @@ jQuery(document).ready(function() {
     }
   });
 
-  $('#rangestart').val(moment(end).format('DD/MM/YYYY') + ' 00:01');
-  $('#rangeend').val(moment(end).format('DD/MM/YYYY' + ' 23:59'));
+  $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
+  $('#rangeend').val(moment(end).format('DD/MM/YYYY HH:mm'));
 
   jQuery( '#timeline' ).
     bind( 'mousewheel DOMMouseScroll', function ( e ) {
@@ -491,7 +508,12 @@ jQuery(document).ready(function() {
       addMonitor(i);
       i++;
     });
-    $(".show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+    if($(this).parent().attr("class")!=="preset-list-item") {
+      $($(this)).replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+    }
+    else {
+      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+    }
   });
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
@@ -546,27 +568,6 @@ jQuery(document).ready(function() {
       $("#play").attr("id", "pause");
     }
   });
-  /*jQuery('#rangestart').change(function() {
-    console.log("changed");
-    if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-      start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-      end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate()
-;      requeryTimeline();
-    }
-  });
-  jQuery('#rangeend').change(function() {
-    console.log("changed");
-    if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isAfter($("#rangestart").val())) {
-      if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-        start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-        end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-        requeryTimeline();
-      }
-    }
-    else {
-      noty({text: 'Range end cannot be before range start!', type: 'error'});
-    }
-  });*/
   jQuery(document).on("click", "#requeryTimeline", function(event) {
     event.preventDefault();
     start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
@@ -579,7 +580,6 @@ jQuery(document).ready(function() {
     stopPlayback();
   });
   jQuery(document).on("click", "#jumpback", function(event) {
-    //clearCurrentEvent();
     shouldbeplaying = false;
     playing = false;
     clearCameraFrames();
@@ -588,7 +588,6 @@ jQuery(document).ready(function() {
     timeline.redraw();
   });
   jQuery(document).on("click", "#jumpforward", function(event) {
-    //clearCurrentEvent();
     shouldbeplaying = false;
     playing = false;
     clearCameraFrames();
@@ -601,7 +600,8 @@ jQuery(document).ready(function() {
     event.preventDefault();
     window.stop();
     jQuery.each(activity, function(i, v) {
-      if(v.Id == parseInt(currentevents[currentevents.length-1])-1) {
+      var currentLength = window["currentevents" + monitorId].length;
+      if(v.Id == parseInt(window["currentevents" + monitorId][currentLength-1])-1) {
         //previous event selected
         shouldbeplaying = false;
         playing = false;
@@ -609,25 +609,14 @@ jQuery(document).ready(function() {
       }
     });
 
-    /*if(currentevents.length > 0) {
-      jQuery.each(activity, function(i, v) {
-        if(parseInt(v.Id) === (parseInt(currentevent)-1)) {
-          breakplayback = true;
-          timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
-        }
-      });
-    }*/
-
   });
   jQuery(document).on("click", "#fastforward", function(event) {
     console.log("FFWD");
     event.preventDefault();
     window.stop();
     jQuery.each(activity, function(i, v) {
-      //console.log(v.Id + " / " + (parseInt(currentevents[currentevents.length-1]) +1) + " / " + currentevents[currentevents.length-1]);
-      if(v.Id == (parseInt(currentevents[currentevents.length-1]) + 1)) {
-        //next event selected
-        //console.log("Match found");
+      var currentLength = window["currentevents" + monitorId].length;
+      if(v.Id == (parseInt(window["currentevents" + monitorId][currentLength-1]) + 1)) {
         shouldbeplaying = false;
         playing = false;
         timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
@@ -638,17 +627,6 @@ jQuery(document).ready(function() {
       event.preventDefault();
       $("#editPresets-dialog").dialog( "open" );
     });
-
-    /*if(currentevent !== null) {
-      jQuery.each(activity, function(i, v) {
-        if(parseInt(v.Id) === (parseInt(currentevent)+1)) {
-          breakplayback = true;
-          clearCurrentEvent();
-          timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
-          return false;
-        }
-      });
-    }*/
 
   });
 
@@ -693,7 +671,7 @@ jQuery(document).ready(function() {
         clearCameraFrames();
       }
 
-      noty({text: 'Jumping to next event'});
+      //noty({text: 'Jumping to next event'});
       shouldbeplaying = false;
       playing = false;
       var offset = $(this).offset();
@@ -708,6 +686,9 @@ jQuery(document).ready(function() {
     getFrames();
 
     setInterval(function() {
+    /*$.each(currenteventarrays, function(index, value) {
+      console.log(index + " - " + window[value]);
+    });*/
     //console.log(currentevents);
     var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
     var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
@@ -716,8 +697,7 @@ jQuery(document).ready(function() {
     jQuery(".playback-time").text(time);
     jQuery.each(activity, function(i, v) {
       if (v.StartTime == datetime) {
-        /*if(currentevent !== v.Id) { */
-          if(jQuery.inArray(v.Id, currentevents) == -1) {
+          if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
           playEvent(v.MonitorId, v.Id);
           playing = true;
           return;
