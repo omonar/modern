@@ -78,6 +78,7 @@
         <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
           <?php
             echo "<ul class=\"preset-list\">";
+            echo "<li class=\"preset-list-item\"><a class=\"show-all-cameras\" href=\"#\">All Cameras</a></li>";
             foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
               echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
             }
