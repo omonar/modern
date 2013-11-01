@@ -103,6 +103,7 @@ $(function() {
 /* end third party code */
 
 function addMonitor(monitorId) {
+  console.log("Adding monitor " + monitorId);
   window["currentevents" + monitorId] = new Array();
   currenteventarrays.push("currentevents" + monitorId);
   noty({text: 'Adding camera', type: 'info'});
@@ -326,7 +327,7 @@ function resumeLiveView() {
 }
 
 function playEvent(monitorId, eventId) {
-  if(jQuery.inArray(monitorId, chosencameras) == -1) {
+  if(jQuery.inArray(parseInt(monitorId), chosencameras) === -1) {
     addMonitor(monitorId);
   }
   window["currentevents" + monitorId].push(eventId);
@@ -503,6 +504,7 @@ jQuery(document).ready(function() {
     event.preventDefault();
     window.stop();
     jQuery("#monitor-streams").empty();
+    chosencameras = [];
     var i = 1;
     jQuery(cameras).each(function() {
       addMonitor(i);
