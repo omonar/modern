@@ -1,30 +1,14 @@
 This is a fork of the work-in-progress skin for ZoneMinder version >= 1.24 by Kyle Johnson. This skin is currently being developed by Emergent Ltd. Any suggestions of features, comments and code are welcome =)
 
---
-
-I plan on removing many of the extra (read: usually unused) features of the WebUI and to go with a more simplistic approach, while adding web 2.0 features.
-To use this skin, check it out into a new zm/skins directory (I.e. zm/skins/new), then browse to http://yourzm/?skin=new
-
 FEATURES
- * While supporting non-standards compliant browsers is not a goal of the project, it may be polyfilled in the future
- * Event playback on multiple cameras at once
- * Timeline of events for playback
- * Single page for live view and playback
- * Filtering is currently only availble by Monitor Name and Date Range
- * Monitors on Console view will ajax refresh at your WEB_REFRESH_IMAGE variable if in Low or Medium bandwidth.
- * Monitors will stream live if in High bandwidth.
- * Clicking on a monitor will "drill into" the associated events for that monitor
- * Filter by additional monitors by checking the corresponding check box.
- * Checking a monitor checkbox will automatically execute the filter (ajax)
- * Clicking on "Specific Date Range" on the Events page will allow you to search by a Date Range.
- * To search by a Date Range, enter both dates (only tested with MM/DD/YYYY) then click "Submit"
 
-BUGS
- * ZM authentication options do not work.  I'm currently using Apache's .htaccess and .htpasswd (mod_basic I suppose)
+* Single page for live view and playback
+* Timeline of events
+* Individual camera and preset selection
+* Valid HTML5
+* No need for Java, Flash, etc - just a decent browser
 
 FUTURE
- * Add "netflix-like" bandwidth test to dynamically determine appropriate image streaming settings.
- * Convert to HTML5.
- * Video playback via HTML5?
- * Add "Take Snapshot" button to event playback
- * Implement widgets
+
+* Exporting of events (Single events, multiple events and multi-camera export options)
+* Improved / unified backend (Goodbye popups)
