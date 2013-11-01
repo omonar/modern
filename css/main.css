@@ -251,9 +251,8 @@ letter-spacing: 2px;
 }
 .zm .timeline-currenttime {
   background-color: #89a;
-  width: 6px;
-  border: 1px dashed #cde;
-  border-width: 0 1px;
+  border: 2px dashed #fff;
+  border-width: 0 0 0 2px;
 }
 
 .zm .choose-cameras li {
