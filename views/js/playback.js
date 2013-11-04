@@ -102,11 +102,16 @@ $(function() {
 });
 /* end third party code */
 
-function addMonitor(monitorId) {
-  console.log("Adding monitor " + monitorId);
+function addMonitor(monitorId, showall) {
+  if(arguments.length === 1) {
+    showall = false;
+  }
+  //console.log("Adding monitor " + monitorId);
   window["currentevents" + monitorId] = new Array();
   currenteventarrays.push("currentevents" + monitorId);
-  noty({text: 'Adding camera', type: 'info'});
+  if(showall === false) {
+    noty({text: 'Adding camera', type: 'info'});
+  }
   if(liveview == false) {
     liveview = true;
   }
@@ -119,7 +124,9 @@ function addMonitor(monitorId) {
         liveview = true;
         chosencameras.push(monitorId);
         jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div>').appendTo('#monitor-streams');
-        requeryTimeline();
+        if((showall === false)||(monitorId==cameras[cameras.length-1].Id)) {
+          requeryTimeline();
+        }
       }
     });
   }
@@ -144,8 +151,8 @@ function stopPlayback() {
   shouldbeplaying = false;
   playing = false;
   timeline.setCurrentTime(new Date().getTime());
+  timeline.draw(null, options);
   jQuery("#monitor-streams").empty();
-  resumeLiveView();
 }
 
 function clearCameraFrames() {
@@ -237,6 +244,7 @@ function clearTimer(eventId, monitorId) {
 }
 
 function requeryTimeline() {
+  console.log("Requerying...");
   if(chosencameras.length > 0) {
     jQuery("#timeline").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
@@ -322,7 +330,7 @@ function playbackFrames(monitorId, eventId, imgarray) {
 
 function resumeLiveView() {
   jQuery(chosencameras).each(function(i) {
-    addMonitor(cameras[i].Id);
+    addMonitor(i+1, true);
   });
 }
 
@@ -507,9 +515,10 @@ jQuery(document).ready(function() {
     chosencameras = [];
     var i = 1;
     jQuery(cameras).each(function() {
-      addMonitor(i);
+      addMonitor(i, true);
       i++;
     });
+    noty({text: 'Added cameras', type: 'success'});
     if($(this).parent().attr("class")!=="preset-list-item") {
       $($(this)).replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
@@ -630,6 +639,13 @@ jQuery(document).ready(function() {
       $("#editPresets-dialog").dialog( "open" );
     });
 
+  });
+
+  jQuery(document).on("click", "#liveview", function(event) {
+    event.preventDefault();
+    window.stop();
+    stopPlayback();
+    resumeLiveView();
   });
 
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
