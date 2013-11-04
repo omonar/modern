@@ -42,9 +42,7 @@
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li class="controls-timeline-playback-buttons">
-              <button class="playback-button" id="rewind"><span class="glyphicon glyphicon-backward"></span></button>
               <button class="playback-button" id="play"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="playback-button" id="fastforward"><span class="glyphicon glyphicon-forward"></span></button>
               <button class="playback-button" id="liveview"><span class="glyphicon glyphicon-record"></span></button>
             </li>
             <li class="controls-timeline-playback-rangestart">
