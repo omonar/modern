@@ -1,19 +1,19 @@
-  //
-  // Copyright (C) 2013 Kevin Varley at Emergent Ltd
-  //
-  // This program is free software; you can redistribute it and/or
-  // modify it under the terms of the GNU General Public License
-  // of the License, or (at your option) any later version.
-  //
-  // This program is distributed in the hope that it will be useful,
-  // but WITHOUT ANY WARRANTY; without even the implied warranty of
-  // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  // GNU General Public License for more details.
-  //
-  // You should have received a copy of the GNU General Public License
-  // along with this program; if not, write to the Free Software
-  // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-  //
+//
+// Copyright (C) 2013 Kevin Varley at Emergent Ltd
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
 
 var activity, cameras;
 var currentTime;
@@ -237,9 +237,9 @@ var activityday = activitydatesplit[2];
 var activityrangestart = new Date(activityyear, activitymonth, activityday);
 
 function preloadFrames(imgarray) {
-jQuery.each(imgarray, function(i, source) {
-  jQuery.get(source);
-});
+  jQuery.each(imgarray, function(i, source) {
+    jQuery.get(source);
+  });
 }
 
 function displayFrame(monitorId, img) {
@@ -249,7 +249,6 @@ function displayFrame(monitorId, img) {
 function clearTimer(eventId, monitorId) {
   clearInterval(timers[eventId]);
   timers[eventId] = 0;
-  //console.log("Cleared timer " + eventId);
 }
 
 function requeryTimeline() {
@@ -258,9 +257,6 @@ function requeryTimeline() {
     jQuery("#timeline").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
-    //console.log(startformatted);
-    //console.log(endformatted);
-    //console.log("requeryTimeline with ... " + chosencameras.join(",") + " / " + startformatted + " / " + endformatted)
     ajaxRequestId = ajaxRequests.length;
     ajaxRequests[ajaxRequestId] = jQuery.ajax({
       type: "POST",
@@ -290,52 +286,52 @@ function requeryTimeline() {
 function playbackFrames(monitorId, eventId, imgarray) {
   var x = 0;
   timers[eventId] = setInterval(function(){
-      // prevent stuttering
-      if(window["currentevents" + monitorId].length > 1) {
-        //console.log("Current events > 1 /// " + window["currentevents" + monitorId]);
-        //get the item before this item in the array
-        var previousEventIndex = window["currentevents" + monitorId].length-2;
-        var previousEventId = window["currentevents" + monitorId][previousEventIndex];
-        console.log("Removing event /// " + previousEventIndex);
-        window["currentevents" + monitorId].splice(previousEventIndex, 1);
-        clearTimer(previousEventId, monitorId);
+    // prevent stuttering
+    if(window["currentevents" + monitorId].length > 1) {
+      //console.log("Current events > 1 /// " + window["currentevents" + monitorId]);
+      //get the item before this item in the array
+      var previousEventIndex = window["currentevents" + monitorId].length-2;
+      var previousEventId = window["currentevents" + monitorId][previousEventIndex];
+      //console.log("Removing event /// " + previousEventIndex);
+      window["currentevents" + monitorId].splice(previousEventIndex, 1);
+      clearTimer(previousEventId, monitorId);
+    }
+    // if an event should be being played
+    if (shouldbeplaying === true) {
+      // if there are still frames to play
+      if (x < imgarray.length) {
+        playing = true;
+        displayFrame(monitorId, imgarray[x]);
       }
-      // if an event should be being played
-      if (shouldbeplaying === true) {
-        // if there are still frames to play
-        if (x < imgarray.length) {
-          playing = true;
-          displayFrame(monitorId, imgarray[x]);
-        }
-        // if there are no more frames to play
-        else {
-          clearTimer(eventId, monitorId);
-          displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
-          window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
-          if(gaplessPlayback === true) {
-            jumpToNearestEvent(timeline.getCurrentTime());
-          }
-        }
-        x++;
-      }
-      // if an event shouldn't be playing
+      // if there are no more frames to play
       else {
-        // if an event has come to an end neatly
-        if(paused === false) {
-          clearTimer(eventId, monitorId);
-          displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
-        }
-        // if an event has come to an end tidily we should no longer be playing
-        if(window["currentevents" + monitorId].length === 1) {
-          playing = false;
-          shouldbeplaying = false;
-        }
-        // remove the event from the relevant array 
+        clearTimer(eventId, monitorId);
+        displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
         window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
         if(gaplessPlayback === true) {
           jumpToNearestEvent(timeline.getCurrentTime());
         }
       }
+      x++;
+    }
+    // if an event shouldn't be playing
+    else {
+      // if an event has come to an end neatly
+      if(paused === false) {
+        clearTimer(eventId, monitorId);
+        displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
+      }
+      // if an event has come to an end tidily we should no longer be playing
+      if(window["currentevents" + monitorId].length === 1) {
+        playing = false;
+        shouldbeplaying = false;
+      }
+      // remove the event from the relevant array 
+      window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+      if(gaplessPlayback === true) {
+        jumpToNearestEvent(timeline.getCurrentTime());
+      }
+    }
   },200);
 }
 
@@ -384,7 +380,6 @@ function getFrames() {
 
 function jumpToNearestEvent(datetime, direction) {
   direction = (typeof direction === "undefined") ? "forward" : direction;
-  //console.log("jumpToNearestEvent called with " + datetime);
   var matchFound = false;
   jQuery.each(activity, function(i, v) {
     if(matchFound === false) {
@@ -441,7 +436,7 @@ function drawVisualization() {
   timeline.draw(timelinedata, options);
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function() { /* begin document ready */
 
   $("#choose-cameras").dialog({
     autoOpen: false,
@@ -454,8 +449,6 @@ jQuery(document).ready(function() {
     resizable: true,
     minWidth: 400
   });
-
-  $("#ui-id-1").parent()
 
   $("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
   $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
@@ -484,6 +477,7 @@ jQuery(document).ready(function() {
       }, 200);
     }
   });
+
   $('#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
     onClose: function(dateText, inst) {
@@ -510,12 +504,12 @@ jQuery(document).ready(function() {
   $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
   $('#rangeend').val(moment(end).format('DD/MM/YYYY HH:mm'));
 
-  jQuery( '#timeline' ).
-    bind( 'mousewheel DOMMouseScroll', function ( e ) {
-        var delta = e.wheelDelta || -e.detail;
-        this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-        e.preventDefault();
-    });
+  jQuery( '#timeline' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
+    var delta = e.wheelDelta || -e.detail;
+    this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+    e.preventDefault();
+  });
+
   jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
     var monitorClass = jQuery(this).parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
@@ -526,6 +520,7 @@ jQuery(document).ready(function() {
     });
     requeryTimeline();
   });
+
   jQuery(document).on("click", ".show-all-cameras", function(event) {
     event.preventDefault();
     window.stop();
@@ -544,6 +539,7 @@ jQuery(document).ready(function() {
       $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
   });
+
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
     window.stop();
@@ -552,6 +548,7 @@ jQuery(document).ready(function() {
     requeryTimeline();
     $(".hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
   });
+
   jQuery(document).on("click", ".preset-list-link", function(event) {
     event.preventDefault();
     window.stop();
@@ -570,6 +567,7 @@ jQuery(document).ready(function() {
       addMonitor(value, true);
     });
   });
+
   jQuery(document).on("click", "#pause", function(event) {
     event.preventDefault();
     window.stop();
@@ -577,6 +575,7 @@ jQuery(document).ready(function() {
     $("#pause").attr("id", "play");
     pausePlayback();
   });
+
   jQuery(document).on("click", "#play", function(event) {
     event.preventDefault();
     window.stop();
@@ -586,12 +585,14 @@ jQuery(document).ready(function() {
       $("#play").attr("id", "pause");
     }
   });
+
   jQuery(document).on("click", "#liveview", function(event) {
     event.preventDefault();
     window.stop();
     stopPlayback();
     resumeLiveView();
   });
+
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
     if($("#choose-cameras").dialog("isOpen")!==true) {
       $("#choose-cameras").dialog("open");
@@ -648,36 +649,33 @@ jQuery(document).ready(function() {
   $(window).bind("load", function() {
     getFrames();
 
+    /* check if an event should start playing every second */
     setInterval(function() {
-    /*$.each(currenteventarrays, function(index, value) {
-      console.log(index + " - " + window[value]);
-    });*/
-    //console.log(currentevents);
-    var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
-    var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
-    var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
-    jQuery(".playback-date").text(date);
-    jQuery(".playback-time").text(time);
-    jQuery.each(activity, function(i, v) {
-      if (v.StartTime == datetime) {
-          if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
-          playEvent(v.MonitorId, v.Id);
-          playing = true;
-          return;
+      var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
+      var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
+      var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
+      jQuery(".playback-date").text(date);
+      jQuery(".playback-time").text(time);
+      jQuery.each(activity, function(i, v) {
+        if (v.StartTime == datetime) {
+            if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
+            playEvent(v.MonitorId, v.Id);
+            playing = true;
+            return;
+          }
+          else {
+            clearTimers();
+          }
         }
-        else {
-          clearTimers();
-        }
-      }
-    });
-  },1000);
+      });
+    },1000);
   });
+}); /* end document ready */
 
-});
-
+/* refresh camera thumbnails every 10 seconds */
 setInterval(function(){
   var timestamp = (new Date()).getTime();
   jQuery(".monitor-thumbnail").each(function() {
     jQuery(this).attr("src", jQuery(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
   });
-  },5000);
+},10000);
