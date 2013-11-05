@@ -15,10 +15,11 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
+var start = new Date();
+var end = new Date();
+start.setDate(end.getDate()-1);
 var activity, cameras;
-var currentTime;
 var frames;
-var frameTimer = null;
 var chosencameras = new Array();
 var timelinedata = [];
 var playing = false;
@@ -34,8 +35,6 @@ var timerstimers = new Array();
 var currenteventarrays = new Array();
 var paused = false;
 var breakplayback = false;
-var start = null;
-var end = null;
 var times = "";
 var gaplessPlayback = true;
 var options = {
@@ -184,7 +183,6 @@ function resumePlayback() {
   timeline.setCustomTime(new Date().getTime());
 }
 
-
 /* begin third party code */
 // Andy E
 // http://stackoverflow.com/users/94197/andy-e
@@ -308,6 +306,7 @@ function playbackFrames(monitorId, eventId, imgarray) {
         clearTimer(eventId, monitorId);
         displayFrame(monitorId, '/zm/skins/modern/views/images/onerror.png');
         window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+        // if gaplessPlayback enabled & the event finishes tidily
         if(gaplessPlayback === true) {
           jumpToNearestEvent(timeline.getCurrentTime());
         }
@@ -328,9 +327,6 @@ function playbackFrames(monitorId, eventId, imgarray) {
       }
       // remove the event from the relevant array 
       window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
-      if(gaplessPlayback === true) {
-        jumpToNearestEvent(timeline.getCurrentTime());
-      }
     }
   },200);
 }
@@ -405,7 +401,7 @@ function clearAjaxRequests() {
   ajaxRequests = [];
 }
 
-function drawVisualization() {
+function setupTimeline() {
   timeline = new links.Timeline(document.getElementById('timeline'));
 
   timeline.applyRange(start, end);
@@ -428,7 +424,7 @@ function drawVisualization() {
         timeline.setCurrentTime(itemobj.start);
         timeline.repaintCurrentTime();
         timeline.options.showCurrentTime = true;
-        timeline.options.showCustomTime = true;
+        timeline.options.showCustomTime = false;
       }
     }
   }
@@ -437,6 +433,7 @@ function drawVisualization() {
 }
 
 jQuery(document).ready(function() { /* begin document ready */
+  setupTimeline();
 
   $("#choose-cameras").dialog({
     autoOpen: false,
@@ -452,10 +449,6 @@ jQuery(document).ready(function() { /* begin document ready */
 
   $("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
   $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-
-  start = new Date();
-  end = new Date();
-  start.setDate(end.getDate()-1);
 
   $('#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
