@@ -88,6 +88,7 @@
         <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection">
           <ul>
             <?php
+              $i = 1;
               $connkey = generateConnKey();
               $streamMode = "single";
               $sql = "SELECT * FROM Monitors";
@@ -95,6 +96,13 @@
                 echo "<li class=\"floatleft\">";
                 outputImageStillWithClass( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail" );
                 echo "</li>";
+                if($i === 3) {
+                  // yes, br is lame. needs changing at some point
+                  echo "<br>";
+                }
+                else{
+                  $i++;
+                }
               }
             ?>
           </ul>
