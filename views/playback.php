@@ -31,7 +31,7 @@
 
   xhtmlHeaders( __FILE__, $SLANG['Playback'] );
 ?>
-  <body class="zm" onload="drawVisualization();"> <!-- begin body -->
+  <body class="zm"> <!-- begin body -->
 
     <?php require("header.php");  $monitors2 = $monitors?>
 
