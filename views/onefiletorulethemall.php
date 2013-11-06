@@ -22,7 +22,15 @@
 		$query = "DELETE FROM PresetsLink WHERE presetMonitorId = " . $cameraID;
 	}
 
+	function userDefaultPresetCheck($username) {
+		
+	}
+
 	/* end functions */
+
+	if(isset($_REQUEST['userDefaultPresetCheck'])) {
+		echo userDefaultPresetCheck($_REQUEST['username']);
+	}
 
 	if(isset($_REQUEST['addPreset'])) {
 		echo addPreset($_REQUEST['presetName']);
