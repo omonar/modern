@@ -54,7 +54,7 @@ $focusWindow = true;
 
 xhtmlHeaders( __FILE__, $SLANG['Options'] );
 ?>
-<body>
+<body class="zm zm-options">
     <?php require("header.php"); ?>
     <div id="content">
       <ul class="tabList">
@@ -64,13 +64,13 @@ foreach ( $tabs as $name=>$value )
     if ( $tab == $name )
     {
 ?>
-        <li class="active"><?= $value ?></li>
+        <li class="active ui-corner-top ui-tabs-active ui-state-active"><?= $value ?></li>
 <?php
     }
     else
     {
 ?>
-        <li><a href="?view=<?= $view ?>&tab=<?= $name ?>"><?= $value ?></a></li>
+        <li class="ui-corner-top"><a href="?view=<?= $view ?>&tab=<?= $name ?>"><?= $value ?></a></li>
 <?php
     }
 }
