@@ -43,7 +43,7 @@
           <ul class="controls-list">
             <li class="controls-timeline-playback-buttons">
               <button class="playback-button" id="play"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="playback-button" id="liveview"><span class="glyphicon glyphicon-record"></span></button>
+              <button class="playback-button" id="playback" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
             </li>
             <li class="controls-timeline-playback-rangestart">
               <label for="rangestart">Start</label>
@@ -76,16 +76,25 @@
 
         <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
           <?php
+            $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
             echo "<ul class=\"preset-list\">";
-            echo "<li class=\"preset-list-item\"><a class=\"show-all-cameras\" href=\"#\">All Cameras</a></li>";
+            echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"-1\"";
+            if($defaultPresetId === "-1") {
+              echo " checked";
+            }
+            echo "><a class=\"show-all-cameras preset-list-link\" href=\"#\">All Cameras</a></li>";
             foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
-              echo "<li class=\"preset-list-item\"><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
+              echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"" . $cameras['Id'] . "\"";
+              if($defaultPresetId == $cameras['Id']) {
+                echo " checked";
+              }
+              echo "><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
             }
             echo "</ul>";
           ?>
         </div>
 
-        <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection">
+        <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection"> <!-- begin choose-cameras -->
           <ul>
             <?php
               $i = 1;
@@ -106,8 +115,7 @@
               }
             ?>
           </ul>
-
-        </div>
+        </div> <!-- end choose-cameras -->
 
       </div> <!-- end view-wrapper -->
    
