@@ -28,7 +28,7 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
     <div class="container">
     <form name="loginForm" id="loginForm" method="post" class="form-signin" action="<?= $_SERVER['PHP_SELF'] ?>">
         <input type="hidden" name="action" value="login"/>
-        <input type="hidden" name="view" value="postlogin"/>
+        <input type="hidden" name="view" value="playback"/>
         <h2 class="form-signin-heading">Please sign in</h2>
         <input name="username" type="text" class="form-control" placeholder="<?= $SLANG['Username'] ?>" autofocus="">
         <input name="password" type="password" class="form-control" placeholder="<?= $SLANG['Password'] ?>">
