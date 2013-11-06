@@ -1,53 +1,62 @@
 <?php
+	// security needs fixing, check ZM_AUTH_TYPE and that the user is logged in, etc
+
 	/* begin functions */
-	function addPreset($name) {
-		$query = "INSERT INTO Presets (prestID, presetName) VALUES(NULL, {$name})";
+	function updateUserDefaultPreset($userId, $defaultPresetId) {
+		$query = "UPDATE Users SET defaultPreset='{$defaultPresetId}' WHERE Id='{$userId}'";
 		$result = dbQuery($query);
-		return $result;
+		if(!$result) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
-	function removePreset($presetID) {
-		$query = "DELETE FROM Presets WHERE presetID = " . $presetID;
+	function userTableInsertPresetColumn() {
+		$query = "ALTER TABLE Users ADD defaultPreset INT(10) NOT NULL default '-1'";
 		$result = dbQuery($query);
-		return $result;
+		if(!$result) {
+			return false;
+		} 
+		else {
+			return true;
+		}
 	}
 
-	function addCameraToPreset($cameraID, $presetID) {
-		$query = "INSERT INTO PresetsLink (presetID, presetMonitorId) VALUES({$presetID}, {$cameraID})";
-		$result = dbQuery($query);
-		return $result;
+	function userTablePresetCheck() {
+		$query = "SELECT * FROM Users WHERE Id='" . $_SESSION['user']['Id'] . "'";
+		$result = dbFetchOne($query);
+		return array_key_exists('defaultPreset', $result);
 	}
-
-	function removeCameraFromPreset($cameraID, $presetID) {
-		$query = "DELETE FROM PresetsLink WHERE presetMonitorId = " . $cameraID;
-	}
-
-	function userDefaultPresetCheck($username) {
-		
-	}
-
 	/* end functions */
 
-	if(isset($_REQUEST['userDefaultPresetCheck'])) {
-		echo userDefaultPresetCheck($_REQUEST['username']);
+	if(isset($_REQUEST['getUserDefaultPresetId'])) {
+		if(isset($_SESSION['user']['Username'])) {
+			echo getUserDefaultPresetId($_SESSION['user']['Id']);
+		}
 	}
 
-	if(isset($_REQUEST['addPreset'])) {
-		echo addPreset($_REQUEST['presetName']);
+	if(isset($_REQUEST['updateUserDefaultPreset'])) {
+		// check if the Users table has 'defaultPreset'
+		if(userTablePresetCheck()===false) {
+			if(userTableInsertPresetColumn()===false) {
+				die("error 2");
+			}
+		}
+
+		if((ctype_digit($_REQUEST['defaultPresetId']) === false)&&($_REQUEST['defaultPresetId']!=="-1")) {
+			die("error 3");
+		}
+
+		if(updateUserDefaultPreset($_SESSION['user']['Id'], $_REQUEST['defaultPresetId']) === true) {
+			echo "success";
+		}
+		else {
+			die("error 4");
+		}
 	}
 
-	if(isset($_REQUEST['removePreset'])) {
-		echo removePreset($_REQUEST['removePreset']);
-	}
-
-	if(isset($_REQUEST['addCameraToPreset'])) {
-		echo addCameraToPreset($_REQUEST['addCameraToPreset']);
-	}
-
-	if(isset($_REQUEST['removeCameraFromPreset'])) {
-		echo removeCameraFromPreset($_REQUEST['removeCameraFromPreset']);
-	}
-	
 	if(isset($_REQUEST['q'])) {
 		$query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE ";
 		$datetimes = explode(",", $_REQUEST['q']);
