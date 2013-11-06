@@ -1,7 +1,6 @@
 /* begin reset */
 html, body {
   width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   border: 0;
@@ -377,8 +376,6 @@ margin: 1px 3px;
 }
 
 .zm .ui-dialog .preset-selection li:active, .zm .ui-dialog .preset-selection li:hover {
-    padding: 1rem 0;
-    font-size:1.3rem;
 }
 
 .zm .ui-dialog li:nth-child(even), .optionTable tr:nth-child(even) {
@@ -409,7 +406,6 @@ margin: 1px 3px;
   border-width: 1px 0;
   font-size:1.2rem;
   text-transform:lowercase;
-  letter-spacing:2px;
   padding: 0.7rem 0.4rem 0.7rem 1rem;
   color:#ddd;
 }
@@ -429,20 +425,33 @@ margin: 1px 3px;
 }
 
 .zm ul.tabList li {
-  margin: 0 0.5rem;
-  padding:0.4rem 1rem;
+  margin: 0 0.3rem;
+  padding:0.4rem 0.8rem;
+  border:1px solid #333;
   border-bottom:0;
   font-size:1.2rem;
 }
 
 .zm ul.tabList li a {
   color:#9ab;
+  border-bottom:0;
 
 }
 
 .zm ul.tabList li:hover {
+  background-color: #345;
+  border: 1px solid #26b3f7;
   border-bottom-width:0;
 }
 
 .zm ul.tabList li.active {
+}
+
+.zm-options td:first-child {
+letter-spacing:2px;
+}
+
+.zm .preset-list-default-preset {
+  float: right;
+  margin-right: 0.8rem;
 }
