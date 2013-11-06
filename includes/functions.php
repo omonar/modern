@@ -18,6 +18,17 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
+function getUserDefaultPresetId($userId) {
+  $query = "SELECT * FROM Users WHERE Id='{$userId}'";
+  $result = dbFetchOne($query);
+  if(array_key_exists('defaultPreset', $result)) {
+    return $result['defaultPreset'];
+  }
+  else {
+    return false;
+  }
+}
+
 function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 	$scale = isset( $_REQUEST['scale'] ) ? validInt($_REQUEST['scale']) : reScale( SCALE_BASE, $monitor['DefaultScale'], ZM_WEB_DEFAULT_SCALE );
 //echo $monitor['Id']." $scale ".$monitor['Width'];
