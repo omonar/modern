@@ -515,6 +515,46 @@ jQuery(document).ready(function() { /* begin document ready */
     e.preventDefault();
   });
 
+  if(jQuery("#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
+    var presetMonitorIds = jQuery("#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
+    var presetMonitorIds = presetMonitorIds.split(",");
+    jQuery.each(presetMonitorIds, function(index, value) {
+      addMonitor(value, true);
+    });
+    noty({text: 'Added cameras', type: 'success'});
+  }
+  else {
+    var i = 1;
+    jQuery(cameras).each(function() {
+      addMonitor(i, true);
+      i++;
+    });
+    noty({text: 'Added cameras', type: 'success'});
+    $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+  }
+
+  jQuery(document).on("change", 'input[name="defaultpreset"]:radio', function() {
+    noty({text: "Changing default preset...", type: 'info'});
+    var newDefaultPresetName = jQuery(this).parent().find(".preset-list-link").text();
+    var ajaxRequestId = ajaxRequests[ajaxRequests.length];
+    ajaxRequests[ajaxRequestId] = jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=onefiletorulethemall',
+      data: {updateUserDefaultPreset: true, defaultPresetId: $(this).attr("value")},
+      success: function(data) {
+        if(data === "success") {
+          noty({text: '\'' + newDefaultPresetName + '\' set as default', type: 'success'});
+          $("#preset-selection").dialog("close");
+        }
+        else {
+          noty({text: 'Failed to save default preset', type: 'error'});
+          console.log(data);
+        }
+        ajaxRequests.splice(ajaxRequestId, 1);
+      }
+    });
+  });
+
   jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
     var monitorClass = jQuery(this).parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
