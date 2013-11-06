@@ -17,7 +17,7 @@
 
 var start = new Date();
 var end = new Date();
-start.setDate(end.getDate()-1);
+start.setHours(0,0,0,0);
 var activity, cameras;
 var frames;
 var chosencameras = new Array();
@@ -29,7 +29,7 @@ var currentlyplaying = [];
 var timeline;
 var data;
 var haschosencameras = false;
-var liveview = false;
+var liveview = true;
 var shouldbeplaying = false;
 var timerstimers = new Array();
 var currenteventarrays = new Array();
@@ -161,6 +161,8 @@ function stopPlayback() {
   timeline.setCurrentTime(new Date().getTime());
   timeline.draw(null, options);
   jQuery("#monitor-streams").empty();
+  $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+  $("#pause").attr("id", "play");
 }
 
 function clearCameraFrames() {
@@ -429,7 +431,9 @@ function setupTimeline() {
     }
   }
   links.events.addListener(timeline, 'select', onselect);
-  timeline.draw(timelinedata, options);
+  timeline.draw(null, options);
+  timeline.options.showCustomTime = false;
+  timeline.repaintCustomTime();
 }
 
 jQuery(document).ready(function() { /* begin document ready */
@@ -446,6 +450,14 @@ jQuery(document).ready(function() { /* begin document ready */
     resizable: true,
     minWidth: 400
   });
+
+  $("#set-default-preset").dialog({
+    autoOpen: false,
+    resizable: true,
+    width: 'auto'
+  })
+
+  $("#playback").tooltip();
 
   $("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
   $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
@@ -495,7 +507,7 @@ jQuery(document).ready(function() { /* begin document ready */
   });
 
   $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
-  $('#rangeend').val(moment(end).format('DD/MM/YYYY HH:mm'));
+  $('#rangeend').val(moment(end).format('DD/MM/YYYY') + ' ' + moment().format('HH:mm'));
 
   jQuery( '#timeline' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
     var delta = e.wheelDelta || -e.detail;
@@ -571,8 +583,8 @@ jQuery(document).ready(function() { /* begin document ready */
 
   jQuery(document).on("click", "#play", function(event) {
     event.preventDefault();
-    window.stop();
     if (paused === true) {
+      window.stop();
       resumePlayback();
       $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
       $("#play").attr("id", "pause");
@@ -582,8 +594,38 @@ jQuery(document).ready(function() { /* begin document ready */
   jQuery(document).on("click", "#liveview", function(event) {
     event.preventDefault();
     window.stop();
-    stopPlayback();
-    resumeLiveView();
+    liveview = false;
+    $("#liveview").tooltip('destroy');
+    $("#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
+    $("#liveview").attr("title", "Enter Playback Mode")
+    $("#liveview").attr("id", "playback");
+    $("#playback").tooltip();
+    timeline.draw(null, options);
+    // if there have been cameras selected
+    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
+      paused = false;
+      stopPlayback();
+      resumeLiveView();
+    }
+    else {
+      $("#choose-cameras").dialog("open");
+    }
+  });
+
+  jQuery(document).on("click", "#playback", function(event) {
+    event.preventDefault();
+    window.stop();
+    liveview = true;
+    $("#playback").tooltip('destroy');
+    $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
+    $("#playback").attr("title", "Enter Live View Mode");
+    $("#playback").attr("id", "liveview");
+    $("#liveview").tooltip();
+    if($("#choose-cameras").dialog("isOpen")===true) {
+      $("#choose-cameras").dialog("close");
+    }
+    timeline.draw(timelinedata, options);
+    timeline.setVisibleChartRange(start, end, true);
   });
 
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
