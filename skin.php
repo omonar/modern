@@ -40,7 +40,7 @@ if ( !isset($user) && ZM_OPT_USE_AUTH )
 {
     if ( ZM_AUTH_TYPE == "remote" && !empty( $_SERVER['REMOTE_USER'] ) )
     {
-        $view = "postlogin";
+        $view = "playback";
         $action = "login";
         $_REQUEST['username'] = $_SERVER['REMOTE_USER'];
     }
