@@ -18,35 +18,9 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
-$focusWindow = true;
-
-xhtmlHeaders(__FILE__, $SLANG['Logout'] );
-?>
-<body>
-  <div id="page">
-    <div id="header">
-      <h1>ZoneMinder <?= $SLANG['Logout'] ?></h1>
-    </div>
-    <div id="content">
-      <form name="contentForm" id="contentForm" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
-	<input type="hidden" name="request" value="refresh" />
-        <input type="hidden" name="action" value="logout"/>
-        <input type="hidden" name="view" value="login"/>
-        <p><?= sprintf( $CLANG['CurrentLogin'], $user['Username'] ) ?></p>
-        <p>
-          <input type="submit" value="<?= $SLANG['Logout'] ?>"/>
-<?php
-if ( ZM_USER_SELF_EDIT )
-{
-?>
-          <input type="button" value="<?= $SLANG['Config'] ?>" onclick="createPopup( '?view=user&uid=<?= $user['Id'] ?>', 'zmUser', 'user' );"/>
-<?php
+if(isset($_SESSION['user'])) {
+  userLogout();
 }
+header('Location: index.php');
+
 ?>
-          </p>
-        </p>
-      </form>
-    </div>
-  </div>
-</body>
-</html>
