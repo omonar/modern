@@ -200,7 +200,14 @@ Date.createFromMysql = function(mysql_string) {
 }
 /* end third party code */
 
-jQuery.fn.exists = function(){return this.length>0;}
+jQuery.fn.exists = function(){
+  if(this.length>0) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
 function imgError(image) {
   image.onerror = "";
@@ -235,7 +242,6 @@ function loadUserDefaultPreset() {
       i++;
     });
     noty({text: 'Added cameras', type: 'success'});
-    $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
   }
 }
 
@@ -452,6 +458,78 @@ function setupTimeline() {
   timeline.repaintCurrentTime();
 }
 
+function toggleShowAllButton(override) {
+  if(arguments.length === 0) {
+    override = false;
+  }
+  if(override === false) {
+    if(jQuery("button.show-all-cameras").exists()) {
+      if(chosencameras.length === cameras.length) {
+        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+      }
+    }
+    else {
+      if(chosencameras.length < cameras.length) {
+        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+      }
+    }
+  }
+  else {
+    if(jQuery("span.glyphicon.glyphicon-eye-close").exists()) {
+      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+    }
+    else{
+      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+    }
+  }
+}
+
+function toggleMode() {
+  if(liveview === true) {
+    liveview = false;
+    $("#playback").tooltip('destroy');
+    $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
+    $("#playback").attr("title", "Enter Live View Mode");
+    $("#playback").attr("id", "liveview");
+    $("#liveview").tooltip();
+    if($("#choose-cameras").dialog("isOpen")===true) {
+      $("#choose-cameras").dialog("close");
+    }
+    // if there have been cameras selected
+    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
+      jQuery(".monitor-stream-image").each(function() {
+        $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
+      });
+    }
+    requeryTimeline();
+    timeline.options.showCurrentTime = true;
+    timeline.repaintCurrentTime();
+  }
+  else {
+    liveview = true;
+    $("#liveview").tooltip('destroy');
+    $("#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
+    $("#liveview").attr("title", "Enter Playback Mode")
+    $("#liveview").attr("id", "playback");
+    $("#playback").tooltip();
+    timeline.draw(null, options);
+    timeline.options.showCustomTime = false;
+    timeline.repaintCustomTime();
+    timeline.options.showCurrentTime = false;
+    timeline.repaintCurrentTime();
+    // if there have been cameras selected
+    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
+      paused = false;
+      stopPlayback();
+      chosencameras = [];
+      loadUserDefaultPreset(); 
+    }
+    else {
+      $("#choose-cameras").dialog("open");
+    }
+  }
+}
+
 jQuery(document).ready(function() { /* begin document ready */
   setupTimeline();
 
@@ -561,7 +639,9 @@ jQuery(document).ready(function() { /* begin document ready */
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     jQuery(this).parent().parent().parent().remove();
     jQuery(".monitor-stream-image").each(function() {
-      jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
+      if(liveview === true) { 
+        jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
+      }
     });
     requeryTimeline();
   });
@@ -577,12 +657,7 @@ jQuery(document).ready(function() { /* begin document ready */
       i++;
     });
     noty({text: 'Added cameras', type: 'success'});
-    if($(this).parent().attr("class")!=="preset-list-item") {
-      $($(this)).replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
-    }
-    else {
-      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
-    }
+    toggleShowAllButton(true);
   });
 
   jQuery(document).on("click", ".hide-all-cameras", function(event) {
@@ -591,7 +666,7 @@ jQuery(document).ready(function() { /* begin document ready */
     jQuery("#monitor-streams").empty();
     chosencameras = [];
     requeryTimeline();
-    $(".hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+    toggleShowAllButton(true);
   });
 
   jQuery(document).on("click", ".preset-list-link:not(.show-all-cameras)", function(event) {
@@ -633,54 +708,17 @@ jQuery(document).ready(function() { /* begin document ready */
 
   jQuery(document).on("click", "#liveview", function(event) {
     event.preventDefault();
-    liveview = true;
-    $("#liveview").tooltip('destroy');
-    $("#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
-    $("#liveview").attr("title", "Enter Playback Mode")
-    $("#liveview").attr("id", "playback");
-    $("#playback").tooltip();
-    timeline.draw(null, options);
-    timeline.options.showCustomTime = false;
-    timeline.repaintCustomTime();
-    timeline.options.showCurrentTime = false;
-    timeline.repaintCurrentTime();
-    // if there have been cameras selected
-    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
-      paused = false;
-      stopPlayback();
-      chosencameras = [];
-      loadUserDefaultPreset(); 
-    }
-    else {
-      $("#choose-cameras").dialog("open");
-    }
+    toggleMode();
   });
 
   jQuery(document).on("click", "#playback", function(event) {
     event.preventDefault();
-    liveview = false;
-    $("#playback").tooltip('destroy');
-    $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
-    $("#playback").attr("title", "Enter Live View Mode");
-    $("#playback").attr("id", "liveview");
-    $("#liveview").tooltip();
-    if($("#choose-cameras").dialog("isOpen")===true) {
-      $("#choose-cameras").dialog("close");
-    }
-    // if there have been cameras selected
-    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
-      jQuery(".monitor-stream-image").each(function() {
-        $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
-      });
-    }
-
-    requeryTimeline();
-    timeline.options.showCurrentTime = true;
-    timeline.repaintCurrentTime();
+    toggleMode();
   });
 
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
     if($("#choose-cameras").dialog("isOpen")!==true) {
+      toggleShowAllButton();
       $("#choose-cameras").dialog("open");
     }
     else {
