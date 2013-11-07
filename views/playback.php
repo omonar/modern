@@ -77,6 +77,9 @@
         <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
           <?php
             $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
+            if($defaultPresetId===false) {
+              $defaultPresetId = "-1";
+            }
             echo "<ul class=\"preset-list\">";
             echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"-1\"";
             if($defaultPresetId === "-1") {
