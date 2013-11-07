@@ -1,7 +1,7 @@
 <?php
 	function outputImageStreamModern( $id, $src, $width, $height, $title="" ) {
 	?>
-	<img id="<?= $id ?>" class="monitor-stream-image" src="<?= $src ?>" alt="<?= validHtmlStr($title) ?>" width="<?= $width ?>" height="<?= $height ?>">
+	<img id="<?= $id ?>" class="monitor-stream-image" src="<?= $src ?>" alt="<?= validHtmlStr($title) ?>" width="<?= $width ?>" height="<?= $height ?>" onerror="imgError(this);">
 	<?php
 	}
 
