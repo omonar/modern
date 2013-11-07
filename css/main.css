@@ -269,6 +269,10 @@ letter-spacing: 2px;
    margin:0 3rem;
 }
 
+.monitor-streams {
+  margin-bottom: 200px;
+}
+
 .zm .monitor-streams .monitor-stream {
   background-color: #333;
   border: 1px solid #777;
