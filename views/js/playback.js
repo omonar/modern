@@ -245,24 +245,6 @@ function loadUserDefaultPreset() {
   }
 }
 
-/*jQuery.each(activity, function(index) {
-  timelinedata.push({start: Date.createFromMysql(activity[index].StartTime), end: Date.createFromMysql(activity[index].EndTime), content: activity[index].Id, className: "monitor"+activity[index].MonitorId});
-});
-
-var activitydate = activity[ Object.keys(activity).sort().pop() ].Date;
-var activitydatesplit = activitydate.split("-");
-var activityyear = activitydatesplit[0];
-var activitymonth = activitydatesplit[1]-1;
-var activityday = activitydatesplit[2];
-var activityrangeend = new Date(activityyear, activitymonth, activityday);
-
-var activitydate = activity[0].Date;
-var activitydatesplit = activitydate.split("-");
-var activityyear = activitydatesplit[0];
-var activitymonth = activitydatesplit[1]-1;
-var activityday = activitydatesplit[2];
-var activityrangestart = new Date(activityyear, activitymonth, activityday);*/
-
 function preloadFrames(imgarray) {
   jQuery.each(imgarray, function(i, source) {
     jQuery.get(source);
@@ -361,6 +343,9 @@ function playbackFrames(monitorId, eventId, imgarray) {
 }
 
 function playEvent(monitorId, eventId) {
+  if(typeof(monitorId)!="number") {
+    monitorId = parseInt(monitorId);
+  }
   if(jQuery.inArray(monitorId, chosencameras) === -1) {
     addMonitor(monitorId);
   }
@@ -522,11 +507,8 @@ function toggleMode() {
       paused = false;
       stopPlayback();
       chosencameras = [];
-      loadUserDefaultPreset(); 
     }
-    else {
-      $("#choose-cameras").dialog("open");
-    }
+    loadUserDefaultPreset();
   }
 }
 
@@ -679,9 +661,6 @@ jQuery(document).ready(function() { /* begin document ready */
     chosencameras = [];
     shouldbeplaying = false;
     playing = false;
-    /*if(liveview === false) {
-      liveview = true;
-    }*/
     var monitorIds = $(this).attr("data-value").split(",");
     jQuery.each(monitorIds, function(index, value) {
       addMonitor(value, true);
@@ -770,38 +749,34 @@ jQuery(document).ready(function() { /* begin document ready */
     }
   });
 
-  $(window).bind("load", function() {
-    //getFrames();
-
-    /* check if an event should start playing every second */
-    setInterval(function() {
-      if(liveview === false) {
-        var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
-        var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
-        var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
-        jQuery(".playback-date").text(date);
-        jQuery(".playback-time").text(time);
-        jQuery.each(activity, function(i, v) {
-          if (v.StartTime == datetime) {
-              if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
-              playEvent(v.MonitorId, v.Id);
-              playing = true;
-              return;
-            }
-            else {
-              clearTimers();
-            }
+  setInterval(function() {
+    if(liveview === false) {
+      var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
+      var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
+      var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
+      jQuery(".playback-date").text(date);
+      jQuery(".playback-time").text(time);
+      jQuery.each(activity, function(i, v) {
+        if (v.StartTime == datetime) {
+            if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
+            playEvent(v.MonitorId, v.Id);
+            playing = true;
+            return;
           }
-        });
-      }
-    },1000);
-  });
-}); /* end document ready */
+          else {
+            clearTimers();
+          }
+        }
+      });
+    }
+  },1000);
 
-/* refresh camera thumbnails every 10 seconds */
-setInterval(function(){
-  var timestamp = (new Date()).getTime();
-  jQuery(".monitor-thumbnail").each(function() {
-    jQuery(this).attr("src", jQuery(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
-  });
-},10000);
+  /* refresh camera thumbnails every 10 seconds */
+  setInterval(function(){
+    var timestamp = (new Date()).getTime();
+    jQuery(".monitor-thumbnail").each(function() {
+      jQuery(this).attr("src", jQuery(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
+    });
+  },10000);
+
+}); /* end document ready */
