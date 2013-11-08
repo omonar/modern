@@ -42,15 +42,15 @@
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li class="controls-timeline-playback-buttons">
-              <button class="btn btn-default  playback-button" id="export" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
-              <button class="btn btn-default  playback-button" id="play" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="btn btn-default  playback-button" id="playback" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
+              <button class="btn btn-default  playback-button" id="playback" rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
+              <button class="btn btn-default  playback-button" id="play" rel="tooltip" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
+              <button class="btn btn-default  playback-button" id="export" rel="tooltip" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
             </li>
-            <li class="controls-timeline-playback-rangestart">
+            <li class="controls-timeline-playback-rangestart" rel="tooltip" title="Choose a new start date to examine">
               <label for="rangestart">Start</label>
               <input id="rangestart" type="text" class="hasDatePicker">
             </li>
-            <li class="controls-timeline-playback-rangeend">
+            <li class="controls-timeline-playback-rangeend" rel="tooltip" title="Change the end date and time for when the listed events should end">
               <label for="rangeend">End</label>
               <input id="rangeend" type="text" class="hasDatePicker">
           </li>
@@ -62,13 +62,13 @@
         <div class="controls-misc controls ui-corner-tl">
           <ul class="controls-list">
             <li>
-              <button id="choose-cameras-opener" class="btn btn-default" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
-              <button id="preset-selection-opener" class="btn btn-default" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
-              <button id="settings" class="btn btn-default playback-button" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></button>
+              <button id="choose-cameras-opener" class="btn btn-default" rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
+              <button id="preset-selection-opener" class="btn btn-default" rel="tooltip" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
+              <button id="settings" class="btn btn-default playback-button" rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></button>
             </li>
             <li>
                <p class="currently-playing">currently playing</p>
-              <p class="playback-date">0000-00-00</p>
+              <p class="playback-date" rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
               <p class="playback-time">00:00:00</p>
             </li>
           </ul>
@@ -105,8 +105,8 @@
               $streamMode = "single";
               $sql = "SELECT * FROM Monitors";
               foreach(dbFetchAll( $sql ) as $row) {
-                echo "<li class=\"floatleft\">";
-                outputImageStillWithClass( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail" );
+                echo "<li class=\"monitor-stream-thumbnail-item floatleft\">";
+                outputImageStillModern( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail");
                 echo "</li>";
                 if($i === 3) {
                   // yes, br is lame. needs changing at some point
