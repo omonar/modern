@@ -42,8 +42,9 @@
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li class="controls-timeline-playback-buttons">
-              <button class="playback-button" id="play"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="playback-button" id="playback" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
+              <button class="btn btn-default  playback-button" id="export" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
+              <button class="btn btn-default  playback-button" id="play" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
+              <button class="btn btn-default  playback-button" id="playback" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
             </li>
             <li class="controls-timeline-playback-rangestart">
               <label for="rangestart">Start</label>
@@ -61,10 +62,9 @@
         <div class="controls-misc controls ui-corner-tl">
           <ul class="controls-list">
             <li>
-              <button id="choose-cameras-opener" class="btn btn-default">Choose Cameras</button>
-            </li>
-            <li>
-              <button id="preset-selection-opener" class="btn btn-default">Choose Preset</button>
+              <button id="choose-cameras-opener" class="btn btn-default" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
+              <button id="preset-selection-opener" class="btn btn-default" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
+              <button id="settings" class="btn btn-default playback-button" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></button>
             </li>
             <li>
                <p class="currently-playing">currently playing</p>
