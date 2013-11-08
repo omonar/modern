@@ -68,10 +68,10 @@ function outputlivestream($monitor,$inwidth=0,$inheight=0) {
 	else outputImageStill( 'liveStream'.$monitor['Id'], $streamSrc, reScale( $width, $scale ), reScale( $height, $scale ), $monitor['Name'] );
 }
 
-function outputImageStillWithClass( $id, $src, $width, $height, $title="", $class="" )
+function outputImageStillModern( $id, $src, $width, $height, $alt="", $class="" )
 {
 ?>
-<img id="<?= $id ?>" class="<?= $class ?>" src="<?= $src ?>" alt="<?= $title ?>" width="<?= $width ?>" height="<?= $height ?>"/>
+<img id="<?= $id ?>" class="<?= $class ?>" src="<?= $src ?>" alt="<?= $alt ?>" width="<?= $width ?>" height="<?= $height ?>">
 <?php
 }
 
