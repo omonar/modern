@@ -123,11 +123,15 @@ function addMonitor(monitorId, showall) {
         chosencameras.push(monitorId);
         //console.log("Pushed " + monitorId + " / " + cameras[monitorId-1].Name + " to chosencameras");
         if(liveview === true) {
-          jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" title=\"The colour assigned to this camera\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div>').appendTo('#monitor-streams');
+          jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\" rel=\"tooltip\" title=\"You can change the name of this camera by ###\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div>').appendTo('#monitor-streams');
         }
         else {
-          jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" title=\"The colour assigned to this camera\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div>').appendTo('#monitor-streams');
+          jQuery('<div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\" rel=\"tooltip\" title=\"You can change the name of this camera by ###\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div>').appendTo('#monitor-streams');
         }
+        $("#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
+        $("#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
+        $("#monitor-stream-" + monitorId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
+        $("#monitor-stream-" + monitorId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
         if((haschosencameras === true)&&(showall === false)) {
           requeryTimeline();
         }
@@ -456,23 +460,24 @@ function toggleShowAllButton(override) {
   if(override === false) {
     if(jQuery("button.show-all-cameras").exists()) {
       if(chosencameras.length === cameras.length) {
-        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
       }
     }
     else {
       if(chosencameras.length < cameras.length) {
-        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
       }
     }
   }
   else {
     if(jQuery("span.glyphicon.glyphicon-eye-close").exists()) {
-      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
     }
     else{
-      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
   }
+  $(".show-hide-cameras").tooltip();
 }
 
 function toggleMode() {
@@ -517,12 +522,17 @@ function toggleMode() {
 }
 
 jQuery(document).ready(function() { /* begin document ready */
-  $("#playback").tooltip();
-  $("#settings").tooltip();
-  $("#play").tooltip();
-  $("#export").tooltip();
-  $("#choose-cameras-opener").tooltip();
-  $("#preset-selection-opener").tooltip();
+  //$("#playback").tooltip();
+  //$("#settings").tooltip();
+  //$("#play").tooltip();
+  //$("#export").tooltip();
+  //$("#choose-cameras-opener").tooltip();
+  //$("#preset-selection-opener").tooltip();
+  //$(".controls-timeline-playback-rangestart").tooltip();
+  //$(".controls-timeline-playback-rangeend").tooltip();
+  //$(".playback-date").tooltip();
+  $("[rel='tooltip']").tooltip();
+
   setupTimeline();
 
   $("#choose-cameras").dialog({
@@ -543,7 +553,8 @@ jQuery(document).ready(function() { /* begin document ready */
     width: 'auto'
   })
 
-  $("<button class=\"show-all-cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
+  $("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
+  $(".show-hide-cameras").tooltip();
   $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
   $('#rangestart').datetimepicker({
@@ -718,14 +729,20 @@ jQuery(document).ready(function() { /* begin document ready */
     }
   });
 
-  jQuery(document).on("click", "#liveview", function(event) {
-    event.preventDefault();
+  jQuery(document).on("click", "#liveview", function() {
     toggleMode();
   });
 
-  jQuery(document).on("click", "#playback", function(event) {
-    event.preventDefault();
+  jQuery(document).on("click", "#playback", function() {
     toggleMode();
+  });
+
+  jQuery(document).on("click", "#export", function() {
+    alert("Not yet implemented");
+  });
+
+  jQuery(document).on("click", "#settings", function() {
+    alert("Not yet implemented");
   });
 
   jQuery(document).on("click", "#choose-cameras-opener", function(event) {
