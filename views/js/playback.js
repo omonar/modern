@@ -640,24 +640,26 @@ jQuery(document).ready(function() { /* begin document ready */
   });
 
   jQuery(document).on("click", ".monitor-stream-image", function() {
-    var width = ($(window).width()-50);
-    var height = ($(window).height()-50);
-    var monitorWidth = $(this).width();
-    var monitorHeight = $(this).height();
-    var dialogContent = "<div class=\"monitor-stream-dialog\"><img class=\"monitor-stream-fullscreen\" src=\"" + $(this).attr("src") + "\"></div>";
-    $(dialogContent).dialog({
-      modal: true,
-      height: height,
-      width: width,
-      resizable: false,
-      draggable: false
-    });
-    $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-    if(monitorWidth > monitorHeight) {
-      $(".monitor-stream-fullscreen").css("height", "100%");
-    }
-    else {
-      $(".monitor-stream-fullscreen").css("width", "100%");
+    if(liveview === true) {
+      var width = ($(window).width()-50);
+      var height = ($(window).height()-50);
+      var monitorWidth = $(this).width();
+      var monitorHeight = $(this).height();
+      var dialogContent = "<div class=\"monitor-stream-dialog\"><img class=\"monitor-stream-fullscreen\" src=\"" + $(this).attr("src") + "\"></div>";
+      $(dialogContent).dialog({
+        modal: true,
+        height: height,
+        width: width,
+        resizable: false,
+        draggable: false
+      });
+      $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+      if(monitorWidth > monitorHeight) {
+        $(".monitor-stream-fullscreen").css("height", "100%");
+      }
+      else {
+        $(".monitor-stream-fullscreen").css("width", "100%");
+      }
     }
   });
 
