@@ -427,23 +427,21 @@ function setupTimeline() {
   timeline.setVisibleChartRange(start, end, true);
 
   function onselect() {
-    if(liveview === true) {
-      clearCameraFrames();
-    }
+    if(liveview === false) {
+      var sel = timeline.getSelection();
 
-    var sel = timeline.getSelection();
+      timeline.setSelection(null);
 
-    timeline.setSelection(null);
-
-    if (sel.length) {
-      if(sel[0].row != undefined) {
-        var itemobj = timeline.getItem(sel[0].row);
-        $("#play").html("<span class\"glyphicon glyphicon-pause\"></span>");
-        $("#play").attr("id", "pause");
-        timeline.options.showCurrentTime = true;
-        timeline.options.showCustomTime = false;
-        timeline.setCurrentTime(itemobj.start);
-        timeline.repaintCurrentTime();
+      if (sel.length) {
+        if(sel[0].row != undefined) {
+          var itemobj = timeline.getItem(sel[0].row);
+          $("#play").html("<span class\"glyphicon glyphicon-pause\"></span>");
+          $("#play").attr("id", "pause");
+          timeline.options.showCurrentTime = true;
+          timeline.options.showCustomTime = false;
+          timeline.setCurrentTime(itemobj.start);
+          timeline.repaintCurrentTime();
+        }
       }
     }
   }
@@ -507,12 +505,14 @@ function toggleMode() {
     $("#playback").tooltip();
     stopPlayback();
     // if there have been cameras selected
-    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
-      jQuery(".monitor-stream-image").each(function() {
-        $(this).attr("src", $(this).attr("data-livesrc").split('&rand')[0] + "&rand=" + new Date().getTime());
-        $(this).removeAttr("data-livesrc");
-      });
-    }
+    window.setTimeout(function() {
+      if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
+        jQuery(".monitor-stream-image").each(function() {
+          $(this).attr("src", $(this).attr("data-livesrc").split('&rand')[0] + "&rand=" + new Date().getTime());
+          $(this).removeAttr("data-livesrc");
+        });
+      }
+    }, 1000);
   }
 }
 
@@ -741,20 +741,16 @@ jQuery(document).ready(function() { /* begin document ready */
   });
 
   jQuery(document).on("click", "#timeline", function(event) {
-    if(event.target.className.length === 0) {
-
-      if(liveview === true) {
-        clearCameraFrames();
+    if(liveview === false) {
+      if(event.target.className.length === 0) {
+        shouldbeplaying = false;
+        playing = false;
+        var offset = $(this).offset();
+        timeline.recalcConversion();
+        jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
+        $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
+        $("#play").attr("id", "pause");
       }
-
-      //noty({text: 'Jumping to next event'});
-      shouldbeplaying = false;
-      playing = false;
-      var offset = $(this).offset();
-      timeline.recalcConversion();
-      jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
-      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-      $("#play").attr("id", "pause");
     }
   });
 
