@@ -260,14 +260,14 @@ letter-spacing: 2px;
   box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, 0.5);
 }
 
-.zm .show-hide-cameras {
+/*.zm .show-hide-cameras {
   width:100%;
   font-size:1.2rem;
 }
 
 .zm .show-hide-cameras a{
    margin:0 3rem;
-}
+}*/
 
 .monitor-streams {
   margin-bottom: 200px;
