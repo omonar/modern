@@ -640,6 +640,7 @@ jQuery(document).ready(function() { /* begin document ready */
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     //console.log("Spliced " + monitorId + " / " + cameras[monitorId-1].Name + " from chosencameras");
     jQuery(this).parent().parent().parent().remove();
+    jQuery(this).parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/images/onerror.png");
     jQuery(".monitor-stream-image").each(function() {
       if(liveview === true) { 
         jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
