@@ -210,7 +210,7 @@ function xhtmlHeaders( $file, $title )
 <style type="text/css">
 <?php
   foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
-    echo ".timeline-event.monitor" . $monitor['Id'] . " { background-color: " . $monitor['WebColour'] . "; }\n";
+    echo ".timeline-event.monitor" . $monitor['Id'] . " { background: " . $monitor['WebColour'] . "; }\n";
     echo "#monitor-stream-" . $monitor['Id'] . " .glyphicon-stop { color: " . $monitor['WebColour'] . "; }\n";
   }
 ?>
