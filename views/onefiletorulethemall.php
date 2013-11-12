@@ -90,8 +90,14 @@
 	}
 
 	if (isset($_REQUEST['timeline'])) {
+		$numRows = dbFetchOne("SELECT COUNT(Id) AS NUMROWS FROM Events")['NUMROWS'];
 		$cameras = "'" . implode("','", explode(",", $_REQUEST['cameras'])) . "'";
-		//echo json_encode(dbFetchAll("SELECT Events.Id, Events.MonitorId, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "'"));
-		echo json_encode(dbFetchAll("SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "'"));
+		if(is_numeric($numRows)) {
+			$query = "SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "' LIMIT 0, {$numRows}";
+			echo json_encode(dbFetchAll($query));
+		}
+		else {
+			echo "error";
+		}
 	}
 ?>
