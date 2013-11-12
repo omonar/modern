@@ -189,7 +189,7 @@ color: #567;
 
 /* temp styles - may need changing */
 
-.btn-group { left: 5px; left: 0.5rem; top: 5px; top: 0.5rem; position: fixed; z-index: 20; }
+/*.btn-group { left: 5px; left: 0.5rem; top: 5px; top: 0.5rem; position: fixed; z-index: 20; }*/
 
 .zm .ui-tabs .ui-tabs-panel {
   padding: 1em 0;
