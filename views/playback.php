@@ -64,7 +64,9 @@
             <li>
               <button id="choose-cameras-opener" class="btn btn-default" rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
               <button id="preset-selection-opener" class="btn btn-default" rel="tooltip" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
-              <button id="settings" class="btn btn-default playback-button" rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></button>
+              <?php if(canEdit('System')===true) { ?>
+                <button id="settings" class="btn btn-default playback-button" rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></button>
+              <?php } ?>
               <a href="?view=logout" class="btn btn-default playback-button" rel="tooltip" title="Logout"><span class="glyphicon glyphicon-log-out"></span></a>
             </li>
             <li>
