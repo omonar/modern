@@ -434,6 +434,9 @@ body.zm .timeline-event {
     float: right;
 }
 
+#timeline .timeline-frame {
+    border-radius: 0;
+}
 /* shouldn't be needed */
 
 #ui-datepicker-div, .dialog-modal { display: none; }
