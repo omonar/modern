@@ -168,7 +168,6 @@ function xhtmlHeaders( $file, $title )
 <?php
  if ($title == "Admin") {
 ?>
-  <script type="text/javascript" src="skins/modern/js/admin.js"></script>
   <script type="text/javascript" src="skins/modern/js/jquery.colorbox.js"></script>
 <?php
  }
