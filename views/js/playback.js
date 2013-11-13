@@ -24,7 +24,7 @@ var chosencameras = new Array();
 var timelinedata = [];
 var playing = false;
 var timers = new Array;
-var ajaxRequests = new Array;
+var ajaxRequests = new Array();
 var currentlyplaying = [];
 var timeline;
 var data;
@@ -37,6 +37,7 @@ var paused = false;
 var breakplayback = false;
 var times = "";
 var gaplessPlayback = true;
+var eventsToExport = [];
 var options = {
   'width':  '100%',
   'height': '170px',
@@ -114,7 +115,8 @@ function addMonitor(monitorId, showall) {
     noty({text: 'Adding camera', type: 'info'});
   }
   if(jQuery.inArray(monitorId, chosencameras) === -1) {
-    var ajaxRequestId = ajaxRequests[ajaxRequests.length];
+    var ajaxRequestId = ajaxRequests.length;
+    //console.log("adding request in addMonitor " + ajaxRequestId);
     ajaxRequests[ajaxRequestId] = jQuery.ajax({
       type: "POST",
       url: 'index.php?view=framefetcher',
@@ -141,11 +143,12 @@ function addMonitor(monitorId, showall) {
         if((showall === true)&&(monitorId==cameras[cameras.length-1].Id)&&(liveview===false)) {
           requeryTimeline();
         }
+        
         ajaxRequests.splice(ajaxRequestId, 1);
       }
     });
   }
-  console.log("Added monitorId = " + monitorId);
+  //console.log("Added monitorId = " + monitorId);
 }
 
 function eventInstance(monitorId, eventId, currentFrame) {
@@ -273,12 +276,13 @@ function clearTimer(eventId, monitorId) {
 }
 
 function requeryTimeline() {
-  console.log("Requerying...");
+  //console.log("Requerying...");
   if(chosencameras.length > 0) {
     jQuery("#timeline").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
-    ajaxRequestId = ajaxRequests.length;
+    var ajaxRequestId = ajaxRequests.length;
+    //console.log("adding request in requeryTimeline " + ajaxRequestId);
     ajaxRequests[ajaxRequestId] = jQuery.ajax({
       type: "POST",
       url: 'index.php?view=onefiletorulethemall',
@@ -292,10 +296,10 @@ function requeryTimeline() {
         timeline.applyRange(start, end);
         timeline.options.showCurrentTime = true;
         timeline.redraw();
+        ajaxRequests.splice(ajaxRequestId, 1);
         getFrames();
         jQuery("#timeline").css("background-color","");
         noty({text: 'Timeline refreshed', type: 'success'});
-        ajaxRequests.splice(ajaxRequestId, 1);
       }
     });
   }
@@ -383,9 +387,10 @@ function getFrames() {
     if(i!==0) {
       times += ",";
     }
-      times += moment(v.StartTime).format("YYYY-MM-DD HH:mm:ss");
+    times += moment(v.StartTime).format("YYYY-MM-DD HH:mm:ss");
   });
   var ajaxRequestId = ajaxRequests.length;
+  //console.log("adding request in getFrames " + ajaxRequestId);
   ajaxRequests[ajaxRequestId] = jQuery.ajax({
     type: "POST",
     url: 'index.php?view=onefiletorulethemall',
@@ -393,6 +398,38 @@ function getFrames() {
     success: function(data) {
       frames = jQuery.parseJSON(data);
       ajaxRequests.splice(ajaxRequestId, 1);
+    }
+  });
+}
+
+function exportEvents() {
+  var ajaxRequestId = ajaxRequests.length;
+  //console.log("adding request in getFrames " + ajaxRequestId);
+  ajaxRequests[ajaxRequestId] = jQuery.ajax({
+    type: "POST",
+    url: 'index.php?view=export',
+    data: {events: eventsToExport},
+    success: function(data) {
+      console.log(data);
+      //window.open(data, "_blank");
+    }
+  });
+}
+
+function addEventToExport(monitorId, eventId, endEventId) {
+  if(arguments.length === 2) {
+    endEventId = false;
+  }
+  //console.log("adding request " + ajaxRequestId);
+  jQuery.ajax({
+    type: "POST",
+    url: 'index.php?view=onefiletorulethemall',
+    data: {eventPath: true, eventId: eventId},
+    success: function(data) {
+      eventsToExport.push({monitorId: monitorId, eventId: eventId, eventPath: data});
+      if(endEventId === true) {
+        exportEvents();
+      }
     }
   });
 }
@@ -521,16 +558,21 @@ function toggleMode() {
   }
 }
 
+function getEventIds(start, end) {
+  var eventIds = new Array();
+  jQuery.each(activity, function(i, v) {
+    var tempDate = Date.createFromMysql(v.StartTime);
+    if ((tempDate >= start)&&(tempDate <= end)) {
+      if(!(v.MonitorId in eventIds)) {
+        eventIds[v.MonitorId] = new Array();
+      }
+      eventIds[v.MonitorId].push(v.Id);
+    }
+  });
+  return eventIds;
+}
+
 jQuery(document).ready(function() { /* begin document ready */
-  //$("#playback").tooltip();
-  //$("#settings").tooltip();
-  //$("#play").tooltip();
-  //$("#export").tooltip();
-  //$("#choose-cameras-opener").tooltip();
-  //$("#preset-selection-opener").tooltip();
-  //$(".controls-timeline-playback-rangestart").tooltip();
-  //$(".controls-timeline-playback-rangeend").tooltip();
-  //$(".playback-date").tooltip();
   $("[rel='tooltip']").tooltip();
 
   setupTimeline();
@@ -615,7 +657,8 @@ jQuery(document).ready(function() { /* begin document ready */
   jQuery(document).on("change", 'input[name="defaultpreset"]:radio', function() {
     noty({text: "Changing default preset...", type: 'info'});
     var newDefaultPresetName = jQuery(this).parent().find(".preset-list-link").text();
-    var ajaxRequestId = ajaxRequests[ajaxRequests.length];
+    var ajaxRequestId = ajaxRequests.length;
+    //console.log("adding request " + ajaxRequestId);
     ajaxRequests[ajaxRequestId] = jQuery.ajax({
       type: "POST",
       url: 'index.php?view=onefiletorulethemall',
@@ -629,6 +672,7 @@ jQuery(document).ready(function() { /* begin document ready */
           noty({text: 'Failed to save default preset', type: 'error'});
           console.log(data);
         }
+        
         ajaxRequests.splice(ajaxRequestId, 1);
       }
     });
@@ -739,7 +783,24 @@ jQuery(document).ready(function() { /* begin document ready */
   });
 
   jQuery(document).on("click", "#export", function() {
-    alert("Not yet implemented");
+    if(liveview === false) {
+      var chartRange = timeline.getVisibleChartRange();
+      var eventIds = getEventIds(chartRange.start, chartRange.end);
+      jQuery.each(eventIds, function(i, v) {
+        // skip iteration 0 as it's not possible that weh ave a camera with that id
+        if(i == 0) {
+          return true;
+        }
+        jQuery.each(v, function(key, value) {
+          if(v[v.length-1] === value) {
+            addEventToExport(i, value, true);
+          }
+          else {
+            addEventToExport(i, value);
+          }
+        });
+      });
+    }
   });
 
   jQuery(document).on("click", "#settings", function() {

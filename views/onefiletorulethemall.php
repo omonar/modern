@@ -89,6 +89,24 @@
     	echo json_encode($frames);
 	}
 
+	if(isset($_REQUEST['eventPath'])) {
+		if(!is_numeric($_REQUEST['eventId'])) {
+			die("ERROR: Invalid eventId " . print_r($_REQUEST['eventId']));
+		}
+		$query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE Id=" . $_REQUEST['eventId'];
+
+		$results = dbFetchAll($query);
+    	$scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
+		foreach ($results as $result) {
+			$event['Id']=$result['Id'];
+	        $event['StartTime']=$result['StartTime'];
+	        $event['MonitorId']=$result['MonitorId'];
+			$imageData = getImageSrc($event, $counter, $scale, (isset($_REQUEST['show']) && $_REQUEST['show']=="capt"));
+	        $eventPath = $imageData['eventPath'];
+	        echo "/zm/" . viewImagePath($eventPath);
+		}
+	}
+
 	if (isset($_REQUEST['timeline'])) {
 		$numRows = dbFetchOne("SELECT COUNT(Id) AS NUMROWS FROM Events");
 		$numRows = $numRows['NUMROWS'];
