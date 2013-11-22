@@ -1,0 +1,52 @@
+body {
+padding-top: 50px;
+}
+.starter-template {
+padding: 40px 15px;
+text-align: center;
+}
+
+.container {
+	margin-top: 20px;
+}
+
+.zm .colour .dropdown-toggle {
+	color: #FFF;
+}
+
+.zm .colour.open a.dropdown-toggle {
+	opacity: 0.8;
+}
+
+.grey {
+	background-color: #444;
+}
+
+.yellow {
+	background-color: #ED9C28;
+}
+
+.green {
+	background-color: #47A447;
+}
+
+.blue {
+	background-color: #3276B1;
+}
+
+.lightblue {
+	background-color: #39B3D7;
+}
+
+.red {
+	background-color: #D2322D;
+}
+
+.purple {
+	background-color: #892E65;
+}
+
+.dropdown.colour.blue .dropdown-toggle span {
+	border-top-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+}

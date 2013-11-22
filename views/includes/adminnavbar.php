@@ -1,0 +1,74 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+      <li><a href="?view=playback"><i class="glyphicon glyphicon-chevron-left"></i> Playback</a></li>
+
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cameras <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="?view=monitor" class="init-colorbox"><span class="glyphicon glyphicon-plus-sign"></span> Add camera</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Edit Existing</li>
+          <?php
+            foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
+              echo "<li><a href=\"?view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox edit-monitor\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
+            }
+          ?>
+        </ul>
+      </li>
+
+      <li><a href="?view=events"><span class="glyphicon glyphicon-picture"></span> Events</a></li>
+
+      <li><a href="#" id="userlist"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+
+      <li><a href="?view=options" class="init-colorbox"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+
+      <li class="dropdown colour yellow">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tasks"></a>
+        <ul class="dropdown-menu">
+          <?php
+            /*$skinVersion = file_get_contents('skins/modern/VERSION');
+            $latestVersion = file_get_contents('http://raw.github.com/kjvarley/modern/master/VERSION');
+
+            if($skinVersion != $latestVersion) {
+              echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">{$latestVersion}</span></a></li>";
+            }
+            else {
+              echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>";
+            }*/
+            echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Update Checking Disabled</a></li>";
+          ?>
+          <!--<li><a href="#"><span class="glyphicon glyphicon-wrench"></span> ZoneMinder Update Available <span class="badge">1.27</span></a></li>-->
+        </ul>
+      </li>
+
+      <!--<li class="dropdown colour green">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></a>
+        <ul class="dropdown-menu">
+          <li><a href="#"><span class="glyphicon glyphicon-camera"></span> Cameras added <span class="badge">2</span></a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-film"></span> Events recorded <span class="badge">1234</span></a></li>
+        </ul>
+      </li>-->
+
+      <li class="dropdown colour blue">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a id="changepassword-opener" href="#"><span class="glyphicon glyphicon-edit"></span> Change Password</a></li>
+          <li><a href="?view=logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+  </div>

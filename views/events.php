@@ -1,113 +1,96 @@
 <?php
-
-xhtmlHeaders(__FILE__, $SLANG['Events'] );
-
+  xhtmlHeaders( __FILE__, "Events" );
 ?>
-<body>
-<!--<div id="widget_actions" style="position:absolute;top:61px;right:14px;z-index:100">
-	<ul>
-		<li><button id="btn_graphs" style="height:25px;">Graphs</button></li>
-		<li><button id="btn_advanced" style="height:25px;">Advanced</button></li>
-	</ul>
-</div>-->
+<body class="zm"> <!-- begin body -->
 
-<input type="hidden" value="<?=$tab?>" id="inptTab"/>
-   <?php require("header.php"); ?>
-<div id="content">
-	<div id="yui-b">
-		<div id="tabs_events">
-			<ul>
-				<!-- tabs go here -->
-				<li style="float:right;"><button id="btn_advanced" style="height:22px;">Advanced</button></li>
-				<li style="float:right;"><button id="btn_graphs" style="height:22px;">Graphs</button></li>
-			</ul>
-			<div ></div>
-		</div> <!-- tabs ends -->
-	</div>
-	
-<div id="sidebar">
-	<div id="sidebarHistory">
-		<h2>Events</h2>
-		<fieldset><legend>Monitors</legend>
-			<ul id="monitors_search"></ul>
-		</fieldset>
- 
-		<fieldset><legend>Date</legend>
-			<ul id="filterSpecificDate" class="filter">
-				<li><label id="lblFrom" for="inptDateFrom">From:</label> <input type="text" id="inptDateFrom" value="<?php echo date('m/d/Y'); ?>" /></li>
-				<li><label id="lblTo" for="inptDateTo">To:</label> <input type="text" id="inptDateTo" value="<?php echo date('m/d/Y'); ?>" /></li>
-			</ul>
-		</fieldset>
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation"> <!-- begin nav -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="?view=admin"><span class="glyphicon glyphicon-chevron-left"></span> Admin</a></li>
+      </ul>
+    </div>
+  </div> <!-- end nav -->
 
-		<fieldset><legend>Time</legend>
-			<ul id="filterSpecificTime" class="filter">
-				<li><label id="lblTimeFrom" for="inptTimeFrom">From:</label> <input type="text" id="inptTimeFrom" value="00:00"/></li>
-				<li><label id="lblTimeTo" for="inptTimeTo">To:</label> <input type="text" id="inptTimeTo" value="23:59" /></li>
-			</ul>
-		</fieldset>
+  <div class="container"> <!-- begin container -->
+    <div class="panel panel-primary events-filters"> <!-- begin filter panel -->
+      <div class="panel-heading"> <!-- begin filter panel heading -->
+        <h3 class="panel-title">Events Filter</h3>
+      </div> <!-- end filter panel heading -->
+      <div class="panel-body"> <!-- begin filter panel body -->
 
-		<fieldset><legend>Event</legend>
-			<ul class="filter">
-				<li><label id="lblEventID" for="inptEventID">Event ID:</label> <input type="text" id="inptEventID" /></li>
-			</ul>
-		</fieldset>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="well well-sm checkboxes">
+              <p>Cameras</p>
+              <?php
+                foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
+                  echo "<div class=\"checkbox\"><label><input type=\"checkbox\" value=\"" . $camera['Id'] . "\" class=\"monitor-checkbox\" checked>" . $camera['Name'] . "</label></div>";
+                }
+              ?>
+            </div>
+          </div>
 
-		<div id="filterSubmit">
-			<div><input value="Submit" type="submit" id="btnSubmit"></input></div>
-			<br />
-			<br />
-			<hr />
-			<div><input type="checkbox" id="btnSelectall" /> &nbsp;Select All</div>
-			<br />
-			<div><input type="button" id="btnExportall" value="Export Selected" /></div>
-			<br />
-			<div><input type="submit" id="btnDelete" value="Delete" /></div>
-			<br />
-			<div>Sort By
-				<select id="selSortBy">
-					<option></option>
-					<option value="date">Date Asc</option>
-					<option value="date_desc">Date Desc</option>
-					<option value="number">Frames Asc</option>
-					<option value="number_desc">Frames Desc</option>
-					<option value="duration">Duration Asc</option>
-					<option value="duration_desc">Duration Desc</option>
-					<option value="score">Score Asc</option>
-					<option value="score_desc">Score Desc</option>
-				</select>
-			</div>
-		</div>
+          <div class="col-md-2">
+            <div class="well well-sm">
+              <p>Timeframe</p>
+              
+              <div class="radio">
+                <label>
+                  <input type="radio" name="timeframe" value="today">Today
+                </label>
+              </div>
 
-   </div> <!-- sidebarHistory ends -->
- </div> <!-- Sidebar ends -->
-</div> <!-- Content ends -->
+              <div class="radio">
+                <label>
+                  <input type="radio" name="timeframe" value="week">This Week
+                </label>
+              </div>
 
+              <div class="radio">
+                <label>
+                  <input type="radio" name="timeframe" value="month">This Month
+                </label>
+              </div>
 
-<div id='spinner'></div>
-<div id='screen'></div>
-<style>
-#spinner{
-	width: 75px;
-	height: 40px;
-	background: #cccccc;
-	border: #777777 solid 5px;
-	text-align: center;
-	position: absolute;
-	margin-left: -75px;
-	margin-top: -75px;
-	left: 50%;
-	top: 50%;
-	z-index: 120;
-	display: none;
-}
+              <div class="radio">
+                <label>
+                  <input type="radio" id="custom-timeframe" name="timeframe" value="custom">Custom
+                </label>
+              </div>
 
-#screen {
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 110;
-	background: #000;
-}
-</style>
+            </div>
+          </div>
 
-   <?php require("footer.php"); ?>
+          <div id="custom-range-filters" style="display: none;" class="col-md-3">
+            <div class="well well-sm">
+              <label for="startdatetime">Start Date & Time</label>
+              <input id="startdatetime" name="startdatetime" type="text" class="form-control hasDatePicker">
+
+              <label for="enddatetime">End Date & Time</label>
+              <input id="enddatetime" name="enddatetime" type="text" class="form-control hasDatePicker">
+
+            </div>
+          </div>
+        </div>
+
+        <button id="show-events" style="float:right;" class="btn btn-primary">Show Events</button>
+
+      </div> <!-- end filter panel body -->
+    </div> <!-- end filter panel -->
+
+    <div id="events" class="events">
+      
+    </div>
+
+  </div> <!-- end container -->
+
+</body>
+</html>
