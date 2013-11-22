@@ -1,42 +1,29 @@
-#controls {
-    height: 16px;
-    width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    position: relative;
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
-#controls a {
-    width: 32%;
+.container {
+    margin-top: 70px;
 }
 
-#controls #refreshLink {
-    position: absolute;
-    left: 0%;
-    text-align: left;
+/* events-filters begin */
+.events-filters .row {
+	padding: 0 15px;
 }
 
-#controls #filterLink {
-    position: absolute;
-    left: 34%;
-    text-align: center;
+.events-filters .checkbox:first-child {
+	margin-top: 0;
 }
 
-#controls #timelineLink {
-    position: absolute;
-    left: 68%;
-    text-align: right;
+.events-filters .checkbox:last-child {
+	margin-bottom: 0;
 }
 
-#contentTable.major .colTime {
-    white-space: nowrap;
+.events-filters p {
+	font-weight: bold;
 }
-
-#contentTable.major .colId, #contentTable.major .colDuration, #contentTable.major .colFrames, #contentTable.major .colAlarmFrames, #contentTable.major .colTotScore, #contentTable.major .colMaxScore, #contentTable.major .colAvgScore {
-    text-align: center;
-}
-
-#contentTable.major td.colDuration {
-    text-align: right;
-    padding-right: 8px;
-}
+/* events-filters end */

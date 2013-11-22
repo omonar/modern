@@ -53,6 +53,9 @@ html body {
   /*font-size: 62.5%;*/
   background-color: #333;
   color: #EEE;
+}
+
+.zm {
   letter-spacing: 0.1rem;
 }
 
@@ -79,6 +82,10 @@ body .view-wrapper {
 .controls {
   background-color: #CCC;
   bottom: 0;
+}
+
+.controls-list, #monitor-streams {
+  text-align: center;
 }
 
 ul.controls-list li {
