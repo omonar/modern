@@ -3,21 +3,7 @@
 ?>
 <body class="zm"> <!-- begin body -->
 
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation"> <!-- begin nav -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="?view=admin"><span class="glyphicon glyphicon-chevron-left"></span> Admin</a></li>
-      </ul>
-    </div>
-  </div> <!-- end nav -->
+  <?php include('includes/adminnavbar.php'); ?>
 
   <div class="container"> <!-- begin container -->
     <div class="panel panel-primary events-filters"> <!-- begin filter panel -->
@@ -41,6 +27,12 @@
           <div class="col-md-2">
             <div class="well well-sm">
               <p>Timeframe</p>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" name="timeframe" checked>All
+                </label>
+              </div>
               
               <div class="radio">
                 <label>

@@ -50,3 +50,12 @@ text-align: center;
 	border-top-color: #FFFFFF;
 	border-bottom-color: #FFFFFF;
 }
+
+.zm .navbar .colour>a {
+	color: white;
+}
+
+.well { margin: 1.5rem 0; }
+
+/* temp */
+.navbar-default .navbar-collapse { padding-left: 0; }

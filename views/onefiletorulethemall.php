@@ -31,6 +31,10 @@
 	}
 	/* end functions */
 
+	if(isset($_REQUEST['getVersionFromGithub'])) {
+		die(file_get_contents("http://raw.github.com/kjvarley/modern/master/VERSION"));
+	}
+
 	if(isset($_REQUEST['getUserDefaultPresetId'])) {
 		if(isset($_SESSION['user']['Username'])) {
 			echo getUserDefaultPresetId($_SESSION['user']['Id']);

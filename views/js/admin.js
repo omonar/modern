@@ -90,6 +90,63 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
+  $(document).on("click", "#zm-change-state-opener", function(event) {
+    event.preventDefault();
+    jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=state',
+      success: function(data) {
+        $(".container").html(data); 
+      }
+    });
+  });
+
+  $(document).on("click", "#zm-change-state", function() {
+    noty({text: "Starting state change...", type: "info"});
+    var newstate = $("#state").find(":checked").val();
+    jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=state',
+      data: {changestate: true, newstate: newstate},
+      success: function(data) {
+        jQuery.ajax({
+          type: "POST",
+          url: 'index.php?view=getstatus',
+          success: function(data) {
+            switch(data) {
+              case "1":
+                if(newstate == "restart" || newstate == "start") {
+                  var stateChangeSuccess = true;
+                }
+                else {
+                  var stateChangeSuccess = "info";
+                }
+                break;
+              case "0":
+                if(newstate == "stop") {
+                  var stateChangeSuccess = true;
+                }
+                else {
+                  var stateChangeSuccess = false;
+                }
+            }
+            if(stateChangeSuccess === true) {
+              clearInterval(checkStatus);
+              noty({text: 'State changed successfully!', type: 'success'});
+              window.setTimeout(function() { window.location.reload(); }, 6000);
+            }
+            else {
+              noty({text: 'Failed to change state...', type: 'error'});
+            }
+          }
+        });
+      }
+    });
+    var checkStatus = setInterval(function() {
+      noty({text: "Processing state change...", type: "info"});
+    },5000);
+  });
+
   $(document).on("click", "#userlist", function(event) {
     event.preventDefault();
     jQuery.ajax({
@@ -147,6 +204,22 @@ $(document).ready(function() { /* begin document ready */
         noty({text: 'Cannot delete the only user account for this system', type: 'error'});
       }
     }
+  });
+
+  $(document).on("click", "#updates", function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: "index.php?view=onefiletorulethemall",
+      data: {getVersionFromGithub: true},
+      success: function(data) {
+        if(parseFloat(skinVersion) == parseFloat(data)) {
+          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>");
+        }
+        if(parseFloat(data) > parseFloat(skinVersion)) {
+          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
+        }
+      }
+    });
   });
 
 }); /* end document ready */

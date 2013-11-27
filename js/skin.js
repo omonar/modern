@@ -309,12 +309,12 @@ function confirmDelete( message )
     return( confirm( message?message:'Are you sure you wish to delete?' ) );
 }
 
-if ( refreshParent )
+if ( typeof(refreshParent)!="undefined" && refreshParent )
 {
     refreshParentWindow();
 }
 
-if ( focusWindow )
+if ( typeof(focusWindow)!="undefined" && focusWindow     )
 {
     windowToFront();
 }

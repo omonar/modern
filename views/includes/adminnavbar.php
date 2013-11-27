@@ -9,7 +9,9 @@
   </div>
   <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
-      <li><a href="?view=playback"><i class="glyphicon glyphicon-chevron-left"></i> Playback</a></li>
+      <li class="colour purple"><a href="?view=playback"><i class="glyphicon glyphicon-chevron-left"></i> Playback</a></li>
+
+      <li class="colour blue"><a href="?view=admin"><span class="glyphicon glyphicon-home"></span></a></li>
 
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cameras <b class="caret"></b></a>
@@ -35,31 +37,31 @@
     <ul class="nav navbar-nav navbar-right">
 
       <li class="dropdown colour yellow">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tasks"></a>
+        <a href="#" id="updates" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tasks"></a>
         <ul class="dropdown-menu">
-          <?php
-            /*$skinVersion = file_get_contents('skins/modern/VERSION');
-            $latestVersion = file_get_contents('http://raw.github.com/kjvarley/modern/master/VERSION');
-
-            if($skinVersion != $latestVersion) {
-              echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">{$latestVersion}</span></a></li>";
-            }
-            else {
-              echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>";
-            }*/
-            echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Update Checking Disabled</a></li>";
-          ?>
-          <!--<li><a href="#"><span class="glyphicon glyphicon-wrench"></span> ZoneMinder Update Available <span class="badge">1.27</span></a></li>-->
+          <li id="skinVersionMessage"><a href="#"><span class="glyphicon glyphicon-picture"></span> Checking for updates...</a></li>
         </ul>
       </li>
 
-      <!--<li class="dropdown colour green">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></a>
-        <ul class="dropdown-menu">
-          <li><a href="#"><span class="glyphicon glyphicon-camera"></span> Cameras added <span class="badge">2</span></a></li>
-          <li><a href="#"><span class="glyphicon glyphicon-film"></span> Events recorded <span class="badge">1234</span></a></li>
-        </ul>
-      </li>-->
+      <?php
+        $running = daemonCheck();
+        $status = $running?$SLANG['Running']:$SLANG['Stopped'];
+
+        if($status === "Running") {
+          $colour = "green";
+          $icon = "glyphicon-ok-sign";
+        }
+        elseif($status === "Stopped") {
+          $colour = "red";
+          $icon = "glyphicon-remove-sign";
+        }
+        else {
+          $colour = "yellow";
+          $icon = "glyphicon-exclamation-sign";
+        }
+      ?>
+
+      <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="glyphicon <?=$icon?>"></span> ZoneMinder is <?=lcfirst($status)?></a></li>
 
       <li class="dropdown colour blue">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
