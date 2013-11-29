@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+  <head>
+    <meta charset="UTF-8">
+    <title>Event Player</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <img src="assets/playback-placeholder.png">
+    </div>
+    <script type="text/javascript">
+      var frames = [];
+      ###files###
+
+      function displayFrame(src) {
+        jQuery("img").attr('src', src);
+      }
+
+      function playbackFrames(imgarray) {
+        var x = 0;
+        setInterval(function() {
+          if(x < frames.length) {
+            displayFrame(imgarray[x]);
+          }
+          else {
+            displayFrame('assets/playback-placeholder.png');
+          }
+          x++;
+        }, 200);
+      }
+      $(document).ready(function() {
+        playbackFrames(frames);
+      });
+    </script>
+  </body>
+</html>

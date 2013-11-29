@@ -133,6 +133,7 @@ $(document).ready(function() {
 
   $(document).on("click", ".event-checkbox", function() {
     $("#delete-selected-events").removeClass("disabled");
+    $("#export-selected-events").removeClass("disabled");
   });
 
   $(document).on("click", "#delete-selected-events", function() {
@@ -162,6 +163,18 @@ $(document).ready(function() {
     }
   });
 
+  $(document).on("click", "#export-selected-events", function() {
+    var eventIDs = [];
+    $(".event-checkbox:checked").each(function() {
+      eventIDs.push($(this).attr("data-eid"));
+    });
+    var eventID = $(this).attr("data-eid");
+    if(confirm("Are you sure you want to export events " + eventIDs.join(", ") + "?") === true) {
+      window.open('index.php?view=exportevents&exportevents=multiple&eids=' + JSON.stringify(eventIDs), '_blank');
+      noty({text: 'Launched download of events', type: 'success'});
+    }
+  });
+
   $(document).on("click", ".delete-event", function(event) {
     event.preventDefault();
     var eventID = $(this).attr("data-eid");
@@ -172,15 +185,27 @@ $(document).ready(function() {
         cache: false,
         data: {deleteevents: "single", eid: eventID},
         success: function(data) {
-          if(data === "success") {
-            $("#delete-event-" + eventID).parent().parent().remove();
-            noty({text: "Successfully deleted event " + eventID, type: 'success'});
+          if(data != "error") {
+            $(eventIDs).each(function(index, value) {
+              $("#export-event-" + value).parent().parent().remove();
+            });
+            noty({text: "Successfully exported event " + eventID, type: 'success'});
+            //window.location(data)
           }
           else {
             noty({text: data, type: 'error'});
           }
         }
       });
+    }
+  });
+
+  $(document).on("click", ".export-event", function(event) {
+    event.preventDefault();
+    var eventID = $(this).attr("data-eid");
+    if(confirm("Are you sure you want to export event " + eventID + "?") === true) {
+      window.open('index.php?view=exportevents&exportevents=single&eid=' + eventID, '_blank');
+      noty({text: 'Launched download of events', type: 'success'});
     }
   });
 
