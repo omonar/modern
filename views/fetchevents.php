@@ -44,7 +44,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
-        $query .= "DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH) LIMIT $limit";
+        $query .= " DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH) LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH)";
         break;
       case "custom":
@@ -52,7 +52,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
-        $query .= "StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]' LIMIT $limit";
+        $query .= " StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]' LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]'";
         break;
     }
@@ -82,12 +82,14 @@
           }
         }
         echo "<td><a href=\"?view=playevent&eid=$event[Id]\" class=\"init-dynamic-colorbox\"><span class=\"glyphicon glyphicon-film\"></span></a></td>";
+        echo "<td><a href=\"#\" id=\"export-event-$event[Id]\" class=\"export-event\" data-eid=\"$event[Id]\"><span class=\"glyphicon glyphicon-export\"></span></a></td>";
         echo "<td><a href=\"#\" id=\"delete-event-$event[Id]\" class=\"delete-event\" data-eid=\"$event[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
         echo "<td><a href=\"#\"><input type=\"checkbox\" data-eid=\"$event[Id]\" class=\"event-checkbox\"></td>";
         echo "</tr>";
       }
       echo "</table>";
-      echo "<button id=\"delete-selected-events\" style=\"float:right\" class=\"btn btn-primary disabled\">Delete Selected</button>";
+      echo "<button id=\"export-selected-events\" style=\"float:right; margin-left: 1rem;\" class=\"btn btn-success disabled\"><span class=\"glyphicon glyphicon-export\"></span> Export Selected</button>";
+      echo "<button id=\"delete-selected-events\" style=\"float:right\" class=\"btn btn-danger disabled\"><span class=\"glyphicon glyphicon-trash\"></span> Delete Selected</button>";
       $response = dbFetchOne($paginationQuery);
       if(!$response) {
         die("ERROR: Failed to create pagination!");
@@ -114,3 +116,5 @@
     }
   }
 ?>
+
+<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
