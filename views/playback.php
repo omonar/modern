@@ -33,18 +33,16 @@
 ?>
   <body class="zm"> <!-- begin body -->
 
-    <?php require("header.php");  $monitors2 = $monitors?>
-
     <div class="view-wrapper">
 
-        <div id="monitor-streams" class="monitor-streams grid"></div>
+        <div id="monitor-streams" class="monitor-streams row"></div>
 
         <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
           <ul class="controls-list">
             <li class="controls-timeline-playback-buttons">
-              <button class="btn btn-default  playback-button" id="playback" rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
-              <button class="btn btn-default  playback-button" id="play" rel="tooltip" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="btn btn-default  playback-button" id="export" rel="tooltip" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
+              <button class="btn btn-default playback-button" id="playback" rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
+              <button class="btn btn-default playback-button" id="play" rel="tooltip" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
+              <button class="btn btn-default playback-button" id="export" rel="tooltip" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
             </li>
             <li class="controls-timeline-playback-rangestart" rel="tooltip" title="Choose a new start date to examine">
               <label for="rangestart">Start</label>
@@ -124,5 +122,5 @@
         </div> <!-- end choose-cameras -->
 
       </div> <!-- end view-wrapper -->
-   
-<?php require_once("footer.php"); ?>
+    </body>
+  </html>
