@@ -164,12 +164,11 @@ $(document).ready(function() {
   });
 
   $(document).on("click", "#export-selected-events", function() {
-    var eventIDs = [];
+    var eventIDs = {};
     $(".event-checkbox:checked").each(function() {
-      eventIDs.push($(this).attr("data-eid"));
+      eventIDs[$(this).attr("data-eid")] = $(this).attr("data-monitorid");
     });
-    var eventID = $(this).attr("data-eid");
-    if(confirm("Are you sure you want to export events " + eventIDs.join(", ") + "?") === true) {
+    if(confirm("Are you sure you want to export the selected events?") === true) {
       window.open('index.php?view=exportevents&exportevents=multiple&eids=' + JSON.stringify(eventIDs), '_blank');
       noty({text: 'Launched download of events', type: 'success'});
     }
@@ -204,7 +203,7 @@ $(document).ready(function() {
     event.preventDefault();
     var eventID = $(this).attr("data-eid");
     if(confirm("Are you sure you want to export event " + eventID + "?") === true) {
-      window.open('index.php?view=exportevents&exportevents=single&eid=' + eventID, '_blank');
+      window.open('index.php?view=exportevents&exportevents=single&eid=' + eventID);
       noty({text: 'Launched download of events', type: 'success'});
     }
   });
