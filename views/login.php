@@ -21,7 +21,6 @@
 xhtmlHeaders(__FILE__, $SLANG['Login'] );
 ?>
 <body class="zm">
-  <?php require_once("header.php"); ?>
   
   <div class="view-wrapper"> <!-- begin view-wrapper -->
 
@@ -39,5 +38,5 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
       </form>
     </div>
   </div> <!-- end view-wrapper -->
-
-  <?php require_once("footer.php"); ?>
+</body>
+</html>
