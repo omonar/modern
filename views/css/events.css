@@ -1,29 +1,19 @@
 html, body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	border: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-.container {
-    margin-top: 70px;
-}
+.container { margin-top: 70px; }
 
 /* events-filters begin */
-.events-filters .row {
-	padding: 0 15px;
-}
+.events-filters .row { padding: 0 15px; }
 
-.events-filters .checkbox:first-child {
-	margin-top: 0;
-}
+.events-filters .checkbox:first-child { margin-top: 0; }
 
-.events-filters .checkbox:last-child {
-	margin-bottom: 0;
-}
+.events-filters .checkbox:last-child { margin-bottom: 0; }
 
-.events-filters p {
-	font-weight: bold;
-}
+.events-filters p { font-weight: bold; }
 /* events-filters end */
