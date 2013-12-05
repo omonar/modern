@@ -46,7 +46,7 @@ var options = {
   'showCurrentTime': false,
   'style': 'box'
 };
-jQuery.noty.defaults = {
+$.noty.defaults = {
   layout: 'topRight',
   theme: 'defaultTheme',
   type: 'alert',
@@ -74,7 +74,7 @@ jQuery.noty.defaults = {
 };
 
 /* begin third party code */
-/* http://www.unseenrevolution.com/jquery-ajax-error-handling-function/ */
+/* http://www.unseenrevolution.com/$-ajax-error-handling-function/ */
 $(function() {
   $.ajaxSetup({
     error: function(jqXHR, exception) {
@@ -114,10 +114,10 @@ function addMonitor(monitorId, showall) {
   if(showall === false) {
     noty({text: 'Adding camera', type: 'info'});
   }
-  if(jQuery.inArray(monitorId, chosencameras) === -1) {
+  if($.inArray(monitorId, chosencameras) === -1) {
     var ajaxRequestId = ajaxRequests.length;
     //console.log("adding request in addMonitor " + ajaxRequestId);
-    ajaxRequests[ajaxRequestId] = jQuery.ajax({
+    ajaxRequests[ajaxRequestId] = $.ajax({
       type: "POST",
       url: 'index.php?view=framefetcher',
       data: {monitor: monitorId, width: cameras[monitorId-1].Width, height: cameras[monitorId-1].Height, scale: 100},
@@ -125,10 +125,10 @@ function addMonitor(monitorId, showall) {
         chosencameras.push(monitorId);
         //console.log("Pushed " + monitorId + " / " + cameras[monitorId-1].Name + " to chosencameras");
         if(liveview === true) {
-          jQuery('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div>').appendTo('#monitor-streams');
+          $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream col-md-4\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div></div>').appendTo('#monitor-streams');
         }
         else {
-          jQuery('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream unit one-of-three\"><div class=\"monitor-stream-info grid\"><p class=\"monitor-stream-info-name unit one-of-three\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events unit one-of-three\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right unit one-of-three\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div>').appendTo('#monitor-streams');
+          $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream col-md-4\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
         }
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
@@ -177,7 +177,7 @@ function stopPlayback() {
 }
 
 function clearCameraFrames() {
-  jQuery("#monitor-streams img").attr("src", '/zm/skins/modern/views/images/onerror.png');
+  $("#monitor-streams img").attr("src", '/zm/skins/modern/views/images/onerror.png');
 }
 
 function pausePlayback() {
@@ -217,7 +217,7 @@ Date.createFromMysql = function(mysql_string) {
 }
 /* end third party code */
 
-jQuery.fn.exists = function(){
+$.fn.exists = function(){
   if(this.length>0) {
     return true;
   }
@@ -233,27 +233,27 @@ function imgError(image) {
 }
 function setTime(element, refresh, formatting) {
   setInterval(function(){
-    jQuery(element).text(moment().format(formatting));
+    $(element).text(moment().format(formatting));
   },refresh);
 }
 
 function processTimelineData(rawdata) {
-  jQuery.each(activity, function(index) {
+  $.each(activity, function(index) {
     timelinedata.push({start: Date.createFromMysql(activity[index].StartTime), end: Date.createFromMysql(activity[index].EndTime), content: activity[index].Id, className: "monitor"+activity[index].MonitorId});
   });
 }
 
 function loadUserDefaultPreset() {
-  if(jQuery("#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
-    var presetMonitorIds = jQuery("#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
+  if($("#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
+    var presetMonitorIds = $("#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
     var presetMonitorIds = presetMonitorIds.split(",");
-    jQuery.each(presetMonitorIds, function(index, value) {
+    $.each(presetMonitorIds, function(index, value) {
       addMonitor(value, true);
     });
     noty({text: 'Added cameras', type: 'success'});
   }
   else {
-    jQuery(cameras).each(function(i, v) {
+    $(cameras).each(function(i, v) {
       addMonitor(v.Id, true);
     });
     noty({text: 'Added cameras', type: 'success'});
@@ -261,13 +261,13 @@ function loadUserDefaultPreset() {
 }
 
 /*function preloadFrames(imgarray) {
-  jQuery.each(imgarray, function(i, source) {
-    jQuery.get(source);
+  $.each(imgarray, function(i, source) {
+    $.get(source);
   });
 }*/
 
 function displayFrame(monitorId, img) {
-    jQuery("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
+    $("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }
 
 function clearTimer(eventId, monitorId) {
@@ -278,12 +278,12 @@ function clearTimer(eventId, monitorId) {
 function requeryTimeline() {
   //console.log("Requerying...");
   if(chosencameras.length > 0) {
-    jQuery("#timeline").css("background-color","red");
+    $("#timeline").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
     var ajaxRequestId = ajaxRequests.length;
     //console.log("adding request in requeryTimeline " + ajaxRequestId);
-    ajaxRequests[ajaxRequestId] = jQuery.ajax({
+    ajaxRequests[ajaxRequestId] = $.ajax({
       type: "POST",
       url: 'index.php?view=onefiletorulethemall',
       data: {timeline: 'ok', cameras: chosencameras.join(","), start: startformatted, end: endformatted},
@@ -298,7 +298,7 @@ function requeryTimeline() {
         timeline.redraw();
         ajaxRequests.splice(ajaxRequestId, 1);
         getFrames();
-        jQuery("#timeline").css("background-color","");
+        $("#timeline").css("background-color","");
         noty({text: 'Timeline refreshed', type: 'success'});
       }
     });
@@ -366,7 +366,7 @@ function playEvent(monitorId, eventId) {
   if(typeof(monitorId)!="number") {
     monitorId = parseInt(monitorId);
   }*/
-  if(jQuery.inArray(monitorId, chosencameras) === -1) {
+  if($.inArray(monitorId, chosencameras) === -1) {
     addMonitor(monitorId);
   }
   window["currentevents" + monitorId].push(eventId);
@@ -375,7 +375,7 @@ function playEvent(monitorId, eventId) {
   shouldbeplaying = true;
   var tempframes = new Array();
   if(frames[monitorId][eventId]) {
-    jQuery.each(frames[monitorId][eventId], function(i, v) {
+    $.each(frames[monitorId][eventId], function(i, v) {
       tempframes.push(v);
     });
   }
@@ -383,7 +383,7 @@ function playEvent(monitorId, eventId) {
 }
 
 function getFrames() {
-  jQuery.each(activity, function(i, v) {
+  $.each(activity, function(i, v) {
     if(i!==0) {
       times += ",";
     }
@@ -391,12 +391,12 @@ function getFrames() {
   });
   var ajaxRequestId = ajaxRequests.length;
   //console.log("adding request in getFrames " + ajaxRequestId);
-  ajaxRequests[ajaxRequestId] = jQuery.ajax({
+  ajaxRequests[ajaxRequestId] = $.ajax({
     type: "POST",
     url: 'index.php?view=onefiletorulethemall',
     data: {q: times},
     success: function(data) {
-      frames = jQuery.parseJSON(data);
+      frames = $.parseJSON(data);
       ajaxRequests.splice(ajaxRequestId, 1);
     }
   });
@@ -405,7 +405,7 @@ function getFrames() {
 function exportEvents() {
   var ajaxRequestId = ajaxRequests.length;
   //console.log("adding request in getFrames " + ajaxRequestId);
-  ajaxRequests[ajaxRequestId] = jQuery.ajax({
+  ajaxRequests[ajaxRequestId] = $.ajax({
     type: "POST",
     url: 'index.php?view=export',
     data: {events: eventsToExport},
@@ -421,7 +421,7 @@ function addEventToExport(monitorId, eventId, endEventId) {
     endEventId = false;
   }
   //console.log("adding request " + ajaxRequestId);
-  jQuery.ajax({
+  $.ajax({
     type: "POST",
     url: 'index.php?view=onefiletorulethemall',
     data: {eventPath: true, eventId: eventId},
@@ -437,7 +437,7 @@ function addEventToExport(monitorId, eventId, endEventId) {
 function jumpToNearestEvent(datetime, direction) {
   direction = (typeof direction === "undefined") ? "forward" : direction;
   var matchFound = false;
-  jQuery.each(activity, function(i, v) {
+  $.each(activity, function(i, v) {
     if(matchFound === false) {
       if (direction === "backward") {
         if(Date.createFromMysql(v.StartTime) <= datetime) {
@@ -495,7 +495,7 @@ function toggleShowAllButton(override) {
     override = false;
   }
   if(override === false) {
-    if(jQuery("button.show-all-cameras").exists()) {
+    if($("button.show-all-cameras").exists()) {
       if(chosencameras.length === cameras.length) {
         $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
       }
@@ -507,7 +507,7 @@ function toggleShowAllButton(override) {
     }
   }
   else {
-    if(jQuery("span.glyphicon.glyphicon-eye-close").exists()) {
+    if($("span.glyphicon.glyphicon-eye-close").exists()) {
       $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
     }
     else{
@@ -530,8 +530,8 @@ function toggleMode() {
       $("#choose-cameras").dialog("close");
     }
     // if there have been cameras selected
-    if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
-      jQuery(".monitor-stream-image").each(function() {
+    if($.trim($("#monitor-streams").html()).length) {
+      $(".monitor-stream-image").each(function() {
         $(this).attr("data-livesrc", $(this).attr("src"));
         $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
       });
@@ -548,8 +548,8 @@ function toggleMode() {
     stopPlayback();
     // if there have been cameras selected
     window.setTimeout(function() {
-      if(jQuery.trim(jQuery("#monitor-streams").html()).length) {
-        jQuery(".monitor-stream-image").each(function() {
+      if($.trim($("#monitor-streams").html()).length) {
+        $(".monitor-stream-image").each(function() {
           $(this).attr("src", $(this).attr("data-livesrc").split('&rand')[0] + "&rand=" + new Date().getTime());
           $(this).removeAttr("data-livesrc");
         });
@@ -560,7 +560,7 @@ function toggleMode() {
 
 function getEventIds(start, end) {
   var eventIds = new Array();
-  jQuery.each(activity, function(i, v) {
+  $.each(activity, function(i, v) {
     var tempDate = Date.createFromMysql(v.StartTime);
     if ((tempDate >= start)&&(tempDate <= end)) {
       if(!(v.MonitorId in eventIds)) {
@@ -572,7 +572,7 @@ function getEventIds(start, end) {
   return eventIds;
 }
 
-jQuery(document).ready(function() { /* begin document ready */
+$(document).ready(function() { /* begin document ready */
   $("[rel='tooltip']").tooltip();
 
   setupTimeline();
@@ -646,7 +646,7 @@ jQuery(document).ready(function() { /* begin document ready */
   $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
   $('#rangeend').val(moment(end).format('DD/MM/YYYY') + ' ' + moment().format('HH:mm'));
 
-  jQuery( '#timeline' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
+  $( '#timeline' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
     var delta = e.wheelDelta || -e.detail;
     this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
     e.preventDefault();
@@ -654,12 +654,12 @@ jQuery(document).ready(function() { /* begin document ready */
 
   loadUserDefaultPreset();
 
-  jQuery(document).on("change", 'input[name="defaultpreset"]:radio', function() {
+  $(document).on("change", 'input[name="defaultpreset"]:radio', function() {
     noty({text: "Changing default preset...", type: 'info'});
-    var newDefaultPresetName = jQuery(this).parent().find(".preset-list-link").text();
+    var newDefaultPresetName = $(this).parent().find(".preset-list-link").text();
     var ajaxRequestId = ajaxRequests.length;
     //console.log("adding request " + ajaxRequestId);
-    ajaxRequests[ajaxRequestId] = jQuery.ajax({
+    ajaxRequests[ajaxRequestId] = $.ajax({
       type: "POST",
       url: 'index.php?view=onefiletorulethemall',
       data: {updateUserDefaultPreset: true, defaultPresetId: $(this).attr("value")},
@@ -678,65 +678,82 @@ jQuery(document).ready(function() { /* begin document ready */
     });
   });
 
-  jQuery(document).on("click", ".monitor-stream-info-close", function(event) {
-    var monitorClass = jQuery(this).parent().parent().parent().attr("id");
+  $(document).on("click", ".monitor-stream-info-close", function(event) {
+    var monitorClass = $(this).parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     //console.log("Spliced " + monitorId + " / " + cameras[monitorId-1].Name + " from chosencameras");
-    jQuery(this).parent().parent().parent().remove();
-    jQuery(this).parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/images/onerror.png");
-    jQuery(".monitor-stream-image").each(function() {
-      if(liveview === true) { 
-        jQuery(this).attr('src', jQuery(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
-      }
-    });
+    $(this).parent().parent().parent().remove();
+    $(this).parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/images/onerror.png");
+    if(liveview === true) {
+      $(".monitor-stream-image").each(function() {
+        $(this).attr('src', $(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
+      });
+    }
     if(liveview === false) {
       requeryTimeline();
     }
   });
 
-  jQuery(document).on("click", ".monitor-stream-image", function() {
+  $(document).on("click", ".monitor-stream-image", function() {
     if(liveview === true) {
-      var width = ($(window).width()-50);
-      var height = ($(window).height()-50);
-      var monitorWidth = $(this).width();
-      var monitorHeight = $(this).height();
-      var dialogContent = "<div class=\"monitor-stream-dialog\"><img class=\"monitor-stream-fullscreen\" src=\"" + $(this).attr("src") + "\"></div>";
-      $(dialogContent).dialog({
-        modal: true,
-        height: height,
-        width: width,
-        resizable: false,
-        draggable: false
-      });
-      $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-      if(monitorWidth > monitorHeight) {
-        $(".monitor-stream-fullscreen").css("height", "100%");
+      var monitorID = $(this).attr("id").match(/\d+/);
+      var fullscreenSrc = $(this).attr("src");
+      if(typeof(window["monitorFullscreen" + monitorID]) === "undefined" || window["monitorFullscreen" + monitorID] === false) {
+        var width = ($(window).width()-50);
+        var height = ($(window).height()-50);
+        var monitorWidth = $(this).width();
+        var monitorHeight = $(this).height();
+        var dialogContent = "<div class=\"monitor-stream-dialog\"><img id=\"monitor-stream-fullscreen-" + monitorID + "\" class=\"monitor-stream-fullscreen\" data-monitorid=\"" + monitorID + "\" src=\"" + fullscreenSrc + "\"></div>";
+        window["monitorFullscreen" + monitorID] = $(dialogContent).dialog({
+          modal: true,
+          height: height,
+          width: width,
+          resizable: false,
+          draggable: false,
+          beforeClose: function() {
+                          $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("data-livesrc"));
+                          $("#liveStream" + monitorID).removeAttr("data-livesrc");
+                          $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
+                      }
+        });
+        $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+        $(".monitor-stream-fullscreen").css("display", "block");
+        $(".monitor-stream-fullscreen").css("margin", "0 auto");
+        if(monitorWidth > monitorHeight) {
+          $(".monitor-stream-fullscreen").css("height", "100%");
+        }
+        else {
+          $(".monitor-stream-fullscreen").css("width", "100%");
+        }
+        $("#monitor-stream-fullscreen-" + monitorID).wheelzoom();
       }
       else {
-        $(".monitor-stream-fullscreen").css("width", "100%");
+        window["monitorFullscreen" + monitorID].dialog("open");
       }
+      $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
+      $(this).attr("data-livesrc", fullscreenSrc);
     }
   });
 
-  jQuery(document).on("click", ".show-all-cameras", function(event) {
+  $(document).on("click", ".show-all-cameras", function(event) {
     event.preventDefault();
-    jQuery(".monitor-stream-image").each(function() {
-      jQuery(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
+    $(".monitor-stream-image").each(function() {
+      $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
     });
     $("#monitor-streams").empty();
     chosencameras = [];
-    jQuery(cameras).each(function(i, v) {
+    $(cameras).each(function(i, v) {
       addMonitor(v.Id, true);
     });
     noty({text: 'Added cameras', type: 'success'});
     toggleShowAllButton(true);
   });
 
-  jQuery(document).on("click", ".hide-all-cameras", function(event) {
+  $(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
-    jQuery(".monitor-stream-image").each(function() {
-      jQuery(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
+    $(".monitor-stream-image").each(function() {
+      $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
     });
     $("#monitor-streams").empty();
     chosencameras = [];
@@ -744,14 +761,14 @@ jQuery(document).ready(function() { /* begin document ready */
     toggleShowAllButton(true);
   });
 
-  jQuery(document).on("click", ".preset-list-link:not(.show-all-cameras)", function(event) {
+  $(document).on("click", ".preset-list-link:not(.show-all-cameras)", function(event) {
     event.preventDefault();
     haschosencameras = true;
     noty({text: 'Loading data', type: 'info'});
     clearAjaxRequests();
     
-    jQuery(".monitor-stream-image").each(function() {
-      jQuery(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
+    $(".monitor-stream-image").each(function() {
+      $(this).attr("src", "/zm/skins/modern/views/images/onerror.png");
     });
     $("#monitor-streams").empty();
 
@@ -759,12 +776,12 @@ jQuery(document).ready(function() { /* begin document ready */
     shouldbeplaying = false;
     playing = false;
     var monitorIds = $(this).attr("data-value").split(",");
-    jQuery.each(monitorIds, function(index, value) {
+    $.each(monitorIds, function(index, value) {
       addMonitor(value, true);
     });
   });
 
-  jQuery(document).on("click", "#pause", function(event) {
+  $(document).on("click", "#pause", function(event) {
     event.preventDefault();
     window.stop();
     $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
@@ -772,7 +789,7 @@ jQuery(document).ready(function() { /* begin document ready */
     pausePlayback();
   });
 
-  jQuery(document).on("click", "#play", function(event) {
+  $(document).on("click", "#play", function(event) {
     event.preventDefault();
     if (paused === true) {
       window.stop();
@@ -782,25 +799,25 @@ jQuery(document).ready(function() { /* begin document ready */
     }
   });
 
-  jQuery(document).on("click", "#liveview", function() {
+  $(document).on("click", "#liveview", function() {
     toggleMode();
   });
 
-  jQuery(document).on("click", "#playback", function() {
+  $(document).on("click", "#playback", function() {
     toggleMode();
   });
 
-  jQuery(document).on("click", "#export", function() {
+  $(document).on("click", "#export", function() {
     alert("Not yet implemented");
     /*if(liveview === false) {
       var chartRange = timeline.getVisibleChartRange();
       var eventIds = getEventIds(chartRange.start, chartRange.end);
-      jQuery.each(eventIds, function(i, v) {
-        // skip iteration 0 as it's not possible that weh ave a camera with that id
+      $.each(eventIds, function(i, v) {
+        // skip iteration 0 as it's not possible that we have a camera with that id
         if(i == 0) {
           return true;
         }
-        jQuery.each(v, function(key, value) {
+        $.each(v, function(key, value) {
           if(v[v.length-1] === value) {
             addEventToExport(i, value, true);
           }
@@ -812,7 +829,7 @@ jQuery(document).ready(function() { /* begin document ready */
     }*/
   });
 
-  jQuery(document).on("click", "#choose-cameras-opener", function(event) {
+  $(document).on("click", "#choose-cameras-opener", function(event) {
     if($("#choose-cameras").dialog("isOpen")!==true) {
       toggleShowAllButton();
       $("#choose-cameras").dialog("open");
@@ -822,7 +839,7 @@ jQuery(document).ready(function() { /* begin document ready */
     }
   });
 
-  jQuery(document).on("click", "#preset-selection-opener", function(event) {
+  $(document).on("click", "#preset-selection-opener", function(event) {
     if($("#preset-selection").dialog("isOpen")!==true) {
       $("#preset-selection").dialog("open");
     }
@@ -831,24 +848,24 @@ jQuery(document).ready(function() { /* begin document ready */
     }
   });
 
-  jQuery(".monitor-thumbnail").click(function() {
+  $(".monitor-thumbnail").click(function() {
     haschosencameras = true;
-    var monitorClass = jQuery(this).attr("id");
+    var monitorClass = $(this).attr("id");
     var monitorId = monitorClass.substr(monitorClass.length - 1);
-    if(jQuery('#monitor-stream-' + monitorId).length == 0) {
+    if($('#monitor-stream-' + monitorId).length == 0) {
       addMonitor(monitorId);
     }
     else {
-      jQuery("#monitor-stream-" + monitorId).remove();
+      $("#monitor-stream-" + monitorId).remove();
       chosencameras.splice(chosencameras.indexOf(monitorId), 1);
       requeryTimeline();
-      if(!jQuery(".monitor-stream")[0]) {
+      if(!$(".monitor-stream")[0]) {
         liveview = false;
       }
     }
   });
 
-  jQuery(document).on("click", "#timeline", function(event) {
+  $(document).on("click", "#timeline", function(event) {
     if(liveview === false) {
       if(event.target.className.length === 0) {
         shouldbeplaying = false;
@@ -867,11 +884,11 @@ jQuery(document).ready(function() { /* begin document ready */
       var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
       var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
       var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
-      jQuery(".playback-date").text(date);
-      jQuery(".playback-time").text(time);
-      jQuery.each(activity, function(i, v) {
+      $(".playback-date").text(date);
+      $(".playback-time").text(time);
+      $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
-            if(jQuery.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
+            if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
             playEvent(v.MonitorId, v.Id);
             playing = true;
             return;
@@ -887,8 +904,8 @@ jQuery(document).ready(function() { /* begin document ready */
   /* refresh camera thumbnails every 10 seconds */
   setInterval(function(){
     var timestamp = (new Date()).getTime();
-    jQuery(".monitor-thumbnail").each(function() {
-      jQuery(this).attr("src", jQuery(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
+    $(".monitor-thumbnail").each(function() {
+      $(this).attr("src", $(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
     });
   },10000);
 
