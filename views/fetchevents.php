@@ -58,7 +58,7 @@
     }
     $response = dbFetchAll($query);
     if(!$response) {
-      die("ERROR: Failed to fetch events!");
+      die("ERROR: Failed to fetch events!<br>" . $query);
     }
     else {
       $skipColumns = array(0 => "Archived", 1 => "Videoed", 2 => "Uploaded", 3 => "Emailed", 4 => "Messaged", 5 => "Executed", 6 => "Width", 7 => "Height", 8 => "Notes", 9 => "Frames", 10 => "AlarmFrames", 11 => "TotScore", 12 => "AvgScore", 13 => "MaxScore");
@@ -96,22 +96,23 @@
       }
       else {
         echo "<p>$response[NUMROWS] events</p>";
-        echo "<ul class=\"pagination\">";
-        echo "<li";
-        if((!isset($_REQUEST['page']))||($_REQUEST['page']=="1")) {
-          echo " class=\"disabled\"";
-        }
-        echo "><a id=\"events-previous-page\" href=\"#\">&laquo;</a></li>";
-        for($i=1; ($i <= $response['NUMROWS'] / 50); $i++) {
+        if($response[NUMROWS] > 50) {
+          echo "<ul class=\"pagination\">";
           echo "<li";
-          if($i == $_REQUEST['page']) {
-            echo " class=\"active\"";
+          if((!isset($_REQUEST['page']))||($_REQUEST['page']=="1")) {
+            echo " class=\"disabled\"";
           }
-          echo "><a href=\"#\">$i</a></li>";
+          echo "><a id=\"events-previous-page\" href=\"#\">&laquo;</a></li>";
+          for($i=1; ($i <= $response['NUMROWS'] / 50); $i++) {
+            echo "<li";
+            if($i == $_REQUEST['page']) {
+              echo " class=\"active\"";
+            }
+            echo "><a href=\"#\">$i</a></li>";
+          }
+          echo "<li><a id=\"events-next-page\" href=\"#\">&raquo;</a></li>";
+          echo "</ul>";
         }
-        echo "<li><a id=\"events-next-page\" href=\"#\">&raquo;</a></li>";
-        echo "</ul>";
-
       }
     }
   }
