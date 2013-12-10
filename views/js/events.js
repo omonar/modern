@@ -27,6 +27,8 @@ jQuery.noty.defaults = {
 };
 
 function getEvents(pagenumber, chosencameras, timeframe, startdatetime, enddatetime) {
+  startdatetime = moment(startdatetime).format('YYYY-M-D HH:mm');
+  enddatetime = moment(enddatetime).format('YYYY-M-D HH:mm');
   if(typeof(timeframe) == "undefined") {
     timeframe = "all";
   }
@@ -98,12 +100,13 @@ $(function() {
 /* end third party code */
 
 $(document).ready(function() {
+
   $('#startdatetime').datetimepicker({
-    dateFormat: "yy-mm-dd"
+    dateFormat: "dd/mm/yy"
   });
 
   $('#enddatetime').datetimepicker({
-    dateFormat: "yy-mm-dd"
+    dateFormat: "dd/mm/yy"
   });
 
   $(document).on("click", ".radio", function() {
@@ -123,7 +126,7 @@ $(document).ready(function() {
     });
     var timeframe = $("input[name=timeframe]:checked").attr("value");
     if(timeframe == "custom") {
-      console.log("Calling custom with " + chosencameras + " " + timeframe + " " + $("#startdatetime").val() + " " + $("#enddatetime").val())
+      console.log("Calling custom with " + chosencameras + " " + timeframe + " " + $("#startdatetime").val() + " " + $("#enddatetime").val());
       getEvents(null, chosencameras, timeframe, $("#startdatetime").val(), $("#enddatetime").val());
     }
     else {
