@@ -35,91 +35,92 @@
 
     <div class="view-wrapper">
 
-        <div id="monitor-streams" class="monitor-streams row"></div>
+        <div id="monitor-streams" class="monitor-streams"></div>
 
-        <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
-          <ul class="controls-list">
-            <li class="controls-timeline-playback-buttons">
-              <button class="btn btn-default playback-button" id="playback" rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
-              <button class="btn btn-default playback-button" id="play" rel="tooltip" title="Play / Pause"><span class="glyphicon glyphicon-play"></span></button>
-              <button class="btn btn-default playback-button" id="export" rel="tooltip" title="Export Events"><span class="glyphicon glyphicon-floppy-save"></span></button>
+        <div class="controls">
+          <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
+            <ul class="controls-list">
+              <li class="controls-timeline-playback-buttons">
+                <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
+                <button class="btn btn-default playback-button" id="play" data-rel="tooltip" title="Play / Pause" disabled><span class="glyphicon glyphicon-play"></span></button>
+                <button class="btn btn-default playback-button" id="export" data-rel="tooltip" title="Export Events" disabled><span class="glyphicon glyphicon-floppy-save"></span></button>
+              </li>
+              <li class="controls-timeline-playback-rangestart" data-rel="tooltip" title="Choose a new start date to examine">
+                <label for="rangestart">Start</label>
+                <input id="rangestart" type="text" class="hasDatePicker" disabled>
+              </li>
+              <li class="controls-timeline-playback-rangeend" data-rel="tooltip" title="Change the end date and time for when the listed events should end">
+                <label for="rangeend">End</label>
+                <input id="rangeend" type="text" class="hasDatePicker" disabled>
             </li>
-            <li class="controls-timeline-playback-rangestart" rel="tooltip" title="Choose a new start date to examine">
-              <label for="rangestart">Start</label>
-              <input id="rangestart" type="text" class="hasDatePicker">
-            </li>
-            <li class="controls-timeline-playback-rangeend" rel="tooltip" title="Change the end date and time for when the listed events should end">
-              <label for="rangeend">End</label>
-              <input id="rangeend" type="text" class="hasDatePicker">
-          </li>
-          </ul>
-        </div> <!-- end controls-timeline -->
+            </ul>
+          </div> <!-- end controls-timeline -->
 
-        <div id="timeline" class="timeline"></div>
+          <div id="timeline" class="timeline"></div>
 
-        <div class="controls-misc controls ui-corner-tl">
-          <ul class="controls-list">
-            <li>
-              <button id="choose-cameras-opener" class="btn btn-default" rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
-              <button id="preset-selection-opener" class="btn btn-default" rel="tooltip" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
-              <?php if(canEdit('System')===true) { ?>
-                <a href="?view=admin" class="btn btn-default playback-button" rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></a>
-              <?php } ?>
-              <a href="?view=logout" class="btn btn-default playback-button" rel="tooltip" title="Logout"><span class="glyphicon glyphicon-log-out"></span></a>
-            </li>
-            <li>
-               <p class="currently-playing">currently playing</p>
-              <p class="playback-date" rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
-              <p class="playback-time">00:00:00</p>
-            </li>
-          </ul>
-        </div>
+          <div class="controls-misc controls ui-corner-tl">
+            <ul class="controls-list">
+              <li>
+                <button id="choose-cameras-opener" class="btn btn-default" data-rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
+                <button id="preset-selection-opener" class="btn btn-default" data-rel="tooltip" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
+                <?php if(canEdit('System')===true) { ?>
+                  <a href="?view=admin" class="btn btn-default playback-button" data-rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></a>
+                <?php } ?>
+                <a href="?view=logout" class="btn btn-default playback-button" data-rel="tooltip" title="Logout"><span class="glyphicon glyphicon-log-out"></span></a>
+              </li>
+              <li>
+                <p class="currently-playing">currently playing</p>
+                <p class="playback-date" data-rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
+                <p class="playback-time">00:00:00</p>
+              </li>
+              <li>
+                <button id="scale-decrease" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
+                <button id="scale-reset" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
+                <button id="scale-increase" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+              </li>
+            </ul>
+          </div>
 
-        <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
-          <?php
-            $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
-            if($defaultPresetId===false) {
-              $defaultPresetId = "-1";
-            }
-            echo "<ul class=\"preset-list\">";
-            echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"-1\"";
-            if($defaultPresetId === "-1") {
-              echo " checked";
-            }
-            echo "><a class=\"show-all-cameras preset-list-link\" href=\"#\">All Cameras</a></li>";
-            foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
-              echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"" . $cameras['Id'] . "\"";
-              if($defaultPresetId == $cameras['Id']) {
+          <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
+            <?php
+              $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
+              if($defaultPresetId===false) {
+                $defaultPresetId = "-1";
+              }
+              echo "<ul class=\"preset-list\">";
+              echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"-1\"";
+              if($defaultPresetId === "-1") {
                 echo " checked";
               }
-              echo "><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
-            }
-            echo "</ul>";
-          ?>
-        </div>
-
-        <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection"> <!-- begin choose-cameras -->
-          <ul>
-            <?php
-              $i = 1;
-              $connkey = generateConnKey();
-              $streamMode = "single";
-              $sql = "SELECT * FROM Monitors";
-              foreach(dbFetchAll( $sql ) as $row) {
-                echo "<li class=\"monitor-stream-thumbnail-item floatleft\">";
-                outputImageStillModern( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail");
-                echo "</li>";
-                if($i === 3) {
-                  // yes, br is lame. needs changing at some point
-                  echo "<br>";
+              echo "><a class=\"show-all-cameras preset-list-link\" href=\"#\">All Cameras</a></li>";
+              foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
+                echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"" . $cameras['Id'] . "\"";
+                if($defaultPresetId == $cameras['Id']) {
+                  echo " checked";
                 }
-                else{
+                echo "><a class=\"preset-list-link\" href=\"#\" data-value=\"" . $cameras['MonitorIds'] . "\">" . $cameras['Name'] . "</a></li>";
+              }
+              echo "</ul>";
+            ?>
+          </div>
+
+          <div id="choose-cameras" class="choose-cameras dialog-modal" title="Camera Selection"> <!-- begin choose-cameras -->
+            <ul class="monitor-stream-thumbnails">
+              <?php
+                $i = 1;
+                $connkey = generateConnKey();
+                $streamMode = "single";
+                $sql = "SELECT * FROM Monitors";
+                foreach(dbFetchAll( $sql ) as $row) {
+                  echo "<li class=\"monitor-stream-thumbnail-item\">";
+                  outputImageStillModern( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  null, "monitor-thumbnail");
+                  echo "</li>";
                   $i++;
                 }
-              }
-            ?>
-          </ul>
-        </div> <!-- end choose-cameras -->
+              ?>
+            </ul>
+          </div> <!-- end choose-cameras -->
+        </div>
 
       </div> <!-- end view-wrapper -->
     </body>
