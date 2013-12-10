@@ -82,184 +82,111 @@ function xhtmlHeaders($file, $title) {
   <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
   <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
   <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
- <meta charset="UTF-8">
- <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="icon" type="image/ico" href="graphics/favicon.ico"/>
- <link rel="shortcut icon" href="graphics/favicon.ico"/>
- <link rel="stylesheet" href="<?= $skinCssFile ?>" type="text/css" media="screen"/>
-<?php if($title != 'Zone' && !preg_match("/Feed/", $title)) { ?>
-<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-<!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
-<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery/dark/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all" />
-<?php if($title != 'Monitor') { ?>
- <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap.min.js"></script>
- <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap.min.css">
- <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap-theme.min.css">
-<?php } ?>
- <?php if($title != 'Admin' && $title != "Run State" && $title != "Events" && $title != 'Monitor' && $title != 'Options' && substr($title, 0, 4) != 'User' && $title != "Event Filter") { ?>
- <link rel="stylesheet" href="skins/<?=$skin?>/views/css/main.css">
- <?php } ?>
-<?php } ?>
-<?php if ($title == "Console") { ?>
- <script type="text/javascript" src="skins/<?=$skin?>/js/console.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-<?php } ?>
-<?php
- if ($title == "Monitor" || $title=="Options" || substr($title, 0, 4) == "User" || $title == "Event Filter") {
-?>
-<link rel="stylesheet" href="/zm/skins/classic/css/skin.css">
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-<script type="text/javascript" src="js/mootools.ext.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "System Log") {
-?>
-<script type="text/javascript">var $j = jQuery.noConflict();</script>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-  <script type="text/javascript" src="js/mootools.ext.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Zone") { ?>
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-  <script type="text/javascript" src="js/mootools.ext.js"></script> 
-<?php
- }
-?>
-<?php if (preg_match("/Feed/", $title)) { ?>
-<link media="screen" type="text/css" href="skins/classic/views/css/watch.css" rel="stylesheet">
-<script type="text/javascript" src="tools/mootools/mootools-core-1.3.2-nc.js"></script>
-<script type="text/javascript" src="tools/mootools/mootools-more-1.3.2.1-nc.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Admin" || $title == "Events") {
-?>
-<script type="text/javascript">
-  var skinVersion = "<?=file_get_contents('skins/modern/VERSION');?>";
-</script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/jquery.noty.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/themes/default.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/top.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/topRight.js"></script>
-<link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/colorbox/colorbox.css">
-<script type="text/javascript" src="skins/<?=$skin?>/views/assets/vendor/js/colorbox/jquery.colorbox-min.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
-<?php
-  if($title == "Events") {
-?>
-    <script src="skins/<?=$skin?>/views/js/admin.js"></script>
-    <link rel="stylesheet" href="skins/<?=$skin?>/views/css/admin.css">
-<?php
-    }
- }
- if ($title == "Full") {
-?>
-<script type="text/javascript" src="skins/modern/js/full.js"></script>
-<?php
- }
-?>
-<?php
- if ($title == "Event") {
-?>
-<script type="text/javascript" src="skins/modern/js/event.js"></script>
-<script type="text/javascript" src="skins/modern/js/preloadImage.js"></script>
-<?php
- }
-?>
-<?php
-  if ($title=="Events") {
-?>
-  <script src="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-<link rel="stylesheet" href="skins/<?=$skin?>/views/js/datetimepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
-<?php
-  }
-  if ($view=="playback") {
-?>
-<style type="text/css">
-<?php
-  foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
-    echo ".timeline-event.monitor" . $monitor['Id'] . " { background: " . $monitor['WebColour'] . "; }\n";
-    echo "#monitor-stream-" . $monitor['Id'] . " .glyphicon-stop { color: " . $monitor['WebColour'] . "; }\n";
-  }
-?>
-</style>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui-timepicker-addon.js"></script>
-<link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline.css" type="text/css" media="screen"/>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/jquery.noty.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/themes/default.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/top.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/topRight.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/moment.min.js"></script>
-<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.wheelzoom.min.js"></script> 
-<?php
- }
-?>
+  <head>
+    <meta charset="UTF-8">
+    <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/ico" href="graphics/favicon.ico"/>
+    <link rel="shortcut icon" href="graphics/favicon.ico"/>
+    <!-- jquery -->
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery/dark/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all" />
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui-timepicker-addon.js"></script>
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
 
+    <!-- bootstrap -->
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap-theme.min.css">
+
+    <!-- noty -->
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/noty/jquery.noty.js"></script>
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/noty/themes/default.js"></script>
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/top.js"></script>
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/noty/layouts/topRight.js"></script>
+
+    <!-- colorbox -->
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/colorbox/colorbox.css">
+    <script type="text/javascript" src="skins/<?=$skin?>/views/assets/vendor/js/colorbox/jquery.colorbox-min.js"></script>
+
+    <!-- main css -->
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/css/main.css">
+
+    <?php
+     if ($title == "Admin" || $title == "Events") {
+    ?>
+        <script type="text/javascript">
+          var skinVersion = "<?=file_get_contents('skins/modern/VERSION');?>";
+        </script>
+        <script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
+        <?php
+          if($title == "Events") {
+        ?>
+            <script src="skins/<?=$skin?>/views/js/admin.js"></script>
+            <link rel="stylesheet" href="skins/<?=$skin?>/views/css/admin.css">
+      <?php
+          }
+       }
+      ?>
+
+      <?php
+        if($view=="playback"||$view="events") {
+      ?>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/moment.min.js"></script>
+      <?php
+        }
+        if ($view=="playback") {
+      ?>
+          <style type="text/css">
+          <?php
+            foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
+              echo ".timeline-event.monitor" . $monitor['Id'] . " { background: " . $monitor['WebColour'] . "; }\n";
+              echo "#monitor-stream-" . $monitor['Id'] . " .glyphicon-stop { color: " . $monitor['WebColour'] . "; }\n";
+            }
+          ?>
+          </style>
+          <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline.css" type="text/css" media="screen"/>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.wheelzoom.min.js"></script> 
+      <?php
+       }
+      ?>
+
+      <?php
+          if ($viewCssFile) {
+      ?>
+            <link rel="stylesheet" href="<?= $viewCssFile ?>" type="text/css" media="screen"/>
+      <?php
+          }
+          if ($viewCssPhpFile) {
+      ?>
+            <style type="text/css">
+              <?php
+                require_once($viewCssPhpFile);
+              ?>
+            </style>
+      <?php
+          }
+
+          if ($viewJsPhpFile) {
+      ?>
+            <script type="text/javascript">
+              <?php
+                require_once($viewJsPhpFile);
+              ?>
+            </script>
+      <?php
+          }
+      ?>
+      <?php
+          if ($viewJsFile) {
+      ?>
+            <script type="text/javascript" src="<?= $viewJsFile ?>"></script>
+      <?php
+        }
+      ?>
+  </head>
 <?php
-    if ( $viewCssFile )
-    {
-?>
-  <link rel="stylesheet" href="<?= $viewCssFile ?>" type="text/css" media="screen"/>
-<?php
-    }
-    if ( $viewCssPhpFile )
-    {
-?>
-  <style type="text/css">
-<?php
-        require_once( $viewCssPhpFile );
-?>
-  </style>
-<?php
-    }
-?>
-<?php
-    if ( $skinJsPhpFile )
-    {
-?>
-  <script type="text/javascript">
-<?php
-    require_once( $skinJsPhpFile );
-?>
-  </script>
-<?php
-    }
-    if ( $viewJsPhpFile )
-    {
-?>
-  <script type="text/javascript">
-<?php
-        require_once( $viewJsPhpFile );
-?>
-  </script>
-<?php
-    }
-?>
-  <script type="text/javascript" src="<?= $skinJsFile ?>"></script>
-<?php
-    if ( $viewJsFile )
-    {
-?>
-  <script type="text/javascript" src="<?= $viewJsFile ?>"></script>
-<?php
-    }
-?>
-</head>
-<?php
-}
+  }
 ?>
