@@ -105,6 +105,13 @@ $(function() {
 });
 /* end third party code */
 
+function stopLiveSteams() {
+  $(".monitor-stream-image").each(function() {
+    $(this).attr("data-livesrc", $(this).attr("src"));
+    $(this).attr("src", "skins/modern/views/images/onerror.png");
+  });
+}
+
 function addMonitor(monitorId, showall) {
   if(arguments.length === 1) {
     showall = false;
@@ -125,10 +132,10 @@ function addMonitor(monitorId, showall) {
         chosencameras.push(monitorId);
         //console.log("Pushed " + monitorId + " / " + cameras[monitorId-1].Name + " to chosencameras");
         if(liveview === true) {
-          $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream col-md-4\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div></div>').appendTo('#monitor-streams');
+          $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-strema\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div></div>').appendTo('#monitor-streams');
         }
         else {
-          $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream col-md-4\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
+          $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info row\"><p class=\"monitor-stream-info-name col-md-4\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events col-md-4\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right col-md-4\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="/zm/skins/modern/views/images/onerror.png" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
         }
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
@@ -468,6 +475,7 @@ function setupTimeline() {
   timeline.setVisibleChartRange(start, end, true);
 
   function onselect() {
+    console.log("onselect");
     if(liveview === false) {
       var sel = timeline.getSelection();
 
@@ -497,21 +505,21 @@ function toggleShowAllButton(override) {
   if(override === false) {
     if($("button.show-all-cameras").exists()) {
       if(chosencameras.length === cameras.length) {
-        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
       }
     }
     else {
       if(chosencameras.length < cameras.length) {
-        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
       }
     }
   }
   else {
     if($("span.glyphicon.glyphicon-eye-close").exists()) {
-      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
     }
     else{
-      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
   }
   $(".show-hide-cameras").tooltip();
@@ -525,6 +533,11 @@ function toggleMode() {
     $("#playback").attr("title", "Enter Live View Mode");
     $("#playback").attr("id", "liveview");
     $("#liveview").tooltip();
+
+    $("#play").prop("disabled", false);
+    $("#export").prop("disabled", false);
+    $("#rangestart").prop("disabled", false);
+    $("#rangeend").prop("disabled", false);
 
     if($("#choose-cameras").dialog("isOpen")===true) {
       $("#choose-cameras").dialog("close");
@@ -545,6 +558,15 @@ function toggleMode() {
     $("#liveview").attr("title", "Enter Playback Mode")
     $("#liveview").attr("id", "playback");
     $("#playback").tooltip();
+
+    $("#play").prop("disabled", true);
+    $("#export").prop("disabled", true);
+    $("#rangestart").prop("disabled", true);
+    $("#rangeend").prop("disabled", true);
+
+    $(".playback-date").text("0000-00-00");
+    $(".playback-time").text("00:00:00");
+
     stopPlayback();
     // if there have been cameras selected
     window.setTimeout(function() {
@@ -573,7 +595,7 @@ function getEventIds(start, end) {
 }
 
 $(document).ready(function() { /* begin document ready */
-  $("[rel='tooltip']").tooltip();
+  $("[rel='data-tooltip']").tooltip();
 
   setupTimeline();
 
@@ -593,9 +615,9 @@ $(document).ready(function() { /* begin document ready */
     autoOpen: false,
     resizable: true,
     width: 'auto'
-  })
+  });
 
-  $("<button class=\"show-all-cameras show-hide-cameras\" rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
+  $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
   $(".show-hide-cameras").tooltip();
   $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
@@ -678,13 +700,30 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
+  $(document).on("click", "#scale-increase", function() {
+    $(".monitor-streams .col-container").css("width", $(".monitor-stream-image").first().width() / 0.75 + "px");
+    $(".monitor-streams .monitor-stream-image").css("width", "100%");
+    //$(".monitor-streams .col-container").css("height", $(".monitor-stream-image").first().height() * 2 + "px");
+  });
+
+  $(document).on("click", "#scale-reset", function() {
+    $(".monitor-streams .col-container").css("width", "");
+    $(".monitor-streams .monitor-stream-image").css("width", "");
+  });
+
+  $(document).on("click", "#scale-decrease", function() {
+    $(".monitor-streams .col-container").css("width", $(".monitor-stream-image").first().width() * 0.75 + "px");
+    $(".monitor-streams .monitor-stream-image").css("width", "100%");
+    //$(".monitor-streams .col-container").css("height", $(".monitor-stream-image").first().height() / 2 + "px");
+  });
+
   $(document).on("click", ".monitor-stream-info-close", function(event) {
-    var monitorClass = $(this).parent().parent().parent().attr("id");
+    var monitorClass = $(this).parent().parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     //console.log("Spliced " + monitorId + " / " + cameras[monitorId-1].Name + " from chosencameras");
-    $(this).parent().parent().parent().remove();
-    $(this).parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/images/onerror.png");
+    $(this).parent().parent().parent().parent().remove();
+    $(this).parent().parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/images/onerror.png");
     if(liveview === true) {
       $(".monitor-stream-image").each(function() {
         $(this).attr('src', $(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
@@ -808,25 +847,19 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(document).on("click", "#export", function() {
-    alert("Not yet implemented");
-    /*if(liveview === false) {
-      var chartRange = timeline.getVisibleChartRange();
-      var eventIds = getEventIds(chartRange.start, chartRange.end);
-      $.each(eventIds, function(i, v) {
-        // skip iteration 0 as it's not possible that we have a camera with that id
-        if(i == 0) {
-          return true;
-        }
-        $.each(v, function(key, value) {
-          if(v[v.length-1] === value) {
-            addEventToExport(i, value, true);
-          }
-          else {
-            addEventToExport(i, value);
-          }
+    if(liveview === false) {
+      if(chosencameras.length >= 1) {
+        $.colorbox({
+          iframe: true, href: "?view=events&selectionset=true&timeframe=custom&startdatetime=" + $("#rangestart").val() + "&enddatetime=" + $("#rangeend").val() + "&chosencameras=" + chosencameras.join(","), innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100
         });
-      });
-    }*/
+      }
+      else {
+        noty({ text: "No cameras selected!", type: "info" });
+      }
+    }
+    else {
+      noty({ text: "Not in playback mode!", type: "info" });
+    }
   });
 
   $(document).on("click", "#choose-cameras-opener", function(event) {
