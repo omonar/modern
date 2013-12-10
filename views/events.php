@@ -84,5 +84,34 @@
 
   </div> <!-- end container -->
 
+  <?php
+    if(isset($_REQUEST['selectionset'])) {
+  ?>
+      <script type="text/javascript">
+        var timeframe = "<?= $_REQUEST['timeframe']; ?>";
+        var startdatetime = "<?= $_REQUEST['startdatetime']; ?>";
+        var enddatetime = "<?= $_REQUEST['enddatetime']; ?>";
+        var chosencameras = "<?= $_REQUEST['chosencameras']; ?>";
+
+        $("#custom-timeframe").attr("checked", "");
+
+        $(".monitor-checkbox").each(function() {
+          $(this).removeAttr("checked");
+          if($.inArray($(this).attr("value"), chosencameras) !== -1) {
+            $(this).prop("checked", true);
+          }
+        });
+
+        $("#custom-range-filters").show();
+
+        $("#startdatetime").val(startdatetime);
+        $("#enddatetime").val(enddatetime);        
+
+        getEvents(null, chosencameras.split(","), timeframe, startdatetime, enddatetime);
+      </script>
+  <?php
+    }
+  ?>
+
 </body>
 </html>
