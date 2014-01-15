@@ -64,16 +64,11 @@ function outputImageStillModern( $id, $src, $width, $height, $alt="", $class="" 
 }
 
 function xhtmlHeaders($file, $title) {
-  $skinCssFile = getSkinFile( 'css/skin.css' );
-  $skinCssPhpFile = getSkinFile( 'css/skin.css.php' );
-  $skinJsFile = getSkinFile( 'js/skin.js' );
-  $skinJsPhpFile = getSkinFile( 'js/skin.js.php' );
-
   $basename = basename( $file, '.php' );
-  $viewCssFile = getSkinFile( 'views/css/'.$basename.'.css' );
-  $viewCssPhpFile = getSkinFile( 'views/css/'.$basename.'.css.php' );
-  $viewJsFile = getSkinFile( 'views/js/'.$basename.'.js' );
-  $viewJsPhpFile = getSkinFile( 'views/js/'.$basename.'.js.php' );
+  $viewCssFile = getSkinFile( 'views/assets/css/'.$basename.'.css' );
+  $viewCssPhpFile = getSkinFile( 'views/assets/css/'.$basename.'.css.php' );
+  $viewJsFile = getSkinFile( 'views/assets/js/'.$basename.'.js' );
+  $viewJsPhpFile = getSkinFile( 'views/assets/js/'.$basename.'.js.php' );
 
   extract( $GLOBALS, EXTR_OVERWRITE );
 ?>
@@ -86,8 +81,8 @@ function xhtmlHeaders($file, $title) {
     <meta charset="UTF-8">
     <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/ico" href="graphics/favicon.ico"/>
-    <link rel="shortcut icon" href="graphics/favicon.ico"/>
+    <link rel="icon" type="image/ico" href="assets/images/favicon.ico"/>
+    <link rel="shortcut icon" href="assets/images/favicon.ico"/>
     <!-- jquery -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui.min.js"></script>
@@ -111,7 +106,7 @@ function xhtmlHeaders($file, $title) {
     <script type="text/javascript" src="skins/<?=$skin?>/views/assets/vendor/js/colorbox/jquery.colorbox-min.js"></script>
 
     <!-- main css -->
-    <link rel="stylesheet" href="skins/<?=$skin?>/views/css/main.css">
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/main.css">
 
     <?php
      if ($title == "Admin" || $title == "Events") {
@@ -123,8 +118,8 @@ function xhtmlHeaders($file, $title) {
         <?php
           if($title == "Events") {
         ?>
-            <script src="skins/<?=$skin?>/views/js/admin.js"></script>
-            <link rel="stylesheet" href="skins/<?=$skin?>/views/css/admin.css">
+            <script src="skins/<?=$skin?>/views/assets/js/admin.js"></script>
+            <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/admin.css">
       <?php
           }
        }
@@ -148,7 +143,9 @@ function xhtmlHeaders($file, $title) {
           </style>
           <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline.css" type="text/css" media="screen"/>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
-          <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.wheelzoom.min.js"></script> 
+          <!--<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.wheelzoom.min.js"></script>-->
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.mousewheel.js"></script>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.panzoom.min.js"></script>
       <?php
        }
       ?>

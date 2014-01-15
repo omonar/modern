@@ -34,6 +34,11 @@
   <body class="zm"> <!-- begin body -->
 
     <div class="view-wrapper">
+        <div class="top-toolbar">
+          <button id="scale-decrease" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
+          <button id="scale-reset" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
+          <button id="scale-increase" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
 
         <div id="monitor-streams" class="monitor-streams"></div>
 
@@ -74,9 +79,7 @@
                 <p class="playback-time">00:00:00</p>
               </li>
               <li>
-                <button id="scale-decrease" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
-                <button id="scale-reset" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
-                <button id="scale-increase" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+                <a href="#" id="page-refresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></a>
               </li>
             </ul>
           </div>
@@ -94,7 +97,7 @@
               }
               echo "><a class=\"show-all-cameras preset-list-link\" href=\"#\">All Cameras</a></li>";
               foreach(dbFetchAll("SELECT * FROM Groups") as $index => $cameras) {
-                echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"" . $cameras['Id'] . "\"";
+                echo "<li class=\"preset-list-item\"><input type=\"radio\" id=\"preset-$cameras[Id]\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"" . $cameras['Id'] . "\"";
                 if($defaultPresetId == $cameras['Id']) {
                   echo " checked";
                 }

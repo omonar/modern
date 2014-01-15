@@ -36,3 +36,7 @@ body { padding-top: 50px; }
 
 /* temp */
 .navbar-default .navbar-collapse { padding-left: 0; }
+
+.remoteSource, .localSource, .miscSource {
+	display: none;
+}

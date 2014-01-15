@@ -16,16 +16,18 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-camera"></span> Cameras <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="?skin=classic&view=monitor" class="init-colorbox"><span class="glyphicon glyphicon-plus-sign"></span> Add camera</a></li>
+          <li><a href="#" id="add-new-monitor"><span class="glyphicon glyphicon-plus-sign"></span> Add camera</a></li>
           <li class="divider"></li>
           <li class="dropdown-header">Edit Existing</li>
           <?php
             foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
-              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox edit-monitor\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
+              echo "<li><a href=\"#\" class=\"edit-monitor\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
             }
           ?>
         </ul>
       </li>
+
+      <li><a href="#" id="presetmanagement"><span class="glyphicon glyphicon-list"></span> Presets</a></li>
 
       <li><a href="?view=events"><span class="glyphicon glyphicon-picture"></span> Events</a></li>
 
