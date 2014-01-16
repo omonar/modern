@@ -113,6 +113,12 @@ function stopLiveStreams() {
   });
 }
 
+function resumeLiveStreams() {
+  $(".monitor-stream-image").each(function() {
+    $(this).attr("src", $(this).attr("data-livesrc"));
+  });
+}
+
 function addMonitor(monitorId, showall) {
   if(arguments.length === 1) {
     showall = false;
@@ -236,6 +242,7 @@ function imgError(image) {
   image.src = "skins/modern/views/assets/images/onerror.png";
   return true;
 }
+
 function setTime(element, refresh, formatting) {
   setInterval(function(){
     $(element).text(moment().format(formatting));
@@ -781,8 +788,10 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(document).on("click", ".monitor-stream-image", function() {
-    // HERE
     if(fullscreen === false) {
+      if(liveview === true) {
+        stopLiveStreams();
+      }
       var monitorID = $(this).attr("id").match(/\d+/);
       var width = ($(window).width()-50);
       var height = ($(window).height()-50);
@@ -792,11 +801,14 @@ $(document).ready(function() { /* begin document ready */
       var monitorMarkup = $(this).clone();
       $(monitorMarkup).addClass("monitor-stream-fullscreen");
       $(monitorMarkup).addClass("monitor-stream-fullscreen-" + monitorID);
+      if(liveview === true) {
+        $(monitorMarkup).attr("src", $(monitorMarkup).attr("data-livesrc"));
+      }
       $(this).remove();
       var dialogContent = "<div class=\"monitor-stream-dialog\"></div>";
-      if(liveview === false) {
+      /*if(liveview === false) {
         $(monitorMarkup).attr("src", "/zm/skins/modern/views/assets/images/onerror.png");
-      }
+      }*/
       $(dialogContent).dialog({
         modal: false,
         height: height,
@@ -812,6 +824,7 @@ $(document).ready(function() { /* begin document ready */
           $(originalMonitorMarkup).appendTo("#monitor-stream-" + monitorID);
           $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
           $("#monitor-stream-" + monitorID + " .col-container").removeAttr("style");
+          resumeLiveStreams();
           fullscreen = false;
         },
       });
@@ -977,11 +990,11 @@ $(document).ready(function() { /* begin document ready */
 
   $(document).on("click", "#page-refresh", function(event) {
     event.preventDefault();
-    stopLiveSteams();
+    stopLiveStreams();
     noty({ text: "Refreshing...", type: "info" });
     window.setTimeout(function() {
       location.reload();
-    }, 1000);
+    }, 2000);
   });
 
   setInterval(function() {
