@@ -21,7 +21,7 @@
           <li class="dropdown-header">Edit Existing</li>
           <?php
             foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
-              echo "<li><a href=\"#\" class=\"edit-monitor\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
+              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
             }
           ?>
         </ul>

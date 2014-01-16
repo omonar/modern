@@ -89,7 +89,10 @@ function pullValuesFromForm() {
 
 $(document).ready(function() { /* begin document ready */
   $(".init-colorbox").colorbox({
-    iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100
+    iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100,
+    onClosed: function() {
+      window.location.href = "http://" + location.hostname + "/" + location.pathname + "?skin=modern&view=admin";
+    }
   });
 
   $(document).on("click", "#changepassword-opener", function(event) {
@@ -169,7 +172,10 @@ $(document).ready(function() { /* begin document ready */
       success: function(data) {
         $(".container").html(data);
         $(".init-dynamic-colorbox").colorbox({
-          iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100
+          iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100,
+          onClosed: function() {
+            window.location.href = "http://" + location.hostname + "/" + location.pathname + "?skin=modern&view=admin";
+          }
         });
       }
     });
@@ -229,20 +235,6 @@ $(document).ready(function() { /* begin document ready */
         noty({text: 'Cannot delete the only user account for this system', type: 'error'});
       }
     }
-  });
-
-  $(document).on("click", ".edit-user", function(event) {
-    event.preventDefault();
-    var uid = $(this).attr("data-userid");
-    jQuery.ajax({
-      type: "POST",
-      url: "index.php?view=edituser",
-      data: {edituser: true, uid: uid },
-      success: function(data) {
-        $(data).appendTo(".container");
-        $("#user-list-panel").hide();
-      }
-    });
   });
 
   $(document).on("click", ".delete-preset", function(event) {
@@ -380,7 +372,7 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
-  $(document).on("click", ".edit-monitor", function(event) {
+  /*$(document).on("click", ".edit-monitor", function(event) {
     event.preventDefault();
     $.ajax({
       url: "index.php?view=editmonitor",
@@ -391,7 +383,7 @@ $(document).ready(function() { /* begin document ready */
         pullValuesFromForm();
       }
     });
-  });
+  });*/
 
   $(document).on("change", "#Type", function() {
     toggleSourceTabElements();

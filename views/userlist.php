@@ -81,7 +81,7 @@
 
                 echo "<td>$value</td>";
               }
-              echo "<td><a href=\"#\" data-userid=\"$row[Id]\" class=\"edit-user\"><span class=\"glyphicon glyphicon-edit\"></span></a></td>";
+              echo "<td><a href=\"?skin=classic&view=user&uid=$row[Id]\" data-userid=\"$row[Id]\" class=\"edit-user init-dynamic-colorbox\"><span class=\"glyphicon glyphicon-edit\"></span></a></td>";
               echo "<td><a href=\"#\" id=\"delete-user-$row[Id]\" class=\"delete-user\" data-userid=\"$row[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
               echo "</tr>";
             }
