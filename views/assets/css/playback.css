@@ -336,3 +336,8 @@ color: #567;
   width: 33.333333333%;
   display: inline-block;
 }
+
+#speed {
+  display: inline-block;
+  width: 80px;
+}
