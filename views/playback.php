@@ -47,8 +47,14 @@
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
                 <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
-                <button class="btn btn-default playback-button" id="play" data-rel="tooltip" title="Play / Pause" disabled><span class="glyphicon glyphicon-play"></span></button>
-                <button class="btn btn-default playback-button" id="export" data-rel="tooltip" title="Export Events" disabled><span class="glyphicon glyphicon-floppy-save"></span></button>
+                <button class="btn btn-default playback-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="glyphicon glyphicon-play"></span></button>
+                <!--<button class="btn btn-default playback-button" id="export" data-rel="tooltip" title="Export Events" disabled><span class="glyphicon glyphicon-floppy-save"></span></button>-->
+                <select class="form-control" id="speed" data-rel="tooltip" title="Change playback speed" style="display: none;">
+                  <option value="400">0.5x</option>
+                  <option value="200" selected>1x</option>
+                  <option value="100">2x</option>
+                  <option value="50">4x</option>
+                </select>
               </li>
               <li class="controls-timeline-playback-rangestart" data-rel="tooltip" title="Choose a new start date to examine">
                 <label for="rangestart">Start</label>
@@ -74,9 +80,9 @@
                 <a href="?view=logout" class="btn btn-default playback-button" data-rel="tooltip" title="Logout"><span class="glyphicon glyphicon-log-out"></span></a>
               </li>
               <li>
-                <p class="currently-playing">currently playing</p>
-                <p class="playback-date" data-rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
-                <p class="playback-time">00:00:00</p>
+                <p style="visibility: hidden;" class="currently-playing">playback date & time</p>
+                <p style="visibility: hidden;" class="playback-date" data-rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
+                <p style="visibility: hidden;" class="playback-time">00:00:00</p>
               </li>
               <li>
                 <a href="#" id="page-refresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></a>
