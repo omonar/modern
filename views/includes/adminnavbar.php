@@ -33,8 +33,12 @@
 
       <li><a href="#" id="userlist"><span class="glyphicon glyphicon-user"></span> Users</a></li>
 
-      <li><a href="?skin=classic&view=options" class="init-colorbox"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> Settings <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="?skin=classic&view=options" class="init-colorbox">ZoneMinder Settings</a></li>
+        </ul>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
 
