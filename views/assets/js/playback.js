@@ -18,7 +18,7 @@
 var start = new Date();
 var end = new Date();
 start.setHours(0,0,0,0);
-var activity, cameras;
+var activity;
 var frames;
 var chosencameras = new Array();
 var timelinedata = [];
@@ -39,6 +39,10 @@ var times = "";
 var gaplessPlayback = true;
 var eventsToExport = [];
 var fullscreen = false;
+var stopped = false;
+var playbackspeed = 200;
+var playheadspeed = 1000;
+var currentevent;
 var options = {
   'width':  '100%',
   'height': '170px',
@@ -159,22 +163,6 @@ function addMonitor(monitorId, showall) {
       }
     });
   }
-  //console.log("Added monitorId = " + monitorId);
-}
-
-function eventInstance(monitorId, eventId, currentFrame) {
-  this.monitorId=monitorId;
-  this.eventId=eventId;
-  this.currentFrame=currentFrame;
-}
-
-function clearTimers() {
-  for (var timer in timers) {
-    console.log("Cleared a timer...");
-    clearInterval(timer);
-  }
-  currentlyplaying = null;
-  timers = null;
 }
 
 function stopPlayback() {
@@ -187,6 +175,45 @@ function stopPlayback() {
   $("#pause").attr("id", "play");
 }
 
+function eventInstance(monitorId, eventId, currentFrame) {
+  this.monitorId=monitorId;
+  this.eventId=eventId;
+  this.currentFrame=currentFrame;
+}
+
+function clearTimer(eventId, monitorId) {
+  if(typeof(timers[eventId]) !== "undefined" && typeof(timers[eventId]) !== null) {
+    clearInterval(timers[eventId]);
+    timers[eventId] = 0;
+  }
+}
+
+function clearTimers() {
+  $.each(currenteventarrays, function(index, value) {
+    var monid = value.substr(value.length - 1);
+    $.each(window[value], function(key, val) {
+      clearTimer(val, Number(monid));
+    });
+  });
+  currentlyplaying = null;
+  timers = [];
+}
+
+function clearPlayback() {
+  shouldbeplaying = false;
+  playing = false;
+  stopped = true;
+  clearInterval(window.playheadtimer);
+  window.playheadtimer = 0;
+  clearTimers();
+  $.each(currenteventarrays, function(index, value) {
+    window[value] = [];
+  });
+  timeline.setCustomTime(new Date());
+  //timeline.options.showCustomTime = false;
+  clearCameraFrames();
+}
+
 function clearCameraFrames() {
   $("#monitor-streams img").attr("src", '/zm/skins/modern/views/assets/images/onerror.png');
 }
@@ -195,23 +222,13 @@ function pausePlayback() {
   shouldbeplaying = false;
   playing = false;
   paused = true;
-  timeline.options.showCustomTime = true;
-  timeline.repaintCustomTime();
-  timeline.setCustomTime(timeline.getCurrentTime());
-  timeline.options.showCurrentTime = false;
-  timeline.repaintCurrentTime();
 }
 
 function resumePlayback() {
   shouldbeplaying = true;
   playing = true;
   paused = false;
-  timeline.setCurrentTime(timeline.getCustomTime());
-  timeline.options.showCurrentTime = true;
-  timeline.repaintCurrentTime();
-  timeline.setCustomTime(new Date().getTime());
-  timeline.options.showCustomTime = false;
-  timeline.repaintCustomTime();
+
 }
 
 /* begin third party code */
@@ -283,13 +300,6 @@ function displayFrame(monitorId, img) {
     //$("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }
 
-function clearTimer(eventId, monitorId) {
-  if(typeof(timers[eventId]) !== "undefined") {
-    clearInterval(timers[eventId]);
-    timers[eventId] = 0;
-  }
-}
-
 function requeryTimeline() {
   //console.log("Requerying...");
   if(chosencameras.length > 0) {
@@ -309,7 +319,8 @@ function requeryTimeline() {
         processTimelineData();
         timeline.draw(timelinedata, options);
         timeline.applyRange(start, end);
-        timeline.options.showCurrentTime = true;
+        //remove timeline.options.showCurrentTime = true;
+        timeline.options.showCustomTime = true;
         timeline.redraw();
         ajaxRequests.splice(ajaxRequestId, 1);
         getFrames();
@@ -326,55 +337,66 @@ function requeryTimeline() {
 
 function playbackFrames(monitorId, eventId, imgarray) {
   var x = 0;
-  timers[eventId] = setInterval(function(){
-    // prevent stuttering
-    if(window["currentevents" + monitorId].length > 1) {
-      //console.log("Current events > 1 /// " + window["currentevents" + monitorId]);
-      //get the item before this item in the array
-      var previousEventIndex = window["currentevents" + monitorId].length-2;
-      var previousEventId = window["currentevents" + monitorId][previousEventIndex];
-      //console.log("Removing event /// " + previousEventIndex);
-      window["currentevents" + monitorId].splice(previousEventIndex, 1);
-      clearTimer(previousEventId, monitorId);
-    }
-    // if an event should be being played
-    if (shouldbeplaying === true) {
-      // if there are still frames to play
-      if (x < imgarray.length) {
-        playing = true;
-        displayFrame(monitorId, imgarray[x]);
+  if(!timers.hasOwnProperty(eventId)) {
+    timers[eventId] = setInterval(function(){
+      // prevent stuttering
+      if(window["currentevents" + monitorId].length > 1) {
+        //console.log("Current events > 1 /// " + window["currentevents" + monitorId]);
+        //get the item before this item in the array
+        var previousEventIndex = window["currentevents" + monitorId].length-2;
+        var previousEventId = window["currentevents" + monitorId][previousEventIndex];
+        //console.log("Removing event /// " + previousEventIndex);
+        window["currentevents" + monitorId].splice(previousEventIndex, 1);
+        clearTimer(previousEventId, monitorId);
       }
-      // if there are no more frames to play
+      // if an event should be being played
+      if (shouldbeplaying === true) {
+        // if there are still frames to play
+        if (x < imgarray.length) {
+          playing = true;
+          displayFrame(monitorId, imgarray[x]);
+        }
+        // if there are no more frames to play
+        else {
+          clearTimer(eventId, monitorId);
+          displayFrame(monitorId, '/zm/skins/modern/views/assets/images/onerror.png');
+          window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+          // if gaplessPlayback enabled & the event finishes tidily
+          if(gaplessPlayback === true) {
+            //jumpToNearestEvent(timeline.getCurrentTime());
+            window.setTimeout(function() {
+              jumpToNearestEvent(timeline.getCustomTime());
+            }, 5000);
+          }
+        }
+        x++;
+      }
+      // if an event shouldn't be playing
       else {
-        clearTimer(eventId, monitorId);
-        displayFrame(monitorId, '/zm/skins/modern/views/assets/images/onerror.png');
-        window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
-        // if gaplessPlayback enabled & the event finishes tidily
-        if(gaplessPlayback === true) {
-          jumpToNearestEvent(timeline.getCurrentTime());
+        // if an event has come to an end neatly
+        if(paused === false) {
+          clearTimer(eventId, monitorId);
+          displayFrame(monitorId, '/zm/skins/modern/views/assets/images/onerror.png');
+        }
+        else {
+          displayFrame(monitorId, $("#liveStream" + monitorId).attr("src"));
+        }
+        // if an event has come to an end tidily we should no longer be playing
+        if(window["currentevents" + monitorId].length === 1) {
+          playing = false;
+          shouldbeplaying = false;
+        }
+        // remove the event from the relevant array
+        if(paused === false) {
+          window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
         }
       }
-      x++;
-    }
-    // if an event shouldn't be playing
-    else {
-      // if an event has come to an end neatly
-      if(paused === false) {
-        clearTimer(eventId, monitorId);
-        displayFrame(monitorId, '/zm/skins/modern/views/assets/images/onerror.png');
-      }
-      // if an event has come to an end tidily we should no longer be playing
-      if(window["currentevents" + monitorId].length === 1) {
-        playing = false;
-        shouldbeplaying = false;
-      }
-      // remove the event from the relevant array 
-      window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
-    }
-  },200);
+    },playbackspeed);
+  }
 }
 
 function playEvent(monitorId, eventId) {
+  currentevent = eventId;
   /*This shouldn't be needed, but leaving it here for a few commits in case I haven't fixed the problem
   console.log("monitorId="+monitorId+" & typeof(monitorId)="+typeof(monitorId));
   console.log("chosencameras[0]=" + chosencameras[0] + " & typeof(chosencameras[0])=" + typeof(chosencameras[0]));
@@ -385,7 +407,7 @@ function playEvent(monitorId, eventId) {
     addMonitor(monitorId);
   }
   window["currentevents" + monitorId].push(eventId);
-  console.log("playing event: " + eventId + " on monitor " + monitorId);
+  console.log("playing event: " + eventId + " on monitor " + monitorId + " with speed " + playbackspeed + " and playheadtimer speed " + playheadspeed);
   liveview = false;
   shouldbeplaying = true;
   var tempframes = new Array();
@@ -450,6 +472,7 @@ function addEventToExport(monitorId, eventId, endEventId) {
 }
 
 function jumpToNearestEvent(datetime, direction) {
+  //console.log("jumpToNearestEvent called at " + timeline.getCustomTime());
   direction = (typeof direction === "undefined") ? "forward" : direction;
   var matchFound = false;
   $.each(activity, function(i, v) {
@@ -458,14 +481,16 @@ function jumpToNearestEvent(datetime, direction) {
         if(Date.createFromMysql(v.StartTime) <= datetime) {
           matchFound = true;
           breakplayback = true;
-          timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
+          //timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
+          timeline.setCustomTime(moment(Date.createFromMysql(v.StartTime)).subtract('seconds', 1));
         }
       }
       else {
         if(Date.createFromMysql(v.StartTime) >= datetime) {
           matchFound = true;
           breakplayback = true;
-          timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
+          //timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
+          timeline.setCustomTime(moment(Date.createFromMysql(v.StartTime)).subtract('seconds', 1));
         }
       }
     }
@@ -483,8 +508,16 @@ function setupTimeline() {
   timeline.setVisibleChartRange(start, end, true);
 
   function onselect() {
-    console.log("onselect");
     if(liveview === false) {
+      $(".currently-playing").css("visibility", "visible");
+      $(".playback-date").css("visibility", "visible");
+      $(".playback-time").css("visibility", "visible");
+
+      if(playing === true) {
+        clearPlayback();
+        stopped = false;
+      }
+
       var sel = timeline.getSelection();
 
       timeline.setSelection(null);
@@ -492,12 +525,14 @@ function setupTimeline() {
       if (sel.length) {
         if(sel[0].row != undefined) {
           var itemobj = timeline.getItem(sel[0].row);
-          $("#play").html("<span class\"glyphicon glyphicon-pause\"></span>");
+          $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
           $("#play").attr("id", "pause");
-          timeline.options.showCurrentTime = true;
-          timeline.options.showCustomTime = false;
-          timeline.setCurrentTime(itemobj.start);
-          timeline.repaintCurrentTime();
+          //timeline.options.showCurrentTime = true;
+          timeline.options.showCustomTime = true;
+          //timeline.setCurrentTime(itemobj.start);
+          timeline.setCustomTime(itemobj.start);
+          //timeline.repaintCurrentTime();
+          timeline.repaintCustomTime();
         }
       }
     }
@@ -536,12 +571,15 @@ function toggleShowAllButton(override) {
 function toggleMode() {
   if(liveview === true) {
     liveview = false;
+
     $("#playback").tooltip('destroy');
     $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
     $("#playback").attr("title", "Enter Live View Mode");
     $("#playback").attr("id", "liveview");
     $("#liveview").tooltip();
 
+    $("#speed").show();
+    $("#play").show();
     $("#play").prop("disabled", false);
     $("#export").prop("disabled", false);
     $("#rangestart").prop("disabled", false);
@@ -567,6 +605,12 @@ function toggleMode() {
     $("#liveview").attr("id", "playback");
     $("#playback").tooltip();
 
+    $(".currently-playing").css("visibility", "visible");
+    $(".playback-date").css("visibility", "visible");
+    $(".playback-time").css("visibility", "visible");
+
+    $("#speed").hide();
+    $("#play").hide();
     $("#play").prop("disabled", true);
     $("#export").prop("disabled", true);
     $("#rangestart").prop("disabled", true);
@@ -600,6 +644,43 @@ function getEventIds(start, end) {
     }
   });
   return eventIds;
+}
+
+function newPlayheadTimer() {
+  window.playheadtimer = setInterval(function() {
+    if(paused === false && stopped === false && liveview === false) {
+      timeline.setCustomTime(moment(timeline.getCustomTime()).add('seconds', 1));
+    }
+    if((liveview === false)&&(paused === false)) {
+      var eventsToPlay = new Array();
+      //remove var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
+      //remove var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
+      var date = moment(timeline.getCustomTime()).format('YYYY-MM-DD');
+      var time = moment(timeline.getCustomTime()).format('HH:mm:ss');
+      //var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
+      var datetime = moment(timeline.getCustomTime()).subtract('seconds', 1).format('YYYY-MM-DD HH:mm:ss');
+      //console.log("checking " + datetime);
+      $(".playback-date").text(date);
+      $(".playback-time").text(time);
+      $.each(activity, function(i, v) {
+        if (v.StartTime == datetime) {
+            if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
+              //playEvent(v.MonitorId, v.Id);
+              //playing = true;
+              eventsToPlay.push(v.MonitorId + "," + v.Id);
+            }
+        }
+      });
+      //console.log(eventsToPlay);
+      if(eventsToPlay.length > 0) {
+        $.each(eventsToPlay, function(index, value) {
+          var x = value.split(",");
+          playEvent(x[0], x[1]);
+          playing = true;
+        });
+      }
+    }
+  }, playheadspeed);
 }
 
 $(document).ready(function() { /* begin document ready */
@@ -776,6 +857,7 @@ $(document).ready(function() { /* begin document ready */
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     //console.log("Spliced " + monitorId + " / " + cameras[monitorId-1].Name + " from chosencameras");
     $(this).parent().parent().parent().parent().remove();
+    var monitorSrc = $(this).parent().parent().parent().find(".monitor-stream-image").attr("src");
     $(this).parent().parent().parent().find(".monitor-stream-image").attr("src", "/zm/skins/modern/views/assets/images/onerror.png");
     if(liveview === true) {
       $(".monitor-stream-image").each(function() {
@@ -785,6 +867,52 @@ $(document).ready(function() { /* begin document ready */
     if(liveview === false) {
       requeryTimeline();
     }
+  });
+
+  $(document).on("change", "#speed", function() {
+    //console.log("Change called on #speed");
+    playbackspeed = $(this).val();
+    //console.log("Playback speed is " + playbackspeed + " but should be " + $(this).val());
+    clearInterval(window.playheadtimer);
+    window.playheadtimer = 0;
+    switch(playbackspeed) {
+      case "400":
+        playheadspeed = 2000;
+        break;
+      case "200":
+        playheadspeed = 1000;
+        break;
+      case "100":
+        playheadspeed = 500;
+        break;
+      case "50":
+        playheadspeed = 250;
+        break;
+    }
+    if(playing === true || shouldbeplaying === true || paused === true) {
+      clearPlayback();
+      stopped = false;
+      paused = false;
+      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
+      $("#play").attr("id", "pause");
+      shouldbeplaying = true;
+
+      var value = false;
+      $.each(activity, function(i, v) {
+        if(v.Id == currentevent) {
+          currentEventStartTime = moment(v.StartTime, "YYYY-MM-DD HH:mm:ss").toDate();
+          return false;
+        }
+      });
+
+      noty({ text: "Restarting playback at " + $("#speed").find(":selected").text() + " speed...", type: "success" });
+
+      window.setTimeout(function() {
+        timeline.setCustomTime(currentEventStartTime)
+        jumpToNearestEvent(moment(currentEventStartTime).subtract('seconds', 1));
+      }, 3000);
+    }
+    newPlayheadTimer();
   });
 
   $(document).on("click", ".monitor-stream-image", function() {
@@ -822,9 +950,11 @@ $(document).ready(function() { /* begin document ready */
         close: function(event, ui) {
           $(this).dialog('destroy').remove();
           $(originalMonitorMarkup).appendTo("#monitor-stream-" + monitorID);
-          $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
-          $("#monitor-stream-" + monitorID + " .col-container").removeAttr("style");
-          resumeLiveStreams();
+          if(liveview === true) {
+            $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
+            $("#monitor-stream-" + monitorID + " .col-container").removeAttr("style");
+            resumeLiveStreams();
+          }
           fullscreen = false;
         },
       });
@@ -977,8 +1107,12 @@ $(document).ready(function() { /* begin document ready */
   $(document).on("click", "#timeline", function(event) {
     if(liveview === false) {
       if(event.target.className.length === 0) {
-        shouldbeplaying = false;
-        playing = false;
+        //if(playing === true || paused === true) {
+          paused = false;
+          clearPlayback();
+          stopped = false;
+          newPlayheadTimer();
+        //}
         var offset = $(this).offset();
         timeline.recalcConversion();
         jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
@@ -997,27 +1131,40 @@ $(document).ready(function() { /* begin document ready */
     }, 2000);
   });
 
-  setInterval(function() {
+  window.playheadtimer = setInterval(function() {
+    if(paused === false && stopped === false && liveview === false) {
+      timeline.setCustomTime(moment(timeline.getCustomTime()).add('seconds', 1));
+    }
     if((liveview === false)&&(paused === false)) {
-      var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
-      var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
-      var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
+      var eventsToPlay = new Array();
+      //remove var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
+      //remove var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
+      var date = moment(timeline.getCustomTime()).format('YYYY-MM-DD');
+      var time = moment(timeline.getCustomTime()).format('HH:mm:ss');
+      //var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
+      var datetime = moment(timeline.getCustomTime()).subtract('seconds', 1).format('YYYY-MM-DD HH:mm:ss');
+      //console.log("checking " + datetime);
       $(".playback-date").text(date);
       $(".playback-time").text(time);
       $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
-            playEvent(v.MonitorId, v.Id);
-            playing = true;
-            return;
-          }
-          else {
-            clearTimers();
-          }
+              //playEvent(v.MonitorId, v.Id);
+              //playing = true;
+              eventsToPlay.push(v.MonitorId + "," + v.Id);
+            }
         }
       });
+      //console.log(eventsToPlay);
+      if(eventsToPlay.length > 0) {
+        $.each(eventsToPlay, function(index, value) {
+          var x = value.split(",");
+          playEvent(x[0], x[1]);
+          playing = true;
+        });
+      }
     }
-  },1000);
+  }, playheadspeed);
 
   /* refresh camera thumbnails every 10 seconds */
   setInterval(function(){
