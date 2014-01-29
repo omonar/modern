@@ -127,12 +127,20 @@ function addMonitor(monitorId, showall) {
   if(arguments.length === 1) {
     showall = false;
   }
-  window["currentevents" + monitorId] = new Array();
-  currenteventarrays.push("currentevents" + monitorId);
+  if(liveview === false) {
+    if(playing === true || shouldbeplaying === true || paused === true) {
+      clearPlayback();
+      newPlayheadTimer();
+      stopped = false;
+    }
+  }
   if(showall === false) {
     noty({text: 'Adding camera', type: 'info'});
   }
   if($.inArray(monitorId, chosencameras) === -1) {
+    window["currentevents" + monitorId] = new Array();
+    currenteventarrays.push("currentevents" + monitorId);
+
     var ajaxRequestId = ajaxRequests.length;
     //console.log("adding request in addMonitor " + ajaxRequestId);
     ajaxRequests[ajaxRequestId] = $.ajax({
@@ -160,6 +168,11 @@ function addMonitor(monitorId, showall) {
         }
         
         ajaxRequests.splice(ajaxRequestId, 1);
+
+        if(chosencameras.length > 1) {
+          $("#monitor-stream-" + monitorId).css("width", $(".monitor-stream").first().css("width"));
+          $("#monitor-stream-" + monitorId + " .monitor-stream-image").css("width", "100%");
+        }
       }
     });
   }
@@ -718,6 +731,7 @@ $(document).ready(function() { /* begin document ready */
 
   $('#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
+    stepMinute: 5,
     onClose: function(dateText, inst) {
       setTimeout(function() {
         if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
@@ -739,6 +753,7 @@ $(document).ready(function() { /* begin document ready */
 
   $('#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
+    stepMinute: 5,
     onClose: function(dateText, inst) {
       setTimeout(function() {
         if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
@@ -852,6 +867,14 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(document).on("click", ".monitor-stream-info-close", function(event) {
+    if(liveview === false) {
+      if(playing === true || shouldbeplaying === true || paused === true) {
+        clearPlayback();
+        newPlayheadTimer();
+        stopped = false;
+      }
+    }
+    
     var monitorClass = $(this).parent().parent().parent().parent().attr("id");
     var monitorId = monitorClass.substr(monitorClass.length -1);
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
@@ -915,14 +938,20 @@ $(document).ready(function() { /* begin document ready */
     newPlayheadTimer();
   });
 
+  $(document).on("dblclick", ".monitor-stream-fullscreen", function() {
+    if(liveview === true) {
+      $(this).panzoom("reset");
+    }
+  });
+
   $(document).on("click", ".monitor-stream-image", function() {
     if(fullscreen === false) {
       if(liveview === true) {
         stopLiveStreams();
       }
       var monitorID = $(this).attr("id").match(/\d+/);
-      var width = ($(window).width()-50);
-      var height = ($(window).height()-50);
+      var width = ($(window).width()-10);
+      var height = ($(window).height()-10);
       var monitorWidth = $(this).width();
       var monitorHeight = $(this).height();
       var originalMonitorMarkup = $(this).clone();
@@ -969,8 +998,11 @@ $(document).ready(function() { /* begin document ready */
         $(".monitor-stream-fullscreen").css("width", "100%");
         $(".monitor-stream-fullscreen").css("height", "auto");
       }
+
+      // enable zoom
       var $section = $('.monitor-stream-dialog');
       var $panzoom = $section.find('#liveStream' + monitorID).panzoom();
+      // handle mousewheel scroll zooming
       $panzoom.parent().on('mousewheel.focal', function( e ) {
         e.preventDefault();
         var delta = e.delta || e.originalEvent.wheelDelta;
@@ -978,9 +1010,10 @@ $(document).ready(function() { /* begin document ready */
         $panzoom.panzoom('zoom', zoomOut, {
           increment: 0.1,
           minScale: 1,
-          focal: e
+          //focal: e
         });
       });
+
     }
   });
 
