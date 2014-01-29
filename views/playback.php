@@ -42,7 +42,7 @@
 
         <div id="monitor-streams" class="monitor-streams"></div>
 
-        <div class="controls">
+        <div class="controls-toolbar">
           <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
