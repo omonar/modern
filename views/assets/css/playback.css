@@ -88,10 +88,13 @@ ul.controls-list li {
 }
 
 .timeline {
-  left: 200px;
+  /*left: 200px;
   left: 20rem;
   right: 200px;
   right: 20rem;
+  bottom: 0;*/
+  width: calc(100% - 40rem);
+  left: 20rem;
   bottom: 0;
   position: fixed;
   min-height: 100px;
