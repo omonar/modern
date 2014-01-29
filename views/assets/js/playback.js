@@ -47,9 +47,9 @@ var options = {
   'width':  '100%',
   'height': '170px',
   'editable': false,
-  'showCustomTime': false,
+  'showCustomTime': true,
   'showCurrentTime': false,
-  'style': 'box'
+  'style': 'box',
 };
 $.noty.defaults = {
   layout: 'topRight',
@@ -333,7 +333,7 @@ function requeryTimeline() {
         timeline.draw(timelinedata, options);
         timeline.applyRange(start, end);
         //remove timeline.options.showCurrentTime = true;
-        timeline.options.showCustomTime = true;
+        //timeline.options.showCustomTime = true;
         timeline.redraw();
         ajaxRequests.splice(ajaxRequestId, 1);
         getFrames();
@@ -541,7 +541,7 @@ function setupTimeline() {
           $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
           $("#play").attr("id", "pause");
           //timeline.options.showCurrentTime = true;
-          timeline.options.showCustomTime = true;
+          //timeline.options.showCustomTime = true;
           //timeline.setCurrentTime(itemobj.start);
           timeline.setCustomTime(itemobj.start);
           //timeline.repaintCurrentTime();
@@ -551,7 +551,29 @@ function setupTimeline() {
     }
   }
   links.events.addListener(timeline, 'select', onselect);
+  //timeline.setCustomTime(new Date());
   timeline.draw(null, options);
+
+  $(document).on("mousewheel", "#timeline", function(event) {
+      event.preventDefault();
+
+      timeline.recalcConversion();
+
+      var frameLeft = links.Timeline.getAbsoluteLeft(timeline.dom.content);
+      var mouseX = links.Timeline.getPageX(event);
+      var zoomAroundDate = (mouseX != undefined && frameLeft != undefined) ? timeline.screenToTime(mouseX - frameLeft) : undefined;
+
+      if((event.originalEvent.deltaY <= 0)&&(event.originalEvent.deltaY != -0)) {
+        timeline.zoom(0.3, zoomAroundDate);
+        timeline.trigger("rangechange");
+        timeline.trigger("rangechanged");
+      }
+      else {
+        timeline.zoom(-0.3, zoomAroundDate);
+        timeline.trigger("rangechange");
+        timeline.trigger("rangechanged");
+    }
+  });
 }
 
 function toggleShowAllButton(override) {
@@ -697,10 +719,6 @@ function newPlayheadTimer() {
 }
 
 $(document).ready(function() { /* begin document ready */
-  if(navigator.userAgent.toLowerCase().indexOf('firefox') > 1) {
-    $("body").addClass("firefox");
-    $(".monitor-stream").addClass("col-md-4");
-  }
 
   $("[rel='data-tooltip']").tooltip();
 
