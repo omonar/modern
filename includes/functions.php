@@ -143,7 +143,6 @@ function xhtmlHeaders($file, $title) {
           </style>
           <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline.css" type="text/css" media="screen"/>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
-          <!--<script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.wheelzoom.min.js"></script>-->
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.mousewheel.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.panzoom.min.js"></script>
       <?php
