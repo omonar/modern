@@ -47,7 +47,7 @@
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
                 <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
-                <button class="btn btn-default playback-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="glyphicon glyphicon-play"></span></button>
+                <button class="btn btn-default playback-button playpause-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="glyphicon glyphicon-play"></span></button>
                 <!--<button class="btn btn-default playback-button" id="export" data-rel="tooltip" title="Export Events" disabled><span class="glyphicon glyphicon-floppy-save"></span></button>-->
                 <select class="form-control" id="speed" data-rel="tooltip" title="Change playback speed" style="display: none;">
                   <option value="400">0.5x</option>
