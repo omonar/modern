@@ -19,7 +19,7 @@ var start = new Date();
 var end = new Date();
 start.setHours(0,0,0,0);
 var activity;
-var frames;
+var frames = [];
 var chosencameras = new Array();
 var timelinedata = [];
 var playing = false;
@@ -280,8 +280,33 @@ function setTime(element, refresh, formatting) {
 }
 
 function processTimelineData(rawdata) {
-  $.each(activity, function(index) {
-    timelinedata.push({start: Date.createFromMysql(activity[index].StartTime), end: Date.createFromMysql(activity[index].EndTime), content: activity[index].Id, className: "monitor"+activity[index].MonitorId});
+
+  frames = [];
+
+  $.each(cameras, function(k, b) {
+    frames[Number(b.Id)-1] = new Array();
+  });
+
+  $.each(activity, function(i, v) {
+    timelinedata.push({start: Date.createFromMysql(activity[i].StartTime), end: Date.createFromMysql(activity[i].EndTime), content: activity[i].Id, className: "monitor"+activity[i].MonitorId});
+
+    if(typeof(frames[Number(v.MonitorId)-1][Number(v.Id)]) === "undefined") {
+      frames[Number(v.MonitorId)-1][Number(v.Id)] = new Array();
+    }
+    
+    for(var counter = 1; counter <= Number(v.Frames); counter++) {
+      if(counter<=9) {
+        frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
+      }
+      else {
+        if(counter<=99) {
+          frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
+        }
+        else {
+          frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
+        }
+      }
+    }
   });
 }
 
@@ -336,7 +361,8 @@ function requeryTimeline() {
         //timeline.options.showCustomTime = true;
         timeline.redraw();
         ajaxRequests.splice(ajaxRequestId, 1);
-        getFrames();
+
+
         $("#timeline").css("background-color","");
         noty({text: 'Timeline refreshed', type: 'success'});
       }
@@ -424,8 +450,8 @@ function playEvent(monitorId, eventId) {
   liveview = false;
   shouldbeplaying = true;
   var tempframes = new Array();
-  if(frames[monitorId][eventId]) {
-    $.each(frames[monitorId][eventId], function(i, v) {
+  if(frames[monitorId-1][eventId]) {
+    $.each(frames[monitorId-1][eventId], function(i, v) {
       tempframes.push(v);
     });
   }
@@ -439,6 +465,7 @@ function getFrames() {
     }
     times += moment(v.StartTime).format("YYYY-MM-DD HH:mm:ss");
   });
+
   var ajaxRequestId = ajaxRequests.length;
   //console.log("adding request in getFrames " + ajaxRequestId);
   ajaxRequests[ajaxRequestId] = $.ajax({
@@ -529,6 +556,7 @@ function setupTimeline() {
       if(playing === true) {
         clearPlayback();
         stopped = false;
+        newPlayheadTimer();
       }
 
       var sel = timeline.getSelection();
@@ -538,7 +566,9 @@ function setupTimeline() {
       if (sel.length) {
         if(sel[0].row != undefined) {
           var itemobj = timeline.getItem(sel[0].row);
-          togglePlayPauseButton();
+          if($(".playpause-button").attr("id") === "play") {
+            togglePlayPauseButton();
+          }
           timeline.setCustomTime(itemobj.start);
           timeline.repaintCustomTime();
         }
@@ -804,12 +834,6 @@ $(document).ready(function() { /* begin document ready */
 
   $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
   $('#rangeend').val(moment(end).format('DD/MM/YYYY') + ' ' + moment().format('HH:mm'));
-
-  $( '#timeline' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
-    var delta = e.wheelDelta || -e.detail;
-    this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-    e.preventDefault();
-  });
 
   loadUserDefaultPreset();
 
@@ -1172,7 +1196,9 @@ $(document).ready(function() { /* begin document ready */
         var offset = $(this).offset();
         timeline.recalcConversion();
         jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
-        togglePlayPauseButton();
+        if($(".playpause-button").attr("id") === "play") {
+          togglePlayPauseButton();
+        }
       }
     }
   });
