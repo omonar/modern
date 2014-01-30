@@ -538,20 +538,14 @@ function setupTimeline() {
       if (sel.length) {
         if(sel[0].row != undefined) {
           var itemobj = timeline.getItem(sel[0].row);
-          $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-          $("#play").attr("id", "pause");
-          //timeline.options.showCurrentTime = true;
-          //timeline.options.showCustomTime = true;
-          //timeline.setCurrentTime(itemobj.start);
+          togglePlayPauseButton();
           timeline.setCustomTime(itemobj.start);
-          //timeline.repaintCurrentTime();
           timeline.repaintCustomTime();
         }
       }
     }
   }
   links.events.addListener(timeline, 'select', onselect);
-  //timeline.setCustomTime(new Date());
   timeline.draw(null, options);
 
   $(document).on("mousewheel", "#timeline", function(event) {
@@ -603,6 +597,17 @@ function toggleShowAllButton(override) {
   $(".show-hide-cameras").tooltip();
 }
 
+function togglePlayPauseButton() {
+  if($(".playpause-button").attr("id") === "play") {
+    $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
+    $("#play").attr("id", "pause");
+  }
+  else {
+    $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+    $("#pause").attr("id", "play");
+  }
+}
+
 function toggleMode() {
   if(liveview === true) {
     liveview = false;
@@ -619,6 +624,10 @@ function toggleMode() {
     $("#export").prop("disabled", false);
     $("#rangestart").prop("disabled", false);
     $("#rangeend").prop("disabled", false);
+
+    $(".currently-playing").css("visibility", "visible");
+    $(".playback-date").css("visibility", "visible");
+    $(".playback-time").css("visibility", "visible");
 
     if($("#choose-cameras").dialog("isOpen")===true) {
       $("#choose-cameras").dialog("close");
@@ -640,9 +649,9 @@ function toggleMode() {
     $("#liveview").attr("id", "playback");
     $("#playback").tooltip();
 
-    $(".currently-playing").css("visibility", "visible");
-    $(".playback-date").css("visibility", "visible");
-    $(".playback-time").css("visibility", "visible");
+    $(".currently-playing").css("visibility", "hidden");
+    $(".playback-date").css("visibility", "hidden");
+    $(".playback-time").css("visibility", "hidden");
 
     $("#speed").hide();
     $("#play").hide();
@@ -934,8 +943,7 @@ $(document).ready(function() { /* begin document ready */
       clearPlayback();
       stopped = false;
       paused = false;
-      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-      $("#play").attr("id", "pause");
+      togglePlayPauseButton();
       shouldbeplaying = true;
 
       var value = false;
@@ -1090,8 +1098,7 @@ $(document).ready(function() { /* begin document ready */
     if (paused === true) {
       window.stop();
       resumePlayback();
-      $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-      $("#play").attr("id", "pause");
+      togglePlayPauseButton();
     }
   });
 
@@ -1157,18 +1164,15 @@ $(document).ready(function() { /* begin document ready */
 
   $(document).on("click", "#timeline", function(event) {
     if(liveview === false) {
-      if(event.target.className.length === 0) {
-        //if(playing === true || paused === true) {
-          paused = false;
-          clearPlayback();
-          stopped = false;
-          newPlayheadTimer();
-        //}
+      if(event.target.className !== "timeline-event" && event.target.className !== "timeline-event-content") {
+        paused = false;
+        clearPlayback();
+        stopped = false;
+        newPlayheadTimer();
         var offset = $(this).offset();
         timeline.recalcConversion();
         jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
-        $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-        $("#play").attr("id", "pause");
+        togglePlayPauseButton();
       }
     }
   });
@@ -1188,25 +1192,18 @@ $(document).ready(function() { /* begin document ready */
     }
     if((liveview === false)&&(paused === false)) {
       var eventsToPlay = new Array();
-      //remove var date = moment(timeline.getCurrentTime()).format('YYYY-MM-DD');
-      //remove var time = moment(timeline.getCurrentTime()).format('HH:mm:ss');
       var date = moment(timeline.getCustomTime()).format('YYYY-MM-DD');
       var time = moment(timeline.getCustomTime()).format('HH:mm:ss');
-      //var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
       var datetime = moment(timeline.getCustomTime()).subtract('seconds', 1).format('YYYY-MM-DD HH:mm:ss');
-      //console.log("checking " + datetime);
       $(".playback-date").text(date);
       $(".playback-time").text(time);
       $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
-              //playEvent(v.MonitorId, v.Id);
-              //playing = true;
               eventsToPlay.push(v.MonitorId + "," + v.Id);
             }
         }
       });
-      //console.log(eventsToPlay);
       if(eventsToPlay.length > 0) {
         $.each(eventsToPlay, function(index, value) {
           var x = value.split(",");
