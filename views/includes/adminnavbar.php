@@ -21,7 +21,30 @@
           <li class="dropdown-header">Edit Existing</li>
           <?php
             foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
-              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'] . "</a></li>";
+              $monitorClass = "monitor-unknown";
+              if(!daemonStatus("zmc", "-m $camera[Id]")) {
+                $monitorClass = "monitor-down";
+              }
+              if(!daemonStatus("zma", "-m $camera[Id]")) {
+                $monitorClass = "monitor-warning";
+              }
+              else {
+                $monitorClass = "monitor-ok";
+              }
+
+              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'];
+              switch($monitorClass) {
+                case "monitor-down":
+                  echo " <span style=\"color: green;\" class=\"glyphicon glyphicon-warning-sign\"></span>";
+                  break;
+                case "monitor-warning":
+                  echo " <span style=\"color: orange;\" class=\"glyphicon glyphicon-warning-sign\"></span>";
+                  break;
+                case "monitor-ok":
+                  echo " <span style=\"color: green;\" class=\"glyphicon glyphicon-ok-circle\"></span>";
+                  break;
+              }
+              echo "</a></li>";
             }
           ?>
         </ul>
