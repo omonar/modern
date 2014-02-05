@@ -61,56 +61,6 @@
 		}
 	}
 
-	if(isset($_REQUEST['q'])) {
-		$query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE ";
-		$datetimes = explode(",", $_REQUEST['q']);
-		$i=0;
-		foreach($datetimes as $datetime) {
-			if($i !== 0) {
-				$query .= " OR ";
-			}
-			$query .= "StartTime='{$datetime}'";
-			$i++;
-		}
-
-		$results = dbFetchAll($query);
-
-    	$scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
-
-		foreach ($results as $result) {
-			for($counter = 1; $counter <= $result['Frames']; $counter++) {
-		        $event['Id']=$result['Id'];
-		        $event['StartTime']=$result['StartTime'];
-		        $event['MonitorId']=$result['MonitorId'];
-				$imageData = getImageSrc($event, $counter, $scale, (isset($_REQUEST['show']) && $_REQUEST['show']=="capt"));
-		        $imagePath = $imageData['thumbPath'];
-		        $eventPath = $imageData['eventPath'];
-		        $dImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-d.jpg", $eventPath, $counter);
-		        $rImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-r.jpg", $eventPath, $counter);
-		        $frames[$result['MonitorId']][$result['Id']][] = "/zm/" . viewImagePath($imagePath);
-			}
-		}
-    	echo json_encode($frames);
-	}
-
-	if(isset($_REQUEST['eventPath'])) {
-		if(!is_numeric($_REQUEST['eventId'])) {
-			die("ERROR: Invalid eventId " . print_r($_REQUEST['eventId']));
-		}
-		$query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE Id=" . $_REQUEST['eventId'];
-
-		$results = dbFetchAll($query);
-    	$scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
-		foreach ($results as $result) {
-			$event['Id']=$result['Id'];
-	        $event['StartTime']=$result['StartTime'];
-	        $event['MonitorId']=$result['MonitorId'];
-			$imageData = getImageSrc($event, $counter, $scale, (isset($_REQUEST['show']) && $_REQUEST['show']=="capt"));
-	        $eventPath = $imageData['eventPath'];
-	        echo "/zm/" . viewImagePath($eventPath);
-		}
-	}
-
 	if (isset($_REQUEST['timeline'])) {
 		$numRows = dbFetchOne("SELECT COUNT(Id) AS NUMROWS FROM Events");
 		$numRows = $numRows['NUMROWS'];
