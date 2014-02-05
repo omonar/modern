@@ -145,6 +145,9 @@ function xhtmlHeaders($file, $title) {
           <script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.mousewheel.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.panzoom.min.js"></script>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/core.js"></script>
+          <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.capty.min.js"></script>
+          <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery.capty.min.css">
       <?php
        }
       ?>
