@@ -210,6 +210,7 @@ function clearPlayback() {
   shouldbeplaying = false;
   playing = false;
   stopped = true;
+  buffering = false;
   clearInterval(window.playheadtimer);
   window.playheadtimer = 0;
   clearTimers();
@@ -774,6 +775,12 @@ $(document).ready(function() { /* begin document ready */
       setTimeout(function() {
         if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
           if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+            if(playing === true || shouldbeplaying === true || paused === true) {
+              clearPlayback();
+              newPlayheadTimer();
+              stopped = false;
+              togglePlayPauseButton();
+            }
             start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
             end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
             requeryTimeline();
@@ -796,6 +803,12 @@ $(document).ready(function() { /* begin document ready */
       setTimeout(function() {
         if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
           if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+            if(playing === true || shouldbeplaying === true || paused === true) {
+              clearPlayback();
+              newPlayheadTimer();
+              stopped = false;
+              togglePlayPauseButton();
+            }
             start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
             end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
             requeryTimeline();
