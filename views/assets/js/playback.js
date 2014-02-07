@@ -48,6 +48,7 @@ var options = {
   'width':  '100%',
   'height': '170px',
   'editable': false,
+  'cluster': true,
   'showCustomTime': true,
   'showCurrentTime': false,
   'style': 'box',
@@ -214,6 +215,7 @@ function clearPlayback() {
   clearInterval(window.playheadtimer);
   window.playheadtimer = 0;
   clearTimers();
+  currentevent = null;
   $.each(currenteventarrays, function(index, value) {
     window[value] = [];
   });
@@ -291,37 +293,6 @@ function setTime(element, refresh, formatting) {
   },refresh);
 }
 
-function processTimelineData(rawdata) {
-
-  frames = [];
-
-  $.each(cameras, function(k, b) {
-    frames[Number(b.Id)-1] = new Array();
-  });
-
-  $.each(activity, function(i, v) {
-    timelinedata.push({start: Date.createFromMysql(activity[i].StartTime), end: Date.createFromMysql(activity[i].EndTime), content: activity[i].Id, className: "monitor"+activity[i].MonitorId});
-
-    if(typeof(frames[Number(v.MonitorId)-1][Number(v.Id)]) === "undefined") {
-      frames[Number(v.MonitorId)-1][Number(v.Id)] = new Array();
-    }
-    
-    for(var counter = 1; counter <= Number(v.Frames); counter++) {
-      if(counter<=9) {
-        frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
-      
-}      else {
-        if(counter<=99) {
-          frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
-        }
-        else {
-          frames[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + moment(v.StartTime).format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
-        }
-      }
-    }
-  });
-}
-
 function loadUserDefaultPreset() {
   if($("#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
     var presetMonitorIds = $("#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
@@ -339,16 +310,6 @@ function loadUserDefaultPreset() {
   }
 }
 
-function preloadFrames(imgarray) {
-  for(var i = 0; i < imgarray.length; i++) {
-    var imgObj = new Image();
-    imgObj.src = imgarray[i];
-    if(i === (imgarray.length-1)) {
-      return true;
-    }
-  }
-}
-
 function displayFrame(monitorId, img) {
     $("#liveStream" + monitorId).attr('src', img);
     //$("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
@@ -357,7 +318,7 @@ function displayFrame(monitorId, img) {
 function requeryTimeline() {
   //console.log("Requerying...");
   if(chosencameras.length > 0) {
-    $("#timeline").css("background-color","red");
+    $(".timeline-frame").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
     var ajaxRequestId = ajaxRequests.length;
@@ -367,31 +328,50 @@ function requeryTimeline() {
       url: 'index.php?view=onefiletorulethemall',
       data: {timeline: 'ok', cameras: chosencameras.join(","), start: startformatted, end: endformatted},
       beforeSend: function() {
-        timers["timeline"] = setInterval(function() {
-          noty({ text: "Downloading event data...", type: "info" });
-        }, 4000);
+        noty({ text: "Downloading data...", type: "info" });
       },
       success: function(data) {
-        if(typeof(timers["timeline"]) != "undefined") {
-          clearInterval(timers["timeline"]);
-          timers["timeline"] = 0;
-          delete timers["timeline"];
-        }
-
-        timelinedata = [];
-        activity = [];
+        noty({ text: "Processing data", type: "info" });
         activity = JSON.parse(data);
-        processTimelineData();
-        timeline.draw(timelinedata, options);
-        timeline.applyRange(start, end);
-        //remove timeline.options.showCurrentTime = true;
-        //timeline.options.showCustomTime = true;
-        timeline.redraw();
-        ajaxRequests.splice(ajaxRequestId, 1);
+        var timelineWorker = new Worker("/zm/skins/modern/views/assets/js/processtimeline.js");
+        noty({ text: "Updating timeline...", type: "info" });
 
+        timelineWorker.addEventListener('message', function(e) {
+          if(e.data.indexOf("###") != -1) {
+            var x = e.data.split("###");
+            switch(x[0]) {
+              case "timelinedata":
+                window.timelinedata = JSON.parse(x[1]);
+                break;
+              case "myframes":
+                window.frames = JSON.parse(x[1]);
+                break;
+            }
+          }
+          else {
+            if(e.data === "success") {
+              window.processedtimelinedata = [];
+              $.each(timelinedata, function(index, value) {
+                value.start = moment(value.start);
+                value.end = moment(value.end);
+                window.processedtimelinedata.push(value);
+              });
+              delete window.timelinedata;
+              timelinedata = window.processedtimelinedata;
+              timeline.draw(timelinedata, options);
+              timeline.applyRange(start, end);
+              timeline.redraw();
+              ajaxRequests.splice(ajaxRequestId, 1);
+              $(".timeline-frame").css("background-color","");
+              noty({text: 'Timeline updated (' + timelinedata.length + " events)", type: 'success'});
+            }
+          }
+        }, false);
 
-        $("#timeline").css("background-color","");
-        noty({text: 'Timeline refreshed', type: 'success'});
+        timelineWorker.postMessage("cameras###" + JSON.stringify(cameras));
+        timelineWorker.postMessage("activity###" + data);
+        timelineWorker.postMessage("start");
+
       }
     });
   }
@@ -461,6 +441,17 @@ function playbackFrames(monitorId, eventId, imgarray) {
   }
 }
 
+function preloadFrames(imgarray) {
+  for(var i = 0; i < imgarray.length; i++) {
+    var imgObj = new Image();
+    imgObj.src = imgarray[i];
+    if(i === (imgarray.length-1)) {
+      toggleBufferingState(false);
+      return true;
+    }
+  }
+}
+
 function playEvent(monitorId, eventId) {
   toggleBufferingState(true);
   currentevent = eventId;
@@ -484,11 +475,10 @@ function playEvent(monitorId, eventId) {
     });
   }
 
-  Core.preloader.queue(tempframes).preload(function(ui) {
-    console.log("Preloaded in " + ui.time);
-    toggleBufferingState(false);
+  if(preloadFrames(tempframes) === true) {
+    console.log("Preloaded event " + eventId + " on " + monitorId);
     playbackFrames(monitorId, eventId, tempframes);
-  });
+  }
 }
 
 function jumpToNearestEvent(datetime, direction) {
@@ -622,6 +612,14 @@ function toggleMode() {
   if(liveview === true) {
     liveview = false;
 
+    // if there have been cameras selected
+    if($.trim($("#monitor-streams").html()).length) {
+      $(".monitor-stream-image").each(function() {
+        $(this).attr("data-livesrc", $(this).attr("src"));
+        $(this).attr("src", errorImageSrc);
+      });
+    }
+
     $("#playback").tooltip('destroy');
     $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
     $("#playback").attr("title", "Enter Live View Mode");
@@ -641,13 +639,6 @@ function toggleMode() {
 
     if($("#choose-cameras").dialog("isOpen")===true) {
       $("#choose-cameras").dialog("close");
-    }
-    // if there have been cameras selected
-    if($.trim($("#monitor-streams").html()).length) {
-      $(".monitor-stream-image").each(function() {
-        $(this).attr("data-livesrc", $(this).attr("src"));
-        $(this).attr("src", errorImageSrc);
-      });
     }
     requeryTimeline();
   }
@@ -674,6 +665,8 @@ function toggleMode() {
     $(".playback-time").text("00:00:00");
 
     stopPlayback();
+
+    clearPlayback();
     // if there have been cameras selected
     window.setTimeout(function() {
       if($.trim($("#monitor-streams").html()).length) {
@@ -771,58 +764,74 @@ $(document).ready(function() { /* begin document ready */
   $('#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
+    onSelect: function() {
+      if(ajaxRequests.length > 0) {
+        noty({ text: "Still processing existing request...", type: "info" });
+        $(this).datetimepicker("hide");
+      }
+    },
     onClose: function(dateText, inst) {
-      setTimeout(function() {
-        if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
-          if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-            if(playing === true || shouldbeplaying === true || paused === true) {
-              clearPlayback();
-              newPlayheadTimer();
-              stopped = false;
-              togglePlayPauseButton();
+      if(ajaxRequests.length > 0) {
+        setTimeout(function() {
+          if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
+            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+              if(playing === true || shouldbeplaying === true || paused === true) {
+                clearPlayback();
+                newPlayheadTimer();
+                stopped = false;
+                togglePlayPauseButton();
+              }
+              start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+              end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+              requeryTimeline();
             }
-            start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-            end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-            requeryTimeline();
           }
-        }
-        else {
-          var temprangestart = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-          temprangestart.setDate(temprangestart.getDate() - 1);
-          $("#rangestart").val(moment(temprangestart).format('D/M/YYYY h:mm'));
-          noty({text: 'Range start cannot be after range end!', type: 'error'});
-        }
-      }, 200);
+          else {
+            var temprangestart = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+            temprangestart.setDate(temprangestart.getDate() - 1);
+            $("#rangestart").val(moment(temprangestart).format('D/M/YYYY h:mm'));
+            noty({text: 'Range start cannot be after range end!', type: 'error'});
+          }
+        }, 200);
+      }
     }
   });
 
   $('#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
+    onSelect: function() {
+      if(ajaxRequests.length > 0) {
+        noty({ text: "Still processing existing request...", type: "info" });
+        $(this).datetimepicker("hide");
+      }
+    },
     onClose: function(dateText, inst) {
-      setTimeout(function() {
-        if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
-          if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-            if(playing === true || shouldbeplaying === true || paused === true) {
-              clearPlayback();
-              newPlayheadTimer();
-              stopped = false;
-              togglePlayPauseButton();
+      if(ajaxRequests.length > 0) {
+        setTimeout(function() {
+          if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
+            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+              if(playing === true || shouldbeplaying === true || paused === true) {
+                clearPlayback();
+                newPlayheadTimer();
+                stopped = false;
+                togglePlayPauseButton();
+              }
+              start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+              end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+              requeryTimeline();
             }
-            start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-            end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-            requeryTimeline();
           }
-        }
-        else {
-          if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isSame($("#rangestart").val())) {
-            var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-            temprangeend.setDate(temprangeend.getDate() + 1);
-            $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
-            noty({text: 'Range end cannot be before range start!', type: 'error'});
+          else {
+            if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isSame($("#rangestart").val())) {
+              var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+              temprangeend.setDate(temprangeend.getDate() + 1);
+              $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
+              noty({text: 'Range end cannot be before range start!', type: 'error'});
+            }
           }
-        }
-      }, 200);
+        }, 200);
+      }
     }
   });
 
@@ -985,9 +994,7 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(document).on("dblclick", ".monitor-stream-fullscreen", function() {
-    if(liveview === true) {
-      $(this).panzoom("reset");
-    }
+    $(this).panzoom("reset");
   });
 
   $(document).on("click", ".monitor-stream-image", function() {
@@ -1053,7 +1060,7 @@ $(document).ready(function() { /* begin document ready */
         $panzoom.panzoom('zoom', zoomOut, {
           increment: 0.1,
           minScale: 1,
-          //focal: e
+          focal: e
         });
       });
 
