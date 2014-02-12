@@ -88,6 +88,7 @@ function pullValuesFromForm() {
 }
 
 $(document).ready(function() { /* begin document ready */
+
   $(".init-colorbox").colorbox({
     iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100,
     onClosed: function() {
@@ -371,19 +372,6 @@ $(document).ready(function() { /* begin document ready */
       }
     });
   });
-
-  /*$(document).on("click", ".edit-monitor", function(event) {
-    event.preventDefault();
-    $.ajax({
-      url: "index.php?view=editmonitor",
-      data: { mid: $(this).attr("data-monitorid") },
-      success: function(data) {
-        $(".container").html(data);
-        toggleSourceTabElements();
-        pullValuesFromForm();
-      }
-    });
-  });*/
 
   $(document).on("change", "#Type", function() {
     toggleSourceTabElements();
