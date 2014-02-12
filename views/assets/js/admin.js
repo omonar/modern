@@ -350,13 +350,22 @@ $(document).ready(function() { /* begin document ready */
     event.preventDefault();
     $.ajax({
       url: "index.php?view=onefiletorulethemall",
+      cache: false,
       data: {getVersionFromGithub: true},
       success: function(data) {
-        if(parseFloat(skinVersion) == parseFloat(data)) {
-          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>");
-        }
-        if(parseFloat(data) > parseFloat(skinVersion)) {
+        var dataArray = data.split(".");
+        var skinArray = skinVersion.split(".");
+        var skinUpdateAvailable = false;
+        $.each(dataArray, function(index, value) {
+          if(parseInt(value) > parseInt(skinArray[index])) {
+            skinUpdateAvailable = true;
+          }
+        });
+        if(skinUpdateAvailable === true) {
           $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
+        }
+        else {
+          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>");
         }
       }
     });
