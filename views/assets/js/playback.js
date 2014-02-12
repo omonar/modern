@@ -112,6 +112,19 @@ $(function() {
 });
 /* end third party code */
 
+$(document).ajaxStop(function() {
+  if(ajaxRequests.length > 0) {
+    if(ajaxRequests.length === 1) {
+      ajaxRequests.splice(0, 1);
+    }
+    else {
+      for(var i = 0; i < (ajaxRequests.length -1); i++) {
+        ajaxRequests.splice(i, 1);
+      }
+    }
+  }
+});
+
 function stopLiveStreams() {
   $(".monitor-stream-image").each(function() {
     $(this).attr("data-livesrc", $(this).attr("src"));
@@ -137,7 +150,7 @@ function addMonitor(monitorId, showall) {
     }
   }
   if(showall === false) {
-    noty({text: 'Adding camera', type: 'info'});
+    noty({text: 'Adding camera...', type: 'info'});
   }
   if($.inArray(monitorId, chosencameras) === -1) {
     window["currentevents" + monitorId] = new Array();
@@ -156,7 +169,7 @@ function addMonitor(monitorId, showall) {
           $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p>' + data + '</div></div>').appendTo('#monitor-streams');
         }
         else {
-          $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" src="' + errorImageSrc + '" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
+          $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" data-livesrc="' + $(data).attr("src") + '" src="' + errorImageSrc + '" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
         }
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
         $("#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
@@ -168,13 +181,15 @@ function addMonitor(monitorId, showall) {
         if((showall === true)&&(monitorId==cameras[cameras.length-1].Id)&&(liveview===false)) {
           requeryTimeline();
         }
-        
-        ajaxRequests.splice(ajaxRequestId, 1);
 
         if(chosencameras.length > 1) {
           $("#monitor-stream-" + monitorId).css("width", $(".monitor-stream").first().css("width"));
           $("#monitor-stream-" + monitorId + " .monitor-stream-image").css("width", "100%");
         }
+      },
+      complete: function() {
+        //console.log("removing request in addMonitor " + ajaxRequestId);
+        ajaxRequests.splice(ajaxRequestId, 1);
       }
     });
   }
@@ -361,7 +376,6 @@ function requeryTimeline() {
               timeline.draw(timelinedata, options);
               timeline.applyRange(start, end);
               timeline.redraw();
-              ajaxRequests.splice(ajaxRequestId, 1);
               $(".timeline-frame").css("background-color","");
               noty({text: 'Timeline updated (' + timelinedata.length + " events)", type: 'success'});
             }
@@ -372,6 +386,10 @@ function requeryTimeline() {
         timelineWorker.postMessage("activity###" + data);
         timelineWorker.postMessage("start");
 
+      },
+      complete: function() {
+        //console.log("removing request in requeryTimeline " + ajaxRequestId);
+        ajaxRequests.splice(ajaxRequestId, 1);
       }
     });
   }
@@ -730,6 +748,18 @@ function newPlayheadTimer() {
   }, playheadspeed);
 }
 
+function prequeryTimeline() {
+  if(playing === true || shouldbeplaying === true || paused === true) {
+    clearPlayback();
+    newPlayheadTimer();
+    stopped = false;
+    togglePlayPauseButton();
+  }
+  start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+  end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+  requeryTimeline();
+}
+
 $(document).ready(function() { /* begin document ready */
 
   $("[data-rel='tooltip']").tooltip();
@@ -767,23 +797,27 @@ $(document).ready(function() { /* begin document ready */
     onClose: function(dateText, inst) {
       if(ajaxRequests.length == 0) {
         setTimeout(function() {
-          if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
+          if( moment($("#rangestart").val(), 'DD/MM/YYYY HH:mm') < moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm')) {
             if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-              if(playing === true || shouldbeplaying === true || paused === true) {
-                clearPlayback();
-                newPlayheadTimer();
-                stopped = false;
-                togglePlayPauseButton();
+              if((chosencameras.length>2)&&(Math.abs(moment(moment($("#rangestart").val())).diff(end, "hour")) > 24)) {
+                noty({ text: "Large range detected...", type: "warning" });
+                window.setTimeout(function() {
+                  noty({ text: "Adjusting selected range...", type: "info" });
+                  window.setTimeout(function() {
+                    $("#rangeend").val( moment($("#rangestart").val(), "DD/MM/YYYY HH:mm").add(24, "hours").format("DD/MM/YYYY HH:mm") );
+                    prequeryTimeline();
+                   }, 3000);
+                }, 2000);
               }
-              start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-              end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-              requeryTimeline();
+              else {
+                prequeryTimeline();
+              }
             }
           }
           else {
-            var temprangestart = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+            var temprangestart = moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm').toDate();
             temprangestart.setDate(temprangestart.getDate() - 1);
-            $("#rangestart").val(moment(temprangestart).format('D/M/YYYY h:mm'));
+            $("#rangestart").val(moment(temprangestart).format('DD/MM/YYYY HH:mm'));
             noty({text: 'Range start cannot be after range end!', type: 'error'});
           }
         }, 200);
@@ -801,17 +835,21 @@ $(document).ready(function() { /* begin document ready */
     onClose: function(dateText, inst) {
       if(ajaxRequests.length == 0) {
         setTimeout(function() {
-          if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
+          if( moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm') > moment($("#rangestart").val(), 'DD/MM/YYYY HH:mm')) {
             if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-              if(playing === true || shouldbeplaying === true || paused === true) {
-                clearPlayback();
-                newPlayheadTimer();
-                stopped = false;
-                togglePlayPauseButton();
+              if((chosencameras.length>2)&&(Math.abs(moment(moment($("#rangestart").val())).diff(end, "hour")) > 24)) {
+                noty({ text: "Large range detected...", type: "warning" });
+                window.setTimeout(function() {
+                  noty({ text: "Adjusting selected range...", type: "info" });
+                  window.setTimeout(function() {
+                    $("#rangestart").val( moment($("#rangeend").val(), "DD/MM/YYYY HH:mm").subtract(24, "hours").format("DD/MM/YYYY HH:mm") );
+                    prequeryTimeline();
+                   }, 3000);
+                }, 2000);
               }
-              start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-              end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
-              requeryTimeline();
+              else {
+                prequeryTimeline();
+              }
             }
           }
           else {
@@ -1155,19 +1193,24 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(".monitor-thumbnail").click(function() {
-    haschosencameras = true;
-    var monitorClass = $(this).attr("id");
-    var monitorId = monitorClass.substr(monitorClass.length - 1);
-    if($('#monitor-stream-' + monitorId).length == 0) {
-      addMonitor(monitorId);
+    if(ajaxRequests.length == 0) {
+      haschosencameras = true;
+      var monitorClass = $(this).attr("id");
+      var monitorId = monitorClass.substr(monitorClass.length - 1);
+      if($('#monitor-stream-' + monitorId).length == 0) {
+        addMonitor(monitorId);
+      }
+      else {
+        $("#monitor-stream-" + monitorId).remove();
+        chosencameras.splice(chosencameras.indexOf(monitorId), 1);
+        requeryTimeline();
+        if(!$(".monitor-stream")[0]) {
+          liveview = false;
+        }
+      }
     }
     else {
-      $("#monitor-stream-" + monitorId).remove();
-      chosencameras.splice(chosencameras.indexOf(monitorId), 1);
-      requeryTimeline();
-      if(!$(".monitor-stream")[0]) {
-        liveview = false;
-      }
+      noty({ text: "Please wait, still adding another camera...", type: "warning" });
     }
   });
 
