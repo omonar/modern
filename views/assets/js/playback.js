@@ -764,14 +764,8 @@ $(document).ready(function() { /* begin document ready */
   $('#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
-    onSelect: function() {
-      if(ajaxRequests.length > 0) {
-        noty({ text: "Still processing existing request...", type: "info" });
-        $(this).datetimepicker("hide");
-      }
-    },
     onClose: function(dateText, inst) {
-      if(ajaxRequests.length > 0) {
+      if(ajaxRequests.length == 0) {
         setTimeout(function() {
           if( moment($("#rangestart").val(), 'D/M/YYYY h:mm') < moment($("#rangeend").val(), 'D/M/YYYY h:mm')) {
             if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
@@ -794,20 +788,18 @@ $(document).ready(function() { /* begin document ready */
           }
         }, 200);
       }
+      else {
+        noty({ text: "Still processing existing request...", type: "info" });
+        $(this).datetimepicker("hide");
+      }
     }
   });
 
   $('#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
-    onSelect: function() {
-      if(ajaxRequests.length > 0) {
-        noty({ text: "Still processing existing request...", type: "info" });
-        $(this).datetimepicker("hide");
-      }
-    },
     onClose: function(dateText, inst) {
-      if(ajaxRequests.length > 0) {
+      if(ajaxRequests.length == 0) {
         setTimeout(function() {
           if( moment($("#rangeend").val(), 'D/M/YYYY h:mm') > moment($("#rangestart").val(), 'D/M/YYYY h:mm')) {
             if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
@@ -831,6 +823,10 @@ $(document).ready(function() { /* begin document ready */
             }
           }
         }, 200);
+      }
+      else {
+        noty({ text: "Still processing existing request...", type: "info" });
+        $(this).datetimepicker("hide");
       }
     }
   });
