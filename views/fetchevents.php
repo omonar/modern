@@ -14,13 +14,44 @@
     if(isset($_REQUEST['chosencameras']) && $_REQUEST['chosencameras'] != "null") {
       $chosencameras = json_decode($_REQUEST['chosencameras']);
     }
+    switch($_REQUEST['orderby']) {
+      case "eventid":
+        $orderString = " ORDER BY Events.Id";
+        break;
+      case "camera":
+        $orderString = " ORDER BY Events.MonitorId";
+        break;
+      case "eventname":
+        $orderString = " ORDER BY Events.Name";
+        break;
+      case "starttime":
+        $orderString = " ORDER BY Events.StartTime";
+        break;
+      case "endtime":
+        $orderString = " ORDER BY Events.EndTime";
+        break;
+      case "length":
+        $orderString = " ORDER BY Events.Length";
+        break;
+      default:
+        $orderString = " ORDER BY Events.Id";
+        break;
+    }
+    switch($_REQUEST['orderdirection']) {
+      case "asc":
+        $orderDirection = " ASC";
+        break;
+      case "desc":
+        $orderDirection = " DESC";
+        break;
+    } 
     switch($_REQUEST['timeframe']) {
       case "all":
         $query = "SELECT * FROM Events ";
         if(isset($chosencameras)) {
           $query .= "WHERE MonitorId IN ('" . implode("','", $chosencameras) . "')";
         }
-        $query .= " LIMIT $limit";
+        $query .= "$orderString $orderDirection LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events";
         break;
       case "today":
@@ -28,7 +59,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
         }
-        $query .= " DATE(StartTime) = CURDATE() LIMIT $limit";
+        $query .= " DATE(StartTime) = CURDATE() $orderString $orderDirection LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) = CURDATE()";
         break;
       case "week":
@@ -36,7 +67,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
-        $query .= " DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY LIMIT $limit";
+        $query .= " DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY $orderString $orderDirection LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY";
         break;
       case "month":
@@ -44,7 +75,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
-        $query .= " DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH) LIMIT $limit";
+        $query .= " DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH) $orderString $orderDirection LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH)";
         break;
       case "custom":
@@ -52,7 +83,7 @@
         if(isset($chosencameras)) {
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
-        $query .= " StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]' LIMIT $limit";
+        $query .= " StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]' $orderString $orderDirection LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]'";
         break;
     }
@@ -61,6 +92,7 @@
       die("ERROR: Failed to fetch events!<br>" . $query);
     }
     else {
+      //echo $query; echo "<br>";
       $skipColumns = array(0 => "Archived", 1 => "Videoed", 2 => "Uploaded", 3 => "Emailed", 4 => "Messaged", 5 => "Executed", 6 => "Width", 7 => "Height", 8 => "Notes", 9 => "Frames", 10 => "AlarmFrames", 11 => "TotScore", 12 => "AvgScore", 13 => "MaxScore");
       echo "<table class=\"table table-striped\">";
       echo "<thead><tr><td>Event Id</td><td>Camera</td><td>Name</td><td>Cause</td><td>Start Time</td><td>End Time</td><td>Length</td></tr></thead>";

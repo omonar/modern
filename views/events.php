@@ -61,7 +61,35 @@
             </div>
           </div>
 
-          <div id="custom-range-filters" style="display: none;" class="col-md-3">
+          <div class="col-md-2">
+            <div class="well well-sm">
+              <p>Order By</p>
+
+              <select id="orderby" class="form-control">
+                <option value="eventid" selected>Event ID</option>
+                <option value="camera">Camera</option>
+                <option value="eventname">Event Name</option>
+                <option value="starttime">Start Date/Time</option>
+                <option value="endtime">End Date/Time</option>
+                <option value="length">Event Length</option>
+              </select>
+
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="well well-sm">
+              <p>Order Direction</p>
+
+              <select id="orderdirection" class="form-control">
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+
+            </div>
+          </div>
+
+          <div id="custom-range-filters" style="display: none;" class="col-md-4">
             <div class="well well-sm">
               <label for="startdatetime">Start Date & Time</label>
               <input id="startdatetime" name="startdatetime" type="text" class="form-control hasDatePicker">
@@ -92,6 +120,7 @@
         var startdatetime = "<?= $_REQUEST['startdatetime']; ?>";
         var enddatetime = "<?= $_REQUEST['enddatetime']; ?>";
         var chosencameras = "<?= $_REQUEST['chosencameras']; ?>";
+        var orderby = "<?= $_REQUEST['orderby']; ?>";
 
         $("#custom-timeframe").attr("checked", "");
 
@@ -105,9 +134,11 @@
         $("#custom-range-filters").show();
 
         $("#startdatetime").val(startdatetime);
-        $("#enddatetime").val(enddatetime);        
+        $("#enddatetime").val(enddatetime);     
 
-        getEvents(null, chosencameras.split(","), timeframe, startdatetime, enddatetime);
+        $("#orderby").val(orderby);
+
+        getEvents(null, chosencameras.split(","), timeframe, startdatetime, enddatetime, orderby);
       </script>
   <?php
     }

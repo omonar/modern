@@ -26,7 +26,7 @@ jQuery.noty.defaults = {
   buttons: false // an array of buttons
 };
 
-function getEvents(pagenumber, chosencameras, timeframe, startdatetime, enddatetime) {
+function getEvents(pagenumber, chosencameras, timeframe, orderby, orderdirection, startdatetime, enddatetime) {
   startdatetime = moment(startdatetime).format('YYYY-M-D HH:mm');
   enddatetime = moment(enddatetime).format('YYYY-M-D HH:mm');
   if(typeof(timeframe) == "undefined") {
@@ -40,7 +40,7 @@ function getEvents(pagenumber, chosencameras, timeframe, startdatetime, enddatet
       type: "POST",
       url: 'index.php?view=fetchevents',
       cache: false,
-      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime},
+      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime, orderby: orderby, orderdirection: orderdirection},
       success: function(data) {
         $("#events").html(data);
         $(".init-dynamic-colorbox").colorbox({
@@ -55,7 +55,7 @@ function getEvents(pagenumber, chosencameras, timeframe, startdatetime, enddatet
       type: "POST",
       url: 'index.php?view=fetchevents',
       cache: false,
-      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe},
+      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, orderby: orderby},
       success: function(data) {
         $("#events").html(data);
         $(".init-dynamic-colorbox").colorbox({
@@ -127,10 +127,12 @@ $(document).ready(function() {
     var timeframe = $("input[name=timeframe]:checked").attr("value");
     if(timeframe == "custom") {
       console.log("Calling custom with " + chosencameras + " " + timeframe + " " + $("#startdatetime").val() + " " + $("#enddatetime").val());
-      getEvents(null, chosencameras, timeframe, $("#startdatetime").val(), $("#enddatetime").val());
+      getEvents(null, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val(), $("#startdatetime").val(), $("#enddatetime").val());
+      
     }
     else {
-      getEvents(null, chosencameras, timeframe);
+      getEvents(null, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val());
+      
     }
   });
 
@@ -227,10 +229,10 @@ $(document).ready(function() {
     var timeframe = $("input[name=timeframe]:checked").attr("value");
     if(timeframe == "custom") {
       console.log("Calling custom with " + chosencameras + " " + timeframe + " " + $("#startdatetime").val() + " " + $("#enddatetime").val())
-      getEvents(goToPage, chosencameras, timeframe, $("#startdatetime").val(), $("#enddatetime").val());
+      getEvents(goToPage, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val(), $("#startdatetime").val(), $("#enddatetime").val());
     }
     else {
-      getEvents(goToPage, chosencameras, timeframe);
+      getEvents(goToPage, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val());
     }
   });
 

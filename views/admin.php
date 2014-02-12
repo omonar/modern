@@ -19,6 +19,29 @@
 
   <div class="container"> <!-- begin container -->
     <div class="row">
+      <div class="col-md-12">
+        <h4>System Information</h4>
+        <table class="table">
+          <tr>
+            <th>ZoneMinder Version</th>
+            <td><?=ZM_VERSION?></td>
+          </tr>
+          <tr>
+            <th>Skin Version</th>
+            <td><?=file_get_contents('skins/modern/VERSION');?></td>
+          </tr>
+          <tr>
+            <th>Load</th>
+            <td><?= getLoad() ?></td>
+          </tr>
+          <tr>
+            <th>Disk Usage</th>
+            <td><?= getDiskPercent() ?>%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-4">
         <h4>Disk Usage</h4>
         <canvas id="disk-usage-chart" width="300" height="300"></canvas>
