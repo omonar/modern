@@ -20,7 +20,8 @@
           <li class="divider"></li>
           <li class="dropdown-header">Edit Existing</li>
           <?php
-            foreach(dbFetchAll("SELECT * FROM Monitors") as $index => $camera) {
+            $cameras = dbFetchAll("SELECT * FROM Monitors");
+            foreach($cameras as $index => $camera) {
               $monitorClass = "monitor-unknown";
               if(!daemonStatus("zmc", "-m $camera[Id]")) {
                 $monitorClass = "monitor-down";
@@ -45,6 +46,19 @@
                   break;
               }
               echo "</a></li>";
+            }
+          ?>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-screenshot"></span> Zones <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <?php
+            foreach($cameras as $camera) {
+          ?>
+            <li><a href="?skin=classic&view=zones&mid=<?=$camera['Id']?>" class="init-colorbox"><span class="glyphicon glyphicon-camera"></span> <?=$camera['Name']?></a></li>
+          <?php
             }
           ?>
         </ul>
@@ -89,7 +103,7 @@
         }
       ?>
 
-      <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="glyphicon <?=$icon?>"></span> ZoneMinder is <?=lcfirst($status)?></a></li>
+      <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="glyphicon <?=$icon?>"></span> ZM <?=lcfirst($status)?></a></li>
 
       <li class="dropdown colour blue">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
