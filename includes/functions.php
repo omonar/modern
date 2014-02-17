@@ -115,6 +115,7 @@ function xhtmlHeaders($file, $title) {
           var skinVersion = "<?=file_get_contents('skins/modern/VERSION');?>";
         </script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
+        <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.cookie.js"></script>
         <?php
           if($title == "Events") {
         ?>
