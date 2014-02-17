@@ -92,7 +92,7 @@ $(document).ready(function() { /* begin document ready */
   $(".init-colorbox").colorbox({
     iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100,
     onClosed: function() {
-      window.location.href = "http://" + location.hostname + location.pathname + "?skin=modern&view=admin";
+      $.cookie('zmSkin', 'modern', { expires: 365   });
     }
   });
 

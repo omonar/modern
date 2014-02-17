@@ -15,43 +15,38 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
-var start = new Date();
-var end = new Date();
+start = new Date();
+end = new Date();
 start.setHours(0,0,0,0);
-var activity;
-var frames = [];
-var chosencameras = new Array();
-var timelinedata = [];
-var playing = false;
-var timers = new Array;
-var ajaxRequests = new Array();
-var currentlyplaying = [];
-var timeline;
-var data;
-var haschosencameras = false;
-var liveview = true;
-var shouldbeplaying = false;
-var timerstimers = new Array();
-var currenteventarrays = new Array();
-var paused = false;
-var breakplayback = false;
-var times = "";
-var gaplessPlayback = true;
-var eventsToExport = [];
-var fullscreen = false;
-var stopped = false;
-var buffering = false;
-var playbackspeed = 200;
-var playheadspeed = 1000;
-var currentevent;
-var options = {
+activity = {};
+frames = [];
+chosencameras = [];
+currenteventarrays = [];
+timelinedata = [];
+timers = [];
+ajaxRequests = [];
+currentlyplaying = [];
+playing = false;
+haschosencameras = false;
+liveview = true;
+shouldbeplaying = false;
+paused = false;
+gaplessPlayback = true;
+fullscreen = false;
+stopped = false;
+buffering = false;
+playbackspeed = 200;
+playheadspeed = 1000;
+timeline = {};
+currentevent = 0;
+options = {
   'width':  '100%',
   'height': '170px',
   'editable': false,
   'cluster': true,
   'showCustomTime': true,
   'showCurrentTime': false,
-  'style': 'box',
+  'style': 'box'
 };
 $.noty.defaults = {
   layout: 'topRight',
@@ -79,7 +74,7 @@ $.noty.defaults = {
   },
   buttons: false // an array of buttons
 };
-var errorImageSrc = "skins/modern/views/assets/images/onerror.png";
+errorImageSrc = "skins/modern/views/assets/images/onerror.png";
 
 /* begin third party code */
 /* http://www.unseenrevolution.com/$-ajax-error-handling-function/ */
@@ -126,14 +121,14 @@ $(document).ajaxStop(function() {
 });
 
 function stopLiveStreams() {
-  $(".monitor-stream-image").each(function() {
+  $("img.monitor-stream-image").each(function() {
     $(this).attr("data-livesrc", $(this).attr("src"));
     $(this).attr("src", errorImageSrc);
   });
 }
 
 function resumeLiveStreams() {
-  $(".monitor-stream-image").each(function() {
+  $("img.monitor-stream-image").each(function() {
     $(this).attr("src", $(this).attr("data-livesrc"));
   });
 }
@@ -171,10 +166,10 @@ function addMonitor(monitorId, showall) {
         else {
           $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id="liveStream' + cameras[monitorId-1].Id + '" class="monitor-stream-image" data-livesrc="' + $(data).attr("src") + '" src="' + errorImageSrc + '" alt="' + cameras[monitorId-1].Id + '" width="' + cameras[monitorId-1].Width + '" height="' + cameras[monitorId-1].Height + '" onerror="imgError(this);"></div></div>').appendTo('#monitor-streams');
         }
-        $("#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
-        $("#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
-        $("#monitor-stream-" + monitorId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
-        $("#monitor-stream-" + monitorId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
+        $("div#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
+        $("div#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
+        $("div#monitor-stream-" + monitorId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
+        $("div#monitor-stream-" + monitorId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
         if((haschosencameras === true)&&(showall === false)&&(liveview===false)) {
           requeryTimeline();
         }
@@ -183,8 +178,8 @@ function addMonitor(monitorId, showall) {
         }
 
         if(chosencameras.length > 1) {
-          $("#monitor-stream-" + monitorId).css("width", $(".monitor-stream").first().css("width"));
-          $("#monitor-stream-" + monitorId + " .monitor-stream-image").css("width", "100%");
+          $("div#monitor-stream-" + monitorId).css("width", $(".monitor-stream").first().css("width"));
+          $("div#monitor-stream-" + monitorId + " .monitor-stream-image").css("width", "100%");
         }
       },
       complete: function() {
@@ -200,8 +195,8 @@ function stopPlayback() {
   playing = false;
   timeline.options.showCustomTime = false;
   timeline.draw(null, options);
-  $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
-  $("#pause").attr("id", "play");
+  $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+  $("button#pause").attr("id", "play");
 }
 
 function clearTimer(eventId) {
@@ -239,7 +234,7 @@ function clearPlayback() {
 }
 
 function clearCameraFrames() {
-  $("#monitor-streams img").attr("src", errorImageSrc);
+  $("div#monitor-streams img").attr("src", errorImageSrc);
 }
 
 function pausePlayback() {
@@ -309,8 +304,8 @@ function setTime(element, refresh, formatting) {
 }
 
 function loadUserDefaultPreset() {
-  if($("#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
-    var presetMonitorIds = $("#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
+  if($("div#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
+    var presetMonitorIds = $("div#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
     var presetMonitorIds = presetMonitorIds.split(",");
     $.each(presetMonitorIds, function(index, value) {
       addMonitor(value, true);
@@ -326,14 +321,14 @@ function loadUserDefaultPreset() {
 }
 
 function displayFrame(monitorId, img) {
-    $("#liveStream" + monitorId).attr('src', img);
+    $("img#liveStream" + monitorId).attr('src', img);
     //$("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }
 
 function requeryTimeline() {
   //console.log("Requerying...");
   if(chosencameras.length > 0) {
-    $(".timeline-frame").css("background-color","red");
+    $("div.timeline-frame").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
     var endformatted = moment(end).format('YYYY-MM-DD HH:mm') + ':00';
     var ajaxRequestId = ajaxRequests.length;
@@ -376,7 +371,7 @@ function requeryTimeline() {
               timeline.draw(timelinedata, options);
               timeline.applyRange(start, end);
               timeline.redraw();
-              $(".timeline-frame").css("background-color","");
+              $("div.timeline-frame").css("background-color","");
               noty({text: 'Timeline updated (' + timelinedata.length + " events)", type: 'success'});
             }
           }
@@ -443,7 +438,7 @@ function playbackFrames(monitorId, eventId, imgarray) {
           displayFrame(monitorId, errorImageSrc);
         }
         else {
-          displayFrame(monitorId, $("#liveStream" + monitorId).attr("src"));
+          displayFrame(monitorId, $("img#liveStream" + monitorId).attr("src"));
         }
         // if an event has come to an end tidily we should no longer be playing
         if(window["currentevents" + monitorId].length === 1) {
@@ -508,16 +503,12 @@ function jumpToNearestEvent(datetime, direction) {
       if (direction === "backward") {
         if(Date.createFromMysql(v.StartTime) <= datetime) {
           matchFound = true;
-          breakplayback = true;
-          //timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
           timeline.setCustomTime(moment(Date.createFromMysql(v.StartTime)).subtract('seconds', 1));
         }
       }
       else {
         if(Date.createFromMysql(v.StartTime) >= datetime) {
           matchFound = true;
-          breakplayback = true;
-          //timeline.setCurrentTime(Date.createFromMysql(v.StartTime));
           timeline.setCustomTime(moment(Date.createFromMysql(v.StartTime)).subtract('seconds', 1));
         }
       }
@@ -537,9 +528,9 @@ function setupTimeline() {
 
   function onselect() {
     if(liveview === false) {
-      $(".currently-playing").css("visibility", "visible");
-      $(".playback-date").css("visibility", "visible");
-      $(".playback-time").css("visibility", "visible");
+      $("p.currently-playing").css("visibility", "visible");
+      $("p.playback-date").css("visibility", "visible");
+      $("p.playback-time").css("visibility", "visible");
 
       if(playing === true) {
         clearPlayback();
@@ -554,7 +545,7 @@ function setupTimeline() {
       if (sel.length) {
         if(sel[0].row != undefined) {
           var itemobj = timeline.getItem(sel[0].row);
-          if($(".playpause-button").attr("id") === "play") {
+          if($("button.playpause-button").attr("id") === "play") {
             togglePlayPauseButton();
           }
           timeline.setCustomTime(itemobj.start);
@@ -612,17 +603,17 @@ function toggleShowAllButton(override) {
       $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
   }
-  $(".show-hide-cameras").tooltip();
+  $("button.show-hide-cameras").tooltip();
 }
 
 function togglePlayPauseButton() {
-  if($(".playpause-button").attr("id") === "play") {
-    $("#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
-    $("#play").attr("id", "pause");
+  if($("button.playpause-button").attr("id") === "play") {
+    $("button#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
+    $("button#play").attr("id", "pause");
   }
   else {
-    $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
-    $("#pause").attr("id", "play");
+    $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+    $("button#pause").attr("id", "play");
   }
 }
 
@@ -631,64 +622,62 @@ function toggleMode() {
     liveview = false;
 
     // if there have been cameras selected
-    if($.trim($("#monitor-streams").html()).length) {
-      $(".monitor-stream-image").each(function() {
+    if($.trim($("div#monitor-streams").html()).length) {
+      $("img.monitor-stream-image").each(function() {
         $(this).attr("data-livesrc", $(this).attr("src"));
         $(this).attr("src", errorImageSrc);
       });
     }
 
-    $("#playback").tooltip('destroy');
-    $("#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
-    $("#playback").attr("title", "Enter Live View Mode");
-    $("#playback").attr("id", "liveview");
-    $("#liveview").tooltip();
+    $("button#playback").tooltip('destroy');
+    $("button#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
+    $("button#playback").attr("title", "Enter Live View Mode");
+    $("button#playback").attr("id", "liveview");
+    $("button#liveview").tooltip();
 
-    $("#speed").show();
-    $("#play").show();
-    $("#play").prop("disabled", false);
-    $("#export").prop("disabled", false);
-    $("#rangestart").prop("disabled", false);
-    $("#rangeend").prop("disabled", false);
+    $("select#speed").show();
+    $("button#play").show();
+    $("button#play").prop("disabled", false);
+    $("input#rangestart").prop("disabled", false);
+    $("input#rangeend").prop("disabled", false);
 
-    $(".currently-playing").css("visibility", "visible");
-    $(".playback-date").css("visibility", "visible");
-    $(".playback-time").css("visibility", "visible");
+    $("p.currently-playing").css("visibility", "visible");
+    $("p.playback-date").css("visibility", "visible");
+    $("p.playback-time").css("visibility", "visible");
 
-    if($("#choose-cameras").dialog("isOpen")===true) {
-      $("#choose-cameras").dialog("close");
+    if($("div#choose-cameras").dialog("isOpen")===true) {
+      $("div#choose-cameras").dialog("close");
     }
     requeryTimeline();
   }
   else {
     liveview = true;
-    $("#liveview").tooltip('destroy');
-    $("#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
-    $("#liveview").attr("title", "Enter Playback Mode")
-    $("#liveview").attr("id", "playback");
-    $("#playback").tooltip();
+    $("button#liveview").tooltip('destroy');
+    $("button#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
+    $("button#liveview").attr("title", "Enter Playback Mode")
+    $("button#liveview").attr("id", "playback");
+    $("button#playback").tooltip();
 
-    $(".currently-playing").css("visibility", "hidden");
-    $(".playback-date").css("visibility", "hidden");
-    $(".playback-time").css("visibility", "hidden");
+    $("p.currently-playing").css("visibility", "hidden");
+    $("p.playback-date").css("visibility", "hidden");
+    $("p.playback-time").css("visibility", "hidden");
 
-    $("#speed").hide();
-    $("#play").hide();
-    $("#play").prop("disabled", true);
-    $("#export").prop("disabled", true);
-    $("#rangestart").prop("disabled", true);
-    $("#rangeend").prop("disabled", true);
+    $("select#speed").hide();
+    $("button#play").hide();
+    $("button#play").prop("disabled", true);
+    $("input#rangestart").prop("disabled", true);
+    $("input#rangeend").prop("disabled", true);
 
-    $(".playback-date").text("0000-00-00");
-    $(".playback-time").text("00:00:00");
+    $("p.playback-date").text("0000-00-00");
+    $("p.playback-time").text("00:00:00");
 
     stopPlayback();
 
     clearPlayback();
     // if there have been cameras selected
     window.setTimeout(function() {
-      if($.trim($("#monitor-streams").html()).length) {
-        $(".monitor-stream-image").each(function() {
+      if($.trim($("div#monitor-streams").html()).length) {
+        $("img.monitor-stream-image").each(function() {
           $(this).attr("src", $(this).attr("data-livesrc").split('&rand')[0] + "&rand=" + new Date().getTime());
           $(this).removeAttr("data-livesrc");
         });
@@ -725,8 +714,8 @@ function newPlayheadTimer() {
       //var datetime = moment(timeline.getCurrentTime()).format('YYYY-MM-DD HH:mm:ss');
       var datetime = moment(timeline.getCustomTime()).subtract('seconds', 1).format('YYYY-MM-DD HH:mm:ss');
       //console.log("checking " + datetime);
-      $(".playback-date").text(date);
-      $(".playback-time").text(time);
+      $("p.playback-date").text(date);
+      $("p.playback-time").text(time);
       $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
@@ -755,8 +744,8 @@ function prequeryTimeline() {
     stopped = false;
     togglePlayPauseButton();
   }
-  start = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-  end = moment($("#rangeend").val(), 'D/M/YYYY h:mm').toDate();
+  start = moment($("input#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+  end = moment($("input#rangeend").val(), 'D/M/YYYY h:mm').toDate();
   requeryTimeline();
 }
 
@@ -764,34 +753,34 @@ $(document).ready(function() { /* begin document ready */
 
   $("[data-rel='tooltip']").tooltip();
 
-  $('.monitor-thumbnail').capty({ animation: 'fixed' });
+  $('img.monitor-thumbnail').capty({ animation: 'fixed' });
 
   setupTimeline();
 
-  $("#choose-cameras").dialog({
+  $("div#choose-cameras").dialog({
     autoOpen: false,
     resizable: true,
     minWidth: 535,
     height: 'auto'
   });
 
-  $("#preset-selection").dialog({
+  $("div#preset-selection").dialog({
     autoOpen: false,
     resizable: true,
     minWidth: 400
   });
 
-  $("#set-default-preset").dialog({
+  $("div#set-default-preset").dialog({
     autoOpen: false,
     resizable: true,
     width: 'auto'
   });
 
-  $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("#ui-id-1").parent());
-  $(".show-hide-cameras").tooltip();
-  $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+  $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("div#ui-id-1").parent());
+  $("button.show-hide-cameras").tooltip();
+  $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
-  $('#rangestart').datetimepicker({
+  $('input#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
     onClose: function(dateText, inst) {
@@ -829,20 +818,20 @@ $(document).ready(function() { /* begin document ready */
     }
   });
 
-  $('#rangeend').datetimepicker({
+  $('input#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
     onClose: function(dateText, inst) {
       if(ajaxRequests.length == 0) {
         setTimeout(function() {
-          if( moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm') > moment($("#rangestart").val(), 'DD/MM/YYYY HH:mm')) {
-            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-              if((chosencameras.length>2)&&(Math.abs(moment(moment($("#rangestart").val())).diff(end, "hour")) > 24)) {
+          if( moment($("input#rangeend").val(), 'DD/MM/YYYY HH:mm') > moment($("input#rangestart").val(), 'DD/MM/YYYY HH:mm')) {
+            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("input#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("input#rangeend").val())) {
+              if((chosencameras.length>2)&&(Math.abs(moment(moment($("input#rangestart").val())).diff(end, "hour")) > 24)) {
                 noty({ text: "Large range detected...", type: "warning" });
                 window.setTimeout(function() {
                   noty({ text: "Adjusting selected range...", type: "info" });
                   window.setTimeout(function() {
-                    $("#rangestart").val( moment($("#rangeend").val(), "DD/MM/YYYY HH:mm").subtract(24, "hours").format("DD/MM/YYYY HH:mm") );
+                    $("input#rangestart").val( moment($("#rangeend").val(), "DD/MM/YYYY HH:mm").subtract(24, "hours").format("DD/MM/YYYY HH:mm") );
                     prequeryTimeline();
                    }, 3000);
                 }, 2000);
@@ -853,10 +842,10 @@ $(document).ready(function() { /* begin document ready */
             }
           }
           else {
-            if( moment($("#rangeend").val(), 'D/M/YYYY h:mm').isSame($("#rangestart").val())) {
-              var temprangeend = moment($("#rangestart").val(), 'D/M/YYYY h:mm').toDate();
+            if( moment($("input#rangeend").val(), 'D/M/YYYY h:mm').isSame($("input#rangestart").val())) {
+              var temprangeend = moment($("input#rangestart").val(), 'D/M/YYYY h:mm').toDate();
               temprangeend.setDate(temprangeend.getDate() + 1);
-              $("#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
+              $("input#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
               noty({text: 'Range end cannot be before range start!', type: 'error'});
             }
           }
@@ -869,14 +858,14 @@ $(document).ready(function() { /* begin document ready */
     }
   });
 
-  $('#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
-  $('#rangeend').val(moment(end).format('DD/MM/YYYY') + ' ' + moment().format('HH:mm'));
+  $('input#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
+  $('input#rangeend').val(moment(end).format('DD/MM/YYYY') + ' ' + moment().format('HH:mm'));
 
   loadUserDefaultPreset();
 
   $(document).on("change", 'input[name="defaultpreset"]:radio', function() {
     noty({text: "Changing default preset...", type: 'info'});
-    var newDefaultPresetName = $(this).parent().find(".preset-list-link").text();
+    var newDefaultPresetName = $(this).parent().find("a.preset-list-link").text();
     if(newDefaultPresetName != "All Cameras") {
       var monitorIds = $(this).parent().find("a").attr("data-value").split(",");
     }
@@ -895,14 +884,14 @@ $(document).ready(function() { /* begin document ready */
       success: function(data) {
         if(data === "success") {
           noty({text: '\'' + newDefaultPresetName + '\' set as default', type: 'success'});
-          $("#preset-selection").dialog("close");
+          $("div#preset-selection").dialog("close");
           if(newDefaultPresetName != "All Cameras") {
             haschosencameras = true;
             noty({text: 'Loading data', type: 'info'});
             clearAjaxRequests();
 
             stopLiveStreams();
-            $("#monitor-streams").empty();
+            $("div#monitor-streams").empty();
 
             chosencameras = [];
             shouldbeplaying = false;
@@ -913,7 +902,7 @@ $(document).ready(function() { /* begin document ready */
           }
           else {
             stopLiveStreams();
-            $("#monitor-streams").empty();
+            $("div#monitor-streams").empty();
 
             chosencameras = [];
             shouldbeplaying = false;
@@ -934,27 +923,25 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
-  $(document).on("click", "#scale-increase", function() {
-    $(".monitor-stream").css("width", $(".monitor-stream-image").first().width() / 0.75 + "px");
-    $(".monitor-streams .monitor-stream-image").css("width", "100%");
+  $(document).on("click", "button#scale-increase", function() {
+    $("div.monitor-stream").css("width", $("img.monitor-stream-image").first().width() / 0.75 + "px");
+    $("div.monitor-streams img.monitor-stream-image").css("width", "100%");
     //$(".monitor-stream").css("width", "auto");
     //$(".monitor-streams .col-container").css("height", $(".monitor-stream-image").first().height() * 2 + "px");
   });
 
-  $(document).on("click", "#scale-reset", function() {
-    $(".monitor-streams .col-container").css("width", "");
-    $(".monitor-streams .monitor-stream-image").css("width", "");
-    $(".monitor-stream").css("width", "480px");
+  $(document).on("click", "button#scale-reset", function() {
+    $("div.monitor-streams div.col-container").css("width", "");
+    $("div.monitor-streams img.monitor-stream-image").css("width", "");
+    $("div.monitor-stream").css("width", "480px");
   });
 
-  $(document).on("click", "#scale-decrease", function() {
-    $(".monitor-stream").css("width", $(".monitor-stream-image").first().width() * 0.75 + "px");
-    $(".monitor-streams .monitor-stream-image").css("width", "100%");
-    //$(".monitor-stream").css("width", "auto");
-    //$(".monitor-streams .col-container").css("height", $(".monitor-stream-image").first().height() / 2 + "px");
+  $(document).on("click", "button#scale-decrease", function() {
+    $("div.monitor-stream").css("width", $("img.monitor-stream-image").first().width() * 0.75 + "px");
+    $("div.monitor-streams img.monitor-stream-image").css("width", "100%");
   });
 
-  $(document).on("click", ".monitor-stream-info-close", function(event) {
+  $(document).on("click", "button.monitor-stream-info-close", function(event) {
     if(liveview === false) {
       if(playing === true || shouldbeplaying === true || paused === true) {
         clearPlayback();
@@ -968,10 +955,10 @@ $(document).ready(function() { /* begin document ready */
     chosencameras.splice(chosencameras.indexOf(monitorId), 1);
     //console.log("Spliced " + monitorId + " / " + cameras[monitorId-1].Name + " from chosencameras");
     $(this).parent().parent().parent().parent().remove();
-    var monitorSrc = $(this).parent().parent().parent().find(".monitor-stream-image").attr("src");
-    $(this).parent().parent().parent().find(".monitor-stream-image").attr("src", errorImageSrc);
+    var monitorSrc = $(this).parent().parent().parent().find("img.monitor-stream-image").attr("src");
+    $(this).parent().parent().parent().find("img.monitor-stream-image").attr("src", errorImageSrc);
     if(liveview === true) {
-      $(".monitor-stream-image").each(function() {
+      $("img.monitor-stream-image").each(function() {
         $(this).attr('src', $(this).attr('src').split('&rand')[0] + "&rand=" + new Date().getTime());
       });
     }
@@ -980,7 +967,7 @@ $(document).ready(function() { /* begin document ready */
     }
   });
 
-  $(document).on("change", "#speed", function() {
+  $(document).on("change", "select#speed", function() {
     //console.log("Change called on #speed");
     playbackspeed = $(this).val();
     //console.log("Playback speed is " + playbackspeed + " but should be " + $(this).val());
@@ -1027,11 +1014,11 @@ $(document).ready(function() { /* begin document ready */
     newPlayheadTimer();
   });
 
-  $(document).on("dblclick", ".monitor-stream-fullscreen", function() {
+  $(document).on("dblclick", "img.monitor-stream-fullscreen", function() {
     $(this).panzoom("reset");
   });
 
-  $(document).on("click", ".monitor-stream-image", function() {
+  $(document).on("click", "img.monitor-stream-image", function() {
     if(fullscreen === false) {
       if(liveview === true) {
         stopLiveStreams();
@@ -1064,28 +1051,28 @@ $(document).ready(function() { /* begin document ready */
           $(this).dialog('destroy').remove();
           $(originalMonitorMarkup).appendTo("#monitor-stream-" + monitorID);
           if(liveview === true) {
-            $("#liveStream" + monitorID).attr("src", $("#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
-            $("#monitor-stream-" + monitorID + " .col-container").removeAttr("style");
+            $("img#liveStream" + monitorID).attr("src", $("img#liveStream" + monitorID).attr("src").split('&rand')[0] + "&rand=" + new Date().getTime());
+            $("div#monitor-stream-" + monitorID + " div.col-container").removeAttr("style");
             resumeLiveStreams();
           }
           fullscreen = false;
-        },
+        }
       });
-      $(".ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-      $(".monitor-stream-fullscreen").css("display", "block");
-      $(".monitor-stream-fullscreen").css("margin", "0 auto");
+      $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+      $("img.monitor-stream-fullscreen").css("display", "block");
+      $("img.monitor-stream-fullscreen").css("margin", "0 auto");
       if(monitorWidth > monitorHeight) {
-        $(".monitor-stream-fullscreen").css("height", "100%");
-        $(".monitor-stream-fullscreen").css("width", "auto");
+        $("img.monitor-stream-fullscreen").css("height", "100%");
+        $("img.monitor-stream-fullscreen").css("width", "auto");
       }
       else {
-        $(".monitor-stream-fullscreen").css("width", "100%");
-        $(".monitor-stream-fullscreen").css("height", "auto");
+        $("img.monitor-stream-fullscreen").css("width", "100%");
+        $("img.monitor-stream-fullscreen").css("height", "auto");
       }
 
       // enable zoom
-      var $section = $('.monitor-stream-dialog');
-      var $panzoom = $section.find('#liveStream' + monitorID).panzoom();
+      var $section = $('div.monitor-stream-dialog');
+      var $panzoom = $section.find('img#liveStream' + monitorID).panzoom();
       // handle mousewheel scroll zooming
       $panzoom.parent().on('mousewheel.focal', function( e ) {
         e.preventDefault();
@@ -1103,11 +1090,11 @@ $(document).ready(function() { /* begin document ready */
 
   $(document).on("click", ".show-all-cameras", function(event) {
     event.preventDefault();
-    $(".monitor-stream-image").each(function() {
+    $("img.monitor-stream-image").each(function() {
       $(this).attr("src", errorImageSrc);
     });
     stopLiveStreams();
-    $("#monitor-streams").empty();
+    $("div#monitor-streams").empty();
     chosencameras = [];
     $(cameras).each(function(i, v) {
       addMonitor(v.Id, true);
@@ -1119,20 +1106,20 @@ $(document).ready(function() { /* begin document ready */
   $(document).on("click", ".hide-all-cameras", function(event) {
     event.preventDefault();
     stopLiveStreams();
-    $("#monitor-streams").empty();
+    $("div#monitor-streams").empty();
     chosencameras = [];
     requeryTimeline();
     toggleShowAllButton(true);
   });
 
-  $(document).on("click", ".preset-list-link:not(.show-all-cameras)", function(event) {
+  $(document).on("click", "a.preset-list-link:not(.show-all-cameras)", function(event) {
     event.preventDefault();
     haschosencameras = true;
     noty({text: 'Loading data', type: 'info'});
     clearAjaxRequests();
 
     stopLiveStreams();
-    $("#monitor-streams").empty();
+    $("div#monitor-streams").empty();
 
     chosencameras = [];
     shouldbeplaying = false;
@@ -1143,15 +1130,15 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
-  $(document).on("click", "#pause", function(event) {
+  $(document).on("click", "button#pause", function(event) {
     event.preventDefault();
     window.stop();
-    $("#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
-    $("#pause").attr("id", "play");
+    $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+    $("button#pause").attr("id", "play");
     pausePlayback();
   });
 
-  $(document).on("click", "#play", function(event) {
+  $(document).on("click", "button#play", function(event) {
     event.preventDefault();
     if (paused === true) {
       window.stop();
@@ -1165,34 +1152,34 @@ $(document).ready(function() { /* begin document ready */
     }
   });
 
-  $(document).on("click", "#liveview", function() {
+  $(document).on("click", "button#liveview", function() {
     toggleMode();
   });
 
-  $(document).on("click", "#playback", function() {
+  $(document).on("click", "button#playback", function() {
     toggleMode();
   });
 
-  $(document).on("click", "#choose-cameras-opener", function(event) {
-    if($("#choose-cameras").dialog("isOpen")!==true) {
+  $(document).on("click", "button#choose-cameras-opener", function(event) {
+    if($("div#choose-cameras").dialog("isOpen")!==true) {
       toggleShowAllButton();
-      $("#choose-cameras").dialog("open");
+      $("div#choose-cameras").dialog("open");
     }
     else {
-      $("#choose-cameras").dialog("close");
+      $("div#choose-cameras").dialog("close");
     }
   });
 
-  $(document).on("click", "#preset-selection-opener", function(event) {
-    if($("#preset-selection").dialog("isOpen")!==true) {
-      $("#preset-selection").dialog("open");
+  $(document).on("click", "button#preset-selection-opener", function(event) {
+    if($("div#preset-selection").dialog("isOpen")!==true) {
+      $("div#preset-selection").dialog("open");
     }
     else {
-      $("#preset-selection").dialog("close");
+      $("div#preset-selection").dialog("close");
     }
   });
 
-  $(".monitor-thumbnail").click(function() {
+  $("img.monitor-thumbnail").click(function() {
     if(ajaxRequests.length == 0) {
       haschosencameras = true;
       var monitorClass = $(this).attr("id");
@@ -1214,7 +1201,7 @@ $(document).ready(function() { /* begin document ready */
     }
   });
 
-  $(document).on("click", "#timeline", function(event) {
+  $(document).on("click", "div#timeline", function(event) {
     if(liveview === false) {
       if(event.target.className !== "timeline-event" && event.target.className !== "timeline-event-content") {
         paused = false;
@@ -1224,14 +1211,14 @@ $(document).ready(function() { /* begin document ready */
         var offset = $(this).offset();
         timeline.recalcConversion();
         jumpToNearestEvent(timeline.screenToTime(event.clientX - offset.left));
-        if($(".playpause-button").attr("id") === "play") {
+        if($("button.playpause-button").attr("id") === "play") {
           togglePlayPauseButton();
         }
       }
     }
   });
 
-  $(document).on("click", "#page-refresh", function(event) {
+  $(document).on("click", "button#page-refresh", function(event) {
     event.preventDefault();
     stopLiveStreams();
     noty({ text: "Refreshing...", type: "info" });
@@ -1249,8 +1236,8 @@ $(document).ready(function() { /* begin document ready */
       var date = moment(timeline.getCustomTime()).format('YYYY-MM-DD');
       var time = moment(timeline.getCustomTime()).format('HH:mm:ss');
       var datetime = moment(timeline.getCustomTime()).subtract('seconds', 1).format('YYYY-MM-DD HH:mm:ss');
-      $(".playback-date").text(date);
-      $(".playback-time").text(time);
+      $("p.playback-date").text(date);
+      $("p.playback-time").text(time);
       $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
@@ -1271,7 +1258,7 @@ $(document).ready(function() { /* begin document ready */
   /* refresh camera thumbnails every 20 seconds */
   setInterval(function(){
     var timestamp = (new Date()).getTime();
-    $(".monitor-thumbnail").each(function() {
+    $("img.monitor-thumbnail").each(function() {
       $(this).attr("src", $(this).attr("src").split('&rand')[0] + "&rand=" + timestamp);
     });
   },20000);
