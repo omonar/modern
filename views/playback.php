@@ -85,7 +85,7 @@
                 <p style="visibility: hidden;" class="playback-time">00:00:00</p>
               </li>
               <li>
-                <a href="#" id="page-refresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></a>
+                <button id="page-refresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
               </li>
             </ul>
           </div>
