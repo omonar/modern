@@ -27,7 +27,6 @@ timers = [];
 ajaxRequests = [];
 currentlyplaying = [];
 playing = false;
-haschosencameras = false;
 liveview = true;
 shouldbeplaying = false;
 paused = false;
@@ -164,7 +163,7 @@ function addMonitor(monitorId, showall) {
     $("div#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + monitorId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + monitorId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
-    if((haschosencameras === true)&&(showall === false)&&(liveview===false)) {
+    if((showall === false)&&(liveview===false)) {
       requeryTimeline();
     }
     if((showall === true)&&(monitorId==cameras[cameras.length-1].Id)&&(liveview===false)) {
@@ -216,6 +215,9 @@ function clearPlayback() {
   currentevent = null;
   $.each(currenteventarrays, function(index, value) {
     window[value] = [];
+  });
+  $.each(cameras, function(index, value) {
+    frames[value.Id-1] = [];
   });
   timeline.setCustomTime(new Date());
   clearCameraFrames();
@@ -892,7 +894,6 @@ $(document).ready(function() { /* begin document ready */
           noty({text: '\'' + newDefaultPresetName + '\' set as default', type: 'success'});
           $("div#preset-selection").dialog("close");
           if(newDefaultPresetName != "All Cameras") {
-            haschosencameras = true;
             noty({text: 'Loading data', type: 'info'});
             clearAjaxRequests();
 
@@ -1120,7 +1121,6 @@ $(document).ready(function() { /* begin document ready */
 
   $(document).on("click", "a.preset-list-link:not(.show-all-cameras)", function(event) {
     event.preventDefault();
-    haschosencameras = true;
     noty({text: 'Loading data', type: 'info'});
     clearAjaxRequests();
 
@@ -1187,7 +1187,6 @@ $(document).ready(function() { /* begin document ready */
 
   $("img.monitor-thumbnail").click(function() {
     if(ajaxRequests.length == 0) {
-      haschosencameras = true;
       var monitorClass = $(this).attr("id");
       var monitorId = monitorClass.substr(monitorClass.length - 1);
       if($('#monitor-stream-' + monitorId).length == 0) {
