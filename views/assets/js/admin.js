@@ -362,7 +362,7 @@ $(document).ready(function() { /* begin document ready */
           }
         });
         if(skinUpdateAvailable === true) {
-          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
+          $("#skinVersionMessage").replaceWith("<li><a href=\"https://github.com/kjvarley/modern/archive/master.zip\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
         }
         else {
           $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"glyphicon glyphicon-picture\"></span> Skin Up-To-Date</a></li>");
