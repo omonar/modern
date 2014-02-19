@@ -11,6 +11,8 @@ body {
 .monitor-stream-image {
     max-width: 100%;
     height: auto;
+    /* stop firefox from creating a 'judder' or 'wiggle' effect */
+    -moz-backface-visibility: hidden;
 }
 
 /* timeline styling */
@@ -42,8 +44,6 @@ body.zm .ui-dialog .ui-dialog-content { padding: 0; }
   -webkit-box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
   box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
   border-radius: 6px;
-  margin-top: 10px;
-  margin-top: 0.625rem;
 }
 
 .monitor-stream-image {
@@ -329,7 +329,8 @@ color: #567;
 
 .monitor-stream {
   display: inline-block;
-  margin: 0 1rem;
+  margin: 10px 16px 0;
+  margin: 0.625rem 1rem 0;
   width: 480px;
 }
 

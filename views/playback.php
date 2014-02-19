@@ -35,9 +35,9 @@
 
     <div class="view-wrapper">
         <div class="top-toolbar">
-          <button id="scale-decrease" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button>
-          <button id="scale-reset" class="btn btn-default"><span class="glyphicon glyphicon-th-large"></span></button>
-          <button id="scale-increase" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+          <button id="scale-decrease" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reduce camera sizes"><span class="glyphicon glyphicon-minus"></span></button>
+          <button id="scale-reset" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reset camera sizes"><span class="glyphicon glyphicon-th-large"></span></button>
+          <button id="scale-increase" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Increase camera sizes"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
 
         <div id="monitor-streams" class="monitor-streams"></div>
@@ -85,7 +85,7 @@
                 <p style="visibility: hidden;" class="playback-time">00:00:00</p>
               </li>
               <li>
-                <button id="page-refresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+                <button id="page-refresh" class="btn btn-default" data-rel="tooltip" title="Refresh this page. May fix sporadic behaviour."><span class="glyphicon glyphicon-refresh"></span></button>
               </li>
             </ul>
           </div>
