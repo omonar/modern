@@ -26,72 +26,10 @@ function processTimelineData() {
     if(typeof(self.myframes[Number(v.MonitorId)-1][Number(v.Id)]) === "undefined") {
       self.myframes[Number(v.MonitorId)-1][Number(v.Id)] = new Array();
     }
-    
-    for(var counter = 1; counter <= Number(v.Frames); counter++) {
-     var startdatetime = Date.createFromMysql(v.StartTime);
-     // get year
-     var s = startdatetime.getFullYear().toString().substr(2,2) + "/";
-
-     // get month and pad with leading zeros
-     if((startdatetime.getMonth() + 1) < 10) {
-      s = s + "0" + (startdatetime.getMonth() + 1);
-     }
-     else {
-      s = s + (startdatetime.getMonth() + 1);
-     }
-     s = s + "/";
-
-     // get day and pad with leading zeros
-     if(startdatetime.getDate() < 10) {
-      s = s + "0" + startdatetime.getDate();
-     }
-     else {
-      s = s + startdatetime.getDate();
-     }
-     s = s + "/";
-
-     // get hours and pad with leading zeros
-     if(startdatetime.getHours() < 10) {
-      s = s + "0" + startdatetime.getHours();
-     }
-     else {
-      s = s + startdatetime.getHours();
-     }
-     s = s + "/";
-
-     // get minutes and pad with leading zeros
-     if(startdatetime.getMinutes() < 10) {
-      s = s + "0" + startdatetime.getMinutes();
-     }
-     else {
-      s = s + startdatetime.getMinutes();
-     }
-     s = s + "/";
-
-     // get seconds and pad with leading zeros
-     if(startdatetime.getSeconds() < 10) {
-      s = s + "0" + startdatetime.getSeconds();
-     }
-     else {
-      s = s + startdatetime.getSeconds();
-     }
-
-     if(counter<=9) {
-        self.myframes[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + s + "/00" + counter + "-capture.jpg");
-      }
-      else {
-        if(counter<=99) {
-          self.myframes[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + s + "/0" + counter + "-capture.jpg");
-        }
-        else {
-          self.myframes[Number(v.MonitorId)-1][Number(v.Id)].push("/zm/events/" + v.MonitorId + "/" + s + "/" + counter + "-capture.jpg");
-        }
-      }
-    }
     i++;
   });
   postMessage("timelinedata###" + JSON.stringify(self.timelinedata));
-  postMessage("myframes###" + JSON.stringify(self.myframes));
+  //postMessage("myframes###" + JSON.stringify(self.myframes));
   postMessage("success");
   return;
 }

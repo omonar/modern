@@ -408,6 +408,8 @@ function playbackFrames(monitorId, eventId, imgarray) {
           clearTimer(eventId);
           displayFrame(monitorId, errorImageSrc);
           window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+          // zero the frames array for the current monitor to keep memory usage low
+          frames[monitorId-1] = [];
           // if gaplessPlayback enabled & the event finishes tidily
           if(gaplessPlayback === true) {
             //jumpToNearestEvent(timeline.getCurrentTime());
@@ -436,6 +438,8 @@ function playbackFrames(monitorId, eventId, imgarray) {
         // remove the event from the relevant array
         if(paused === false) {
           window["currentevents" + monitorId].splice(window["currentevents" + monitorId].indexOf(eventId), 1);
+          // zero the frames array for the current monitor to keep memory usage low
+          frames[monitorId-1] = [];
         }
       }
     },playbackspeed);
@@ -453,7 +457,7 @@ function preloadFrames(imgarray) {
   }
 }
 
-function playEvent(monitorId, eventId) {
+function playEvent(monitorId, eventId, startdatetime, numberofframes) {
   toggleBufferingState(true);
   currentevent = eventId;
   /*This shouldn't be nedeched, but leaving it here for a few commits in case I haven't fixed the problem
@@ -469,16 +473,26 @@ function playEvent(monitorId, eventId) {
   console.log("playing event: " + eventId + " on monitor " + monitorId + " with speed " + playbackspeed + " and playheadtimer speed " + playheadspeed);
   liveview = false;
   shouldbeplaying = true;
-  var tempframes = new Array();
-  if(frames[monitorId-1][eventId]) {
-    $.each(frames[monitorId-1][eventId], function(i, v) {
-      tempframes.push(v);
-    });
-  }
 
-  if(preloadFrames(tempframes) === true) {
+  frames[Number(monitorId)-1][Number(eventId)] = [];
+
+  for(var counter = 1; counter <= Number(numberofframes); counter++) {
+     if(counter<=9) {
+        frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
+      }
+      else {
+        if(counter<=99) {
+          frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
+        }
+        else {
+         frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
+        }
+      }
+    }
+
+  if(preloadFrames(frames[monitorId-1][eventId]) === true) {
     console.log("Preloaded event " + eventId + " on " + monitorId);
-    playbackFrames(monitorId, eventId, tempframes);
+    playbackFrames(monitorId, eventId, frames[monitorId-1][eventId]);
   }
 }
 
@@ -709,7 +723,7 @@ function newPlayheadTimer() {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
               //playEvent(v.MonitorId, v.Id);
               //playing = true;
-              eventsToPlay.push(v.MonitorId + "," + v.Id);
+              eventsToPlay.push(v.MonitorId + "," + v.Id + "," + v.StartTime + "," + v.Frames);
             }
         }
       });
@@ -717,7 +731,7 @@ function newPlayheadTimer() {
       if(eventsToPlay.length > 0) {
         $.each(eventsToPlay, function(index, value) {
           var x = value.split(",");
-          playEvent(x[0], x[1]);
+          playEvent(x[0], x[1], x[2], x[3]);
           playing = true;
         });
       }
@@ -738,6 +752,10 @@ function prequeryTimeline() {
 }
 
 $(document).ready(function() { /* begin document ready */
+
+  $.each(cameras, function(index, value) {
+    frames[value.Id-1] = [];
+  });
 
   $("[data-rel='tooltip']").tooltip();
 
@@ -1229,14 +1247,14 @@ $(document).ready(function() { /* begin document ready */
       $.each(activity, function(i, v) {
         if (v.StartTime == datetime) {
             if($.inArray(v.Id, window["currentevents" + v.MonitorId]) == -1) {
-              eventsToPlay.push(v.MonitorId + "," + v.Id);
+              eventsToPlay.push(v.MonitorId + "," + v.Id + "," + v.StartTime + "," + v.Frames);
             }
         }
       });
       if(eventsToPlay.length > 0) {
         $.each(eventsToPlay, function(index, value) {
           var x = value.split(",");
-          playEvent(x[0], x[1]);
+          playEvent(x[0], x[1], x[2], x[3]);
           playing = true;
         });
       }
