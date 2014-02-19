@@ -295,18 +295,19 @@ function setTime(element, refresh, formatting) {
 
 function loadUserDefaultPreset() {
   if($("div#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
+    var presetName = $("div#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").text();
     var presetMonitorIds = $("div#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
     var presetMonitorIds = presetMonitorIds.split(",");
     $.each(presetMonitorIds, function(index, value) {
       addMonitor(value, true);
     });
-    noty({text: 'Added cameras', type: 'success'});
+    noty({text: "Loaded \"" + presetName + "\" preset", type: 'success'});
   }
   else {
     $(cameras).each(function(i, v) {
       addMonitor(v.Id, true);
     });
-    //noty({text: 'Added cameras', type: 'success'});
+    noty({text: "Loaded all cameras", type: 'success'});
   }
 }
 
@@ -784,7 +785,7 @@ $(document).ready(function() { /* begin document ready */
     width: 'auto'
   });
 
-  $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("div#ui-id-1").parent());
+  $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("span#ui-id-1").parent());
   $("button.show-hide-cameras").tooltip();
   $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
@@ -933,19 +934,20 @@ $(document).ready(function() { /* begin document ready */
   $(document).on("click", "button#scale-increase", function() {
     $("div.monitor-stream").css("width", $("img.monitor-stream-image").first().width() / 0.75 + "px");
     $("div.monitor-streams img.monitor-stream-image").css("width", "100%");
-    //$(".monitor-stream").css("width", "auto");
-    //$(".monitor-streams .col-container").css("height", $(".monitor-stream-image").first().height() * 2 + "px");
+    noty({ text: "Cameras size increased", type: "success" });
   });
 
   $(document).on("click", "button#scale-reset", function() {
     $("div.monitor-streams div.col-container").css("width", "");
     $("div.monitor-streams img.monitor-stream-image").css("width", "");
     $("div.monitor-stream").css("width", "480px");
+    noty({ text: "Cameras size reset to default", type: "success" });
   });
 
   $(document).on("click", "button#scale-decrease", function() {
     $("div.monitor-stream").css("width", $("img.monitor-stream-image").first().width() * 0.75 + "px");
     $("div.monitor-streams img.monitor-stream-image").css("width", "100%");
+    noty({ text: "Cameras size decreased", type: "success" });
   });
 
   $(document).on("click", "button.monitor-stream-info-close", function(event) {
@@ -1103,11 +1105,14 @@ $(document).ready(function() { /* begin document ready */
     stopLiveStreams();
     $("div#monitor-streams").empty();
     chosencameras = [];
-    $(cameras).each(function(i, v) {
-      addMonitor(v.Id, true);
+    $.when(
+      $(cameras).each(function(i, v) {
+        addMonitor(v.Id, true);
+      })
+    ).then(function() {
+      noty({text: 'Added all cameras', type: 'success'});
+      toggleShowAllButton(true);
     });
-    noty({text: 'Added cameras', type: 'success'});
-    toggleShowAllButton(true);
   });
 
   $(document).on("click", ".hide-all-cameras", function(event) {
@@ -1121,6 +1126,7 @@ $(document).ready(function() { /* begin document ready */
 
   $(document).on("click", "a.preset-list-link:not(.show-all-cameras)", function(event) {
     event.preventDefault();
+    var presetName = $(this).text();
     noty({text: 'Loading data', type: 'info'});
     clearAjaxRequests();
 
@@ -1131,8 +1137,12 @@ $(document).ready(function() { /* begin document ready */
     shouldbeplaying = false;
     playing = false;
     var monitorIds = $(this).attr("data-value").split(",");
-    $.each(monitorIds, function(index, value) {
-      addMonitor(value, true);
+    $.when(
+      $.each(monitorIds, function(index, value) {
+        addMonitor(value, true);
+      })
+    ).then(function() {
+        noty({ text: "Loaded \"" + presetName + "\" preset", type: "success" });
     });
   });
 
@@ -1188,9 +1198,14 @@ $(document).ready(function() { /* begin document ready */
   $("img.monitor-thumbnail").click(function() {
     if(ajaxRequests.length == 0) {
       var monitorClass = $(this).attr("id");
+      var monitorName = $(this).attr("alt");
       var monitorId = monitorClass.substr(monitorClass.length - 1);
       if($('#monitor-stream-' + monitorId).length == 0) {
-        addMonitor(monitorId);
+        $.when(
+          addMonitor(monitorId)
+        ).then(function() {
+          noty({ text: "Added camera \"" + monitorName + "\"", type: "success" });
+        });
       }
       else {
         $("#monitor-stream-" + monitorId).remove();
