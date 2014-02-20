@@ -24,6 +24,7 @@ body.zm .timeline-event {
 #timeline .timeline-frame {
     border-radius: 0;
     background-color:none !important;
+    border-width: 1px 0 0 0;
 }
 
 .preset-list { text-align: center; }
@@ -273,6 +274,25 @@ color: #567;
   width: 100%;
   border-width: 1px 0;
   background-color: #aaa;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.zm .controls .controls-timeline-playback-rangestart, .zm .controls .controls-timeline-playback-rangeend {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.zm .controls .controls-timeline-playback-load {
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+}
+
+button.load-events {
+  width: 100%;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
 }
 
 .controls-list label {

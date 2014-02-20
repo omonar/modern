@@ -40,7 +40,7 @@ timeline = {};
 currentevent = 0;
 options = {
   'width':  '100%',
-  'height': '170px',
+  'height': '182px',
   'editable': false,
   'cluster': true,
   'showCustomTime': true,
@@ -645,6 +645,7 @@ function toggleMode() {
     $("button#play").prop("disabled", false);
     $("input#rangestart").prop("disabled", false);
     $("input#rangeend").prop("disabled", false);
+    $("button#load-events").prop("disabled", false);
 
     $("p.currently-playing").css("visibility", "visible");
     $("p.playback-date").css("visibility", "visible");
@@ -672,6 +673,7 @@ function toggleMode() {
     $("button#play").prop("disabled", true);
     $("input#rangestart").prop("disabled", true);
     $("input#rangeend").prop("disabled", true);
+    $("button#load-events").prop("disabled", true);
 
     $("p.playback-date").text("0000-00-00");
     $("p.playback-time").text("00:00:00");
@@ -827,79 +829,13 @@ $(document).ready(function() { /* begin document ready */
   $('input#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
-    onClose: function(dateText, inst) {
-      if(ajaxRequests.length == 0) {
-        setTimeout(function() {
-          if( moment($("#rangestart").val(), 'DD/MM/YYYY HH:mm') < moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm')) {
-            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
-              if((chosencameras.length>2)&&(Math.abs(moment(moment($("#rangestart").val())).diff(end, "hour")) > 24)) {
-                noty({ text: "Large range detected...", type: "warning" });
-                window.setTimeout(function() {
-                  noty({ text: "Adjusting selected range...", type: "info" });
-                  window.setTimeout(function() {
-                    $("#rangeend").val( moment($("#rangestart").val(), "DD/MM/YYYY HH:mm").add(24, "hours").format("DD/MM/YYYY HH:mm") );
-                    prequeryTimeline();
-                   }, 3000);
-                }, 2000);
-              }
-              else {
-                prequeryTimeline();
-              }
-            }
-          }
-          else {
-            var temprangestart = moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm').toDate();
-            temprangestart.setDate(temprangestart.getDate() - 1);
-            $("#rangestart").val(moment(temprangestart).format('DD/MM/YYYY HH:mm'));
-            noty({text: 'Range start cannot be after range end!', type: 'error'});
-          }
-        }, 200);
-      }
-      else {
-        noty({ text: "Still processing existing request...", type: "info" });
-        $(this).datetimepicker("hide");
-      }
-    }
+    closeText: "Hide"
   });
 
   $('input#rangeend').datetimepicker({
     dateFormat: "dd/mm/yy",
     stepMinute: 5,
-    onClose: function(dateText, inst) {
-      if(ajaxRequests.length == 0) {
-        setTimeout(function() {
-          if( moment($("input#rangeend").val(), 'DD/MM/YYYY HH:mm') > moment($("input#rangestart").val(), 'DD/MM/YYYY HH:mm')) {
-            if((moment(start).format('DD/MM/YYYY HH:mm') !== $("input#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("input#rangeend").val())) {
-              if((chosencameras.length>2)&&(Math.abs(moment(moment($("input#rangestart").val())).diff(end, "hour")) > 24)) {
-                noty({ text: "Large range detected...", type: "warning" });
-                window.setTimeout(function() {
-                  noty({ text: "Adjusting selected range...", type: "info" });
-                  window.setTimeout(function() {
-                    $("input#rangestart").val( moment($("#rangeend").val(), "DD/MM/YYYY HH:mm").subtract(24, "hours").format("DD/MM/YYYY HH:mm") );
-                    prequeryTimeline();
-                   }, 3000);
-                }, 2000);
-              }
-              else {
-                prequeryTimeline();
-              }
-            }
-          }
-          else {
-            if( moment($("input#rangeend").val(), 'D/M/YYYY h:mm').isSame($("input#rangestart").val())) {
-              var temprangeend = moment($("input#rangestart").val(), 'D/M/YYYY h:mm').toDate();
-              temprangeend.setDate(temprangeend.getDate() + 1);
-              $("input#rangeend").val(moment(temprangeend).format('D/M/YYYY h:mm'));
-              noty({text: 'Range end cannot be before range start!', type: 'error'});
-            }
-          }
-        }, 200);
-      }
-      else {
-        noty({ text: "Still processing existing request...", type: "info" });
-        $(this).datetimepicker("hide");
-      }
-    }
+    closeText: "Hide"
   });
 
   $('input#rangestart').val(moment(start).format('DD/MM/YYYY HH:mm'));
@@ -1012,6 +948,7 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $(document).on("change", "select#speed", function() {
+    var current = currentevent;
     //console.log("Change called on #speed");
     playbackspeed = $(this).val();
     //console.log("Playback speed is " + playbackspeed + " but should be " + $(this).val());
@@ -1042,7 +979,7 @@ $(document).ready(function() { /* begin document ready */
 
       var value = false;
       $.each(activity, function(i, v) {
-        if(v.Id == currentevent) {
+        if(v.Id == current) {
           currentEventStartTime = moment(v.StartTime, "YYYY-MM-DD HH:mm:ss").toDate();
           return false;
         }
@@ -1215,6 +1152,34 @@ $(document).ready(function() { /* begin document ready */
       timeline.setCustomTime(start);
       jumpToNearestEvent(start);
       togglePlayPauseButton();
+    }
+  });
+
+  $(document).on("click", "button#load-events", function() {
+    if(ajaxRequests.length == 0) {
+      if( moment($("#rangestart").val(), 'DD/MM/YYYY HH:mm') < moment($("#rangeend").val(), 'DD/MM/YYYY HH:mm')) {
+        if((moment(start).format('DD/MM/YYYY HH:mm') !== $("#rangestart").val())||(moment(end).format('DD/MM/YYYY HH:mm') !== $("#rangeend").val())) {
+          if((chosencameras.length>2)&&(Math.abs(moment(moment($("#rangestart").val())).diff(end, "hour")) > 24)) {
+            noty({ text: "Large range detected...", type: "warning" });
+            window.setTimeout(function() {
+              noty({ text: "Limiting to first 24 hours...", type: "info" });
+              window.setTimeout(function() {
+                $("#rangeend").val( moment($("#rangestart").val(), "DD/MM/YYYY HH:mm").add(24, "hours").format("DD/MM/YYYY HH:mm") );
+                prequeryTimeline();
+               }, 3000);
+            }, 2000);
+          }
+          else {
+            prequeryTimeline();
+          }
+        }
+      }
+      else {
+        noty({text: 'Range start cannot be after range end!', type: 'error'});
+      }
+    }
+    else {
+      noty({ text: "Still processing existing request...", type: "info" });
     }
   });
 

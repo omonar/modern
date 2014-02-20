@@ -62,7 +62,10 @@
               <li class="controls-timeline-playback-rangeend" data-rel="tooltip" title="Change the end date and time for when the listed events should end">
                 <label for="rangeend">End</label>
                 <input id="rangeend" type="text" class="hasDatePicker" disabled>
-            </li>
+              </li>
+              <li class="controls-timeline-playback-load" data-rel="tooltip" title="Load event data for the selected range">
+                <button id="load-events" class="btn btn-default btn-sm load-events" disabled><span class="glyphicon glyphicon-screenshot"></span> Load Events</button>
+              </li>
             </ul>
           </div> <!-- end controls-timeline -->
 
