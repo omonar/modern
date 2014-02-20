@@ -86,6 +86,7 @@
               </li>
               <li>
                 <button id="page-refresh" class="btn btn-default" data-rel="tooltip" title="Refresh this page. May fix sporadic behaviour."><span class="glyphicon glyphicon-refresh"></span></button>
+                <button id="fullscreen" class="btn btn-default" data-rel="tooltip" title="Make this page fullscreen"><span class="glyphicon glyphicon-fullscreen"></span></button>
               </li>
             </ul>
           </div>

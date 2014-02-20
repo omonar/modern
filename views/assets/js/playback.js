@@ -754,6 +754,41 @@ function prequeryTimeline() {
   requeryTimeline();
 }
 
+/* begin third party code */
+/* Mozilla Contributors - Developer Wiki */
+/* https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Using_full_screen_mode */
+function toggleFullscreen() {
+  if (!document.fullscreenElement &&
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+    else {
+      noty({ text: "Cannot enter fullscreen mode automatically. Try manually pressing F11!", type: "error" });
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+    else {
+      noty({ text: "Cannot exit fullscreen mode automatically. Try manually pressing F11!", type: "error" });
+    }
+  }
+}
+/* end third party code */
+
 $(document).ready(function() { /* begin document ready */
 
   $.each(cameras, function(index, value) {
@@ -1247,6 +1282,11 @@ $(document).ready(function() { /* begin document ready */
     }, 2000);
   });
 
+  $(document).on("click", "button#fullscreen", function(event) {
+    event.preventDefault();
+    toggleFullscreen();
+  });
+
   window.playheadtimer = setInterval(function() {
     if(paused === false && stopped === false && liveview === false) {
       timeline.setCustomTime(moment(timeline.getCustomTime()).add('seconds', 1));
@@ -1274,6 +1314,13 @@ $(document).ready(function() { /* begin document ready */
       }
     }
   }, playheadspeed);
+
+  $(window).resize(function() {
+    if(fullscreen === true) {
+      $(".monitor-stream-dialog").dialog({ width: ($(window).width()-10), height: ($(window).height()-10) });
+      $(".monitor-stream-dialog").dialog("option", "position", "center");
+    }
+  });
 
   /* refresh camera thumbnails every 20 seconds */
   setInterval(function(){
