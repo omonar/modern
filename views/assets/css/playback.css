@@ -63,8 +63,8 @@ body.zm .ui-dialog .ui-dialog-content { padding: 0; }
   position: fixed;
   width: 200px;
   width: 20rem;
-  height: 170px;
-  height: 17rem;
+  height: 200px;
+  height: 20rem;
 }
 
 .mainnav-btn, .preset-btn, .controls-timeline { left: 0; }
@@ -81,7 +81,7 @@ body.zm .ui-dialog .ui-dialog-content { padding: 0; }
 }
 
 ul.controls-list li {
-  margin: 0.5rem 0 0;
+  margin: 1.4rem 0;
 }
 
 .timeline {
@@ -325,7 +325,7 @@ color: #567;
 .monitor-stream {
   display: inline-block;
   margin: 10px 16px 0;
-  margin: 0.625rem 1rem 0;
+  margin: 0.625rem 1rem 1rem;
   width: 480px;
 }
 

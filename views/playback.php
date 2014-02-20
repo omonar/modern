@@ -43,7 +43,7 @@
         <div id="monitor-streams" class="monitor-streams"></div>
 
         <div class="controls-toolbar">
-          <div class="controls-timeline controls"> <!-- begin controls-timeline -->
+          <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
                 <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
@@ -68,7 +68,7 @@
 
           <div id="timeline" class="timeline"></div>
 
-          <div class="controls-misc controls">
+          <div class="controls-misc controls ui-corner-tl">
             <ul class="controls-list">
               <li>
                 <button id="choose-cameras-opener" class="btn btn-default" data-rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
