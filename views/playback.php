@@ -43,12 +43,11 @@
         <div id="monitor-streams" class="monitor-streams"></div>
 
         <div class="controls-toolbar">
-          <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
+          <div class="controls-timeline controls"> <!-- begin controls-timeline -->
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
                 <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
                 <button class="btn btn-default playback-button playpause-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="glyphicon glyphicon-play"></span></button>
-                <!--<button class="btn btn-default playback-button" id="export" data-rel="tooltip" title="Export Events" disabled><span class="glyphicon glyphicon-floppy-save"></span></button>-->
                 <select class="form-control" id="speed" data-rel="tooltip" title="Change playback speed" style="display: none;">
                   <option value="400">0.5x</option>
                   <option value="200" selected>1x</option>
@@ -69,7 +68,7 @@
 
           <div id="timeline" class="timeline"></div>
 
-          <div class="controls-misc controls ui-corner-tl">
+          <div class="controls-misc controls">
             <ul class="controls-list">
               <li>
                 <button id="choose-cameras-opener" class="btn btn-default" data-rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>

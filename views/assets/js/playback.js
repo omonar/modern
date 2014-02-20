@@ -1090,6 +1090,7 @@ $(document).ready(function() { /* begin document ready */
         open: function() {
           $(monitorMarkup).appendTo(".monitor-stream-dialog");
           fullscreen = true;
+          console.log($(".monitor-stream-fullscreen").width());
         },
         close: function(event, ui) {
           $(this).dialog('destroy').remove();
@@ -1103,16 +1104,30 @@ $(document).ready(function() { /* begin document ready */
         }
       });
       $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-      $("img.monitor-stream-fullscreen").css("display", "block");
-      $("img.monitor-stream-fullscreen").css("margin", "0 auto");
-      if(monitorWidth > monitorHeight) {
-        $("img.monitor-stream-fullscreen").css("height", "100%");
-        $("img.monitor-stream-fullscreen").css("width", "auto");
+
+      if($(window).width() > $(window).height()) {
+        if(monitorWidth > monitorHeight) {
+          $("img.monitor-stream-fullscreen").css("height", "100%");
+          $("img.monitor-stream-fullscreen").css("width", "auto");
+        }
+        else {
+          $("img.monitor-stream-fullscreen").css("height", "auto");
+          $("img.monitor-stream-fullscreen").css("width", "100%");
+        }
       }
       else {
-        $("img.monitor-stream-fullscreen").css("width", "100%");
-        $("img.monitor-stream-fullscreen").css("height", "auto");
+        if(monitorWidth > monitorHeight) {
+          $("img.monitor-stream-fullscreen").css("height", "auto");
+          $("img.monitor-stream-fullscreen").css("width", "100%");
+        }
+        else {
+          $("img.monitor-stream-fullscreen").css("height", "100%");
+          $("img.monitor-stream-fullscreen").css("width", "auto");
+        }
       }
+
+      $("img.monitor-stream-fullscreen").css("display", "block");
+      $("img.monitor-stream-fullscreen").css("margin", "0 auto");
 
       // enable zoom
       var $section = $('div.monitor-stream-dialog');
@@ -1319,6 +1334,30 @@ $(document).ready(function() { /* begin document ready */
     if(fullscreen === true) {
       $(".monitor-stream-dialog").dialog({ width: ($(window).width()-10), height: ($(window).height()-10) });
       $(".monitor-stream-dialog").dialog("option", "position", "center");
+
+      if($(window).width() > $(window).height()) {
+        if(cameras[$(".monitor-stream-dialog").find(".monitor-stream-fullscreen").attr("id").substr(-1, 1) - 1].Width > cameras[$(".monitor-stream-dialog").find(".monitor-stream-fullscreen").attr("id").substr(-1, 1) - 1].Height) {
+          $("img.monitor-stream-fullscreen").css("height", "100%");
+          $("img.monitor-stream-fullscreen").css("width", "auto");
+        }
+        else {
+          $("img.monitor-stream-fullscreen").css("height", "auto");
+          $("img.monitor-stream-fullscreen").css("width", "100%");
+        }
+      }
+      else {
+        if(cameras[$(".monitor-stream-dialog").find(".monitor-stream-fullscreen").attr("id").substr(-1, 1) - 1].Width > cameras[$(".monitor-stream-dialog").find(".monitor-stream-fullscreen").attr("id").substr(-1, 1) - 1].Height) {
+          $("img.monitor-stream-fullscreen").css("height", "auto");
+          $("img.monitor-stream-fullscreen").css("width", "100%");
+        }
+        else {
+          $("img.monitor-stream-fullscreen").css("height", "100%");
+          $("img.monitor-stream-fullscreen").css("width", "auto");
+        }
+      }
+
+      $("img.monitor-stream-fullscreen").css("display", "block");
+      $("img.monitor-stream-fullscreen").css("margin", "0 auto");
     }
   });
 
