@@ -15,30 +15,30 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
-start = new Date();
-end = new Date();
+var start = new Date();
+var end = new Date();
 start.setHours(0,0,0,0);
-activity = {};
-frames = [];
-chosencameras = [];
-currenteventarrays = [];
-timelinedata = [];
-timers = [];
-ajaxRequests = [];
-currentlyplaying = [];
-playing = false;
-liveview = true;
-shouldbeplaying = false;
-paused = false;
-gaplessPlayback = true;
-fullscreen = false;
-stopped = false;
-buffering = false;
-playbackspeed = 200;
-playheadspeed = 1000;
-timeline = {};
-currentevent = 0;
-options = {
+var activity = {};
+var frames = [];
+var chosencameras = [];
+var currenteventarrays = [];
+var timelinedata = [];
+var timers = [];
+var ajaxRequests = [];
+var currentlyplaying = [];
+var playing = false;
+var liveview = true;
+var shouldbeplaying = false;
+var paused = false;
+var gaplessPlayback = true;
+var fullscreen = false;
+var stopped = false;
+var buffering = false;
+var playbackspeed = 200;
+var playheadspeed = 1000;
+var timeline = {};
+var currentevent = 0;
+var options = {
   'width':  '100%',
   'height': '182px',
   'editable': false,
@@ -73,7 +73,7 @@ $.noty.defaults = {
   },
   buttons: false // an array of buttons
 };
-errorImageSrc = "skins/modern/views/assets/images/onerror.png";
+var errorImageSrc = "skins/modern/views/assets/images/onerror.png";
 
 /* begin third party code */
 /* http://www.unseenrevolution.com/$-ajax-error-handling-function/ */
@@ -107,7 +107,6 @@ $(function() {
 /* end third party code */
 
 $(document).ajaxStop(function() {
-  console.log("ajaxStop called");
   if(ajaxRequests.length > 0) {
     if(ajaxRequests.length === 1) {
       ajaxRequests.splice(0, 1);
@@ -154,10 +153,10 @@ function addMonitor(monitorId, showall) {
     chosencameras.push(monitorId);
     //console.log("Pushed " + monitorId + " / " + cameras[monitorId-1].Name + " to chosencameras");
     if(liveview === true) {
-      $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + monitorId + '\" class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].LiveSrc + '\" alt=\"' + monitorId + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
+      $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + monitorId + '\" class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].LiveSrc + '\" alt=\"' + monitorId + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
     }
     else {
-      $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-events\" data-rel=\"tooltip\" title=\"The total number of events recorded by this camera\">' + cameras[monitorId-1].Events + ' events</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameras[monitorId-1].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[monitorId-1].Id + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
+      $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-montiorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameras[monitorId-1].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[monitorId-1].Id + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
     }
     $("div#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
@@ -651,6 +650,8 @@ function toggleMode() {
     $("p.playback-date").css("visibility", "visible");
     $("p.playback-time").css("visibility", "visible");
 
+    $(".monitor-stream-image").css("-moz-backface-visibility", "hidden");
+
     if($("div#choose-cameras").dialog("isOpen")===true) {
       $("div#choose-cameras").dialog("close");
     }
@@ -667,6 +668,8 @@ function toggleMode() {
     $("p.currently-playing").css("visibility", "hidden");
     $("p.playback-date").css("visibility", "hidden");
     $("p.playback-time").css("visibility", "hidden");
+
+    $(".monitor-stream-image").css("-moz-backface-visibility", "visible");
 
     $("select#speed").hide();
     $("button#play").hide();

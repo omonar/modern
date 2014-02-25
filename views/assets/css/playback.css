@@ -11,8 +11,6 @@ body {
 .monitor-stream-image {
     max-width: 100%;
     height: auto;
-    /* stop firefox from creating a 'judder' or 'wiggle' effect */
-    -moz-backface-visibility: hidden;
 }
 
 /* timeline styling */
@@ -353,8 +351,14 @@ button.load-events {
   display: inline-block;
 }
 
+.monitor-stream-info .monitor-stream-info-name {
+  text-align: left;
+  padding-left: 12px;
+  padding-left: 1.2rem;
+}
+
 .monitor-stream-info p {
-  width: 33.333333333%;
+  width: 50%;
   display: inline-block;
 }
 
