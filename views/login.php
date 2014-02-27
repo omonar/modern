@@ -31,6 +31,15 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
         <h2 class="form-signin-heading">Please sign in</h2>
         <input name="username" type="text" class="form-control" placeholder="<?= $SLANG['Username'] ?>" autofocus="">
         <input name="password" type="password" class="form-control" placeholder="<?= $SLANG['Password'] ?>">
+        <?php
+          if(isset($_SESSION['username'])) {
+        ?>
+            <div class="alert alert-danger">
+              <p>Incorrect username and / or password...</p>
+            </div>
+        <?php
+          }
+        ?>
         <button name="login" class="btn btn-lg btn-primary btn-block" type="submit">
           <span class="glyphicon glyphicon-log-in"></span> 
           <?= $SLANG['Login'] ?>

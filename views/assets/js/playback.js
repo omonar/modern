@@ -607,7 +607,7 @@ function toggleShowAllButton(override) {
       $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
     }
   }
-  $("button.show-hide-cameras").tooltip();
+  $("button.show-hide-cameras").tooltip({ placement: "bottom" });
 }
 
 function togglePlayPauseButton() {
@@ -826,8 +826,7 @@ $(document).ready(function() { /* begin document ready */
   });
 
   $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("span#ui-id-1").parent());
-  $("button.show-hide-cameras").tooltip();
-  $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+  $("button.show-hide-cameras").tooltip({ placement: "bottom" });
 
   $('input#rangestart').datetimepicker({
     dateFormat: "dd/mm/yy",
@@ -1043,7 +1042,6 @@ $(document).ready(function() { /* begin document ready */
           fullscreen = false;
         }
       });
-      $("button.ui-dialog-titlebar-close").html("<span class=\"glyphicon glyphicon-remove\"></span>");
 
       if($(window).width() > $(window).height()) {
         if(monitorWidth > monitorHeight) {

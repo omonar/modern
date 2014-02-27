@@ -11,6 +11,7 @@ body {
 .monitor-stream-image {
     max-width: 100%;
     height: auto;
+    margin-bottom: -1px;
 }
 
 /* timeline styling */
@@ -43,6 +44,16 @@ body.zm .ui-dialog .ui-dialog-content { padding: 0; }
   -webkit-box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
   box-shadow: 0px 0px 10px 1px rgba(255, 255, 255, 0.4);
   border-radius: 6px;
+}
+
+.monitor-stream-image {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.monitor-stream-image.monitor-stream-fullscreen {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .row {
@@ -282,7 +293,7 @@ color: #567;
 }
 
 .zm .controls .controls-timeline-playback-load {
-  margin-top: 0.6rem;
+  margin-top: 1rem;
   margin-bottom: 0;
 }
 
@@ -303,7 +314,7 @@ button.load-events {
 
 .zm .controls input {
   border: 1px #aaa solid;
-  padding: 0.2rem 1rem;
+  padding: 0.4rem 1rem;
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   width: 100%;
@@ -366,3 +377,5 @@ button.load-events {
   display: inline-block;
   width: 80px;
 }
+
+.zm .timeline-event-content { font-weight: normal; }

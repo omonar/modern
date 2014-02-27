@@ -85,15 +85,17 @@ function xhtmlHeaders($file, $title) {
     <link rel="shortcut icon" href="assets/images/favicon.ico"/>
     <!-- jquery -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
-    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery/dark/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all" />
-    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui-timepicker-addon.js"></script>
-    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
 
     <!-- bootstrap -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap-theme.min.css">
+
+    <!-- jqueryui -->
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery/jquery-ui-1.10.4.custom.min.css" type="text/css" media="all" />
+    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery-ui-timepicker-addon.js"></script>
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen"/>
 
     <!-- noty -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/noty/jquery.noty.js"></script>
@@ -146,7 +148,6 @@ function xhtmlHeaders($file, $title) {
           <script src="skins/<?=$skin?>/views/assets/vendor/js/timeline/timeline-min.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.mousewheel.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.panzoom.min.js"></script>
-          <script src="skins/<?=$skin?>/views/assets/vendor/js/core.js"></script>
           <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.capty.min.js"></script>
           <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/jquery.capty.min.css">
       <?php
