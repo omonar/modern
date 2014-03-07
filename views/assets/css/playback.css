@@ -16,10 +16,6 @@ body {
 
 /* timeline styling */
 
-body.zm .timeline-event {
-    color: #FFF;
-}
-
 #timeline .timeline-frame {
     border-radius: 0;
     background-color:none !important;
@@ -208,6 +204,11 @@ color: #567;
   color:#eee;
 }
 
+.zm .ui-dialog-buttonpane .ui-button {
+  border: 1px solid #666;
+  font-weight: bold;
+}
+
 /* end general */
 
 .monitor-stream-info p {  
@@ -379,3 +380,26 @@ button.load-events {
 }
 
 .zm .timeline-event-content { font-weight: normal; }
+
+p.monitor-limit-dialog-message {
+  margin: 0.5rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.monitor-selected .glyphicon-ok-circle {
+  position: absolute;
+  left: 115px;
+  top: 0;
+  z-index: 2;
+  font-size: 4rem;
+  color: #29AB87;
+}
+
+img.monitor-thumbnail {
+  opacity: 0.3;
+}
+
+.monitor-selected img.monitor-thumbnail {
+  opacity: 1;
+}

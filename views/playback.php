@@ -125,7 +125,7 @@
                 $sql = "SELECT * FROM Monitors";
                 foreach(dbFetchAll( $sql ) as $row) {
                   echo "<li class=\"monitor-stream-thumbnail-item\">";
-                  outputImageStillModern( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  $row['Name'], "monitor-thumbnail");
+                  outputImageStillModern( "monitor-stream-thumbnail-".$row['Id'], getStreamSrc(array( "mode=".$streamMode, "monitor=".$row['Id'] )), 160, 120,  $row['Name'], "monitor-thumbnail", $row['Id']);
                   echo "</li>";
                   $i++;
                 }
