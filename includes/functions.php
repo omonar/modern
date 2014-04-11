@@ -118,6 +118,7 @@ function xhtmlHeaders($file, $title) {
         </script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.cookie.js"></script>
+        <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/font-awesome.min.css">
         <?php
           if($title == "Events") {
         ?>
