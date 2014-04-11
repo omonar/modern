@@ -9,14 +9,14 @@
   </div>
   <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
-      <li class="colour purple"><a href="?view=playback"><i class="glyphicon glyphicon-chevron-left"></i> Playback</a></li>
+      <li class="colour purple"><a href="?view=playback"><i class="fa fa-arrow-circle-left"></i> Playback</a></li>
 
-      <li class="colour blue"><a href="?view=admin"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+      <li class="colour blue"><a href="?view=admin"><span class="fa fa-home"></span> Home</a></li>
 
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-camera"></span> Cameras <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-camera"></span> Cameras <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="#" id="add-new-monitor"><span class="glyphicon glyphicon-plus-sign"></span> Add camera</a></li>
+          <li><a href="#" id="add-new-monitor"><span class="fa fa-plus-circle"></span> Add camera</a></li>
           <li class="divider"></li>
           <li class="dropdown-header">Edit Existing</li>
           <?php
@@ -33,16 +33,16 @@
                 $monitorClass = "monitor-ok";
               }
 
-              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"glyphicon glyphicon-edit\"></span> " . $camera['Name'];
+              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"fa fa-edit\"></span> " . $camera['Name'];
               switch($monitorClass) {
                 case "monitor-down":
-                  echo " <span style=\"color: green;\" class=\"glyphicon glyphicon-warning-sign\"></span>";
+                  echo " <span style=\"color: green;\" class=\"fa fa-warning-sign\"></span>";
                   break;
                 case "monitor-warning":
-                  echo " <span style=\"color: orange;\" class=\"glyphicon glyphicon-warning-sign\"></span>";
+                  echo " <span style=\"color: orange;\" class=\"fa fa-warning-sign\"></span>";
                   break;
                 case "monitor-ok":
-                  echo " <span style=\"color: green;\" class=\"glyphicon glyphicon-ok-circle\"></span>";
+                  echo " <span style=\"color: green;\" class=\"fa fa-ok-circle\"></span>";
                   break;
               }
               echo "</a></li>";
@@ -52,36 +52,36 @@
       </li>
 
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-screenshot"></span> Zones <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-crosshairs"></span> Zones <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <?php
             foreach($cameras as $camera) {
           ?>
-            <li><a href="?skin=classic&view=zones&mid=<?=$camera['Id']?>" class="init-colorbox"><span class="glyphicon glyphicon-camera"></span> <?=$camera['Name']?></a></li>
+            <li><a href="?skin=classic&view=zones&mid=<?=$camera['Id']?>" class="init-colorbox"><span class="fa fa-camera"></span> <?=$camera['Name']?></a></li>
           <?php
             }
           ?>
         </ul>
       </li>
 
-      <li><a href="#" id="presetmanagement"><span class="glyphicon glyphicon-list"></span> Presets</a></li>
+      <li><a href="#" id="presetmanagement"><span class="fa fa-list"></span> Presets</a></li>
 
-      <li><a href="?view=events"><span class="glyphicon glyphicon-picture"></span> Events</a></li>
+      <li><a href="?view=events"><span class="fa fa-picture-o"></span> Events</a></li>
 
-      <li><a href="#" id="userlist"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+      <li><a href="#" id="userlist"><span class="fa fa-users"></span> Users</a></li>
 
-      <li><a href="?skin=classic&view=log" class="init-colorbox"><span class="glyphicon glyphicon-list-alt"></span> Log</a></li>
+      <li><a href="?skin=classic&view=log" class="init-colorbox"><span class="fa fa-terminal"></span> Log</a></li>
 
-      <li><a href="?skin=classic&view=options" class="init-colorbox"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+      <li><a href="?skin=classic&view=options" class="init-colorbox"><span class="fa fa-cog"></span> Settings</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
 
-      <li class="colour red"><a href="#"><span class="glyphicon glyphicon-hdd"></span> <?=getDiskPercent();?>%</a></li>
+      <li class="colour red"><a href="#"><span class="fa fa-hdd-o"></span> <?=getDiskPercent();?>%</a></li>
 
       <li class="dropdown colour yellow">
-        <a href="#" id="updates" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-circle-arrow-up"></span> Updates</a>
+        <a href="#" id="updates" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-arrow-circle-up"></span> Updates</a>
         <ul class="dropdown-menu">
-          <li id="skinVersionMessage"><a href="#"><span class="glyphicon glyphicon-picture"></span> Checking for updates...</a></li>
+          <li id="skinVersionMessage"><a href="#"><span class="fa fa-picture-o"></span> Checking for updates...</a></li>
         </ul>
       </li>
 
@@ -91,25 +91,25 @@
 
         if($status === "Running") {
           $colour = "green";
-          $icon = "glyphicon-ok-sign";
+          $icon = "fa-check-circle";
         }
         elseif($status === "Stopped") {
           $colour = "red";
-          $icon = "glyphicon-remove-sign";
+          $icon = "fa-times-circle";
         }
         else {
           $colour = "yellow";
-          $icon = "glyphicon-exclamation-sign";
+          $icon = "fa-exclamation-circle";
         }
       ?>
 
-      <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="glyphicon <?=$icon?>"></span> ZM <?=lcfirst($status)?></a></li>
+      <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="fa <?=$icon?>"></span> ZM <?=lcfirst($status)?></a></li>
 
       <li class="dropdown colour blue">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> <?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a id="changepassword-opener" href="#"><span class="glyphicon glyphicon-edit"></span> Change Password</a></li>
-          <li><a href="?view=logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+          <li><a id="changepassword-opener" href="#"><span class="fa fa-edit"></span> Change Password</a></li>
+          <li><a href="?view=logout"><span class="fa fa-sign-out"></span> Log Out</a></li>
         </ul>
       </li>
 
