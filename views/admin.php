@@ -23,6 +23,14 @@
         <h4>System Information</h4>
         <table class="table">
           <tr>
+            <th>Server Date &amp; Time</th>
+            <td>
+              <?php
+                echo date("H:i:s jS F Y");
+              ?>
+            </td>
+          </tr>
+          <tr>
             <th>ZoneMinder Version</th>
             <td><?=ZM_VERSION?></td>
           </tr>
@@ -37,6 +45,33 @@
           <tr>
             <th>Disk Usage</th>
             <td><?= getDiskPercent() ?>%</td>
+          </tr>
+          <tr>
+            <th>Recorded Events</th>
+            <td>
+              <?php
+                $response = dbFetchOne("SELECT COUNT(Id) AS event_count FROM Events");
+                echo $response['event_count'];
+              ?>
+            </td>
+          </tr>
+          <tr>
+            <th>Most Recent Event</th>
+            <td>
+              <?php
+                $response = dbFetchOne("SELECT EndTime FROM Events ORDER BY EndTime LIMIT 1");
+                echo "recording ended at " . date("H:i:s \o\\n \\t\h\e jS F Y", strtotime($response['EndTime']));
+              ?>
+            </td>
+          </tr>
+          <tr>
+            <th>Registered Users</th>
+            <td>
+              <?php
+                $response = dbFetchOne("SELECT COUNT(Id) AS user_count FROM Users");
+                echo $response['user_count'];
+              ?>
+            </td>
           </tr>
         </table>
       </div>
