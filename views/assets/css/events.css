@@ -16,4 +16,6 @@ html, body {
 .events-filters .checkbox:last-child { margin-bottom: 0; }
 
 .events-filters p { font-weight: bold; }
+
+.pad-bottom { margin-bottom: 10px; margin-bottom: 1rem; }
 /* events-filters end */
