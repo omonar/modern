@@ -12,7 +12,7 @@
       </div> <!-- end filter panel heading -->
       <div class="panel-body"> <!-- begin filter panel body -->
 
-        <div class="row">
+        <div class="row"> <!-- begin row -->
           <div class="col-md-2">
             <div class="well well-sm checkboxes">
               <p>Cameras</p>
@@ -65,8 +65,49 @@
             <div class="well well-sm">
               <p>Order By</p>
 
-              <select id="orderby" class="form-control">
-                <option value="eventid" selected>Event ID</option>
+              <select id="orderby-1" class="form-control pad-bottom">
+                <option value="null" selected>Choose One</option>
+                <option value="eventid">Event ID</option>
+                <option value="camera">Camera</option>
+                <option value="eventname">Event Name</option>
+                <option value="starttime">Start Date/Time</option>
+                <option value="endtime">End Date/Time</option>
+                <option value="length">Event Length</option>
+              </select>
+
+              <select id="orderby-2" class="form-control pad-bottom">
+                <option value="null" selected>Choose One</option>
+                <option value="eventid">Event ID</option>
+                <option value="camera">Camera</option>
+                <option value="eventname">Event Name</option>
+                <option value="starttime">Start Date/Time</option>
+                <option value="endtime">End Date/Time</option>
+                <option value="length">Event Length</option>
+              </select>
+
+              <select id="orderby-3" class="form-control pad-bottom">
+                <option value="null" selected>Choose One</option>
+                <option value="eventid">Event ID</option>
+                <option value="camera">Camera</option>
+                <option value="eventname">Event Name</option>
+                <option value="starttime">Start Date/Time</option>
+                <option value="endtime">End Date/Time</option>
+                <option value="length">Event Length</option>
+              </select>
+
+              <select id="orderby-4" class="form-control pad-bottom">
+                <option value="null" selected>Choose One</option>
+                <option value="eventid">Event ID</option>
+                <option value="camera">Camera</option>
+                <option value="eventname">Event Name</option>
+                <option value="starttime">Start Date/Time</option>
+                <option value="endtime">End Date/Time</option>
+                <option value="length">Event Length</option>
+              </select>
+
+              <select id="orderby-5" class="form-control pad-bottom">
+                <option value="null" selected>Choose One</option>
+                <option value="eventid">Event ID</option>
                 <option value="camera">Camera</option>
                 <option value="eventname">Event Name</option>
                 <option value="starttime">Start Date/Time</option>
@@ -81,7 +122,27 @@
             <div class="well well-sm">
               <p>Order Direction</p>
 
-              <select id="orderdirection" class="form-control">
+              <select id="orderdirection-1" class="form-control pad-bottom">
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+
+              <select id="orderdirection-2" class="form-control pad-bottom">
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+
+              <select id="orderdirection-3" class="form-control pad-bottom">
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+
+              <select id="orderdirection-4" class="form-control pad-bottom">
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+
+              <select id="orderdirection-5" class="form-control pad-bottom">
                 <option value="asc" selected>Ascending</option>
                 <option value="desc">Descending</option>
               </select>
@@ -89,7 +150,7 @@
             </div>
           </div>
 
-          <div id="custom-range-filters" style="display: none;" class="col-md-4">
+          <div id="custom-range-filters" style="display: none;" class="col-md-3">
             <div class="well well-sm">
               <label for="startdatetime">Start Date & Time</label>
               <input id="startdatetime" name="startdatetime" type="text" class="form-control hasDatePicker">
@@ -99,9 +160,14 @@
 
             </div>
           </div>
-        </div>
+        </div> <!-- end row -->
 
-        <button id="show-events" style="float:right;" class="btn btn-primary">Show Events</button>
+          <div class="row"> <!-- begin row -->
+            <div class="col-md-12">
+              <button id="show-events" class="btn btn-primary pull-right" style="margin-left: 10px;">Load Events</button>
+              <button id="clear-filters" class="btn btn-default pull-right">Clear Filters</button>
+            </div>
+          </div> <!-- end row -->
 
       </div> <!-- end filter panel body -->
     </div> <!-- end filter panel -->

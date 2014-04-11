@@ -26,7 +26,7 @@ jQuery.noty.defaults = {
   buttons: false // an array of buttons
 };
 
-function getEvents(pagenumber, chosencameras, timeframe, orderby, orderdirection, startdatetime, enddatetime) {
+function getEvents(pagenumber, chosencameras, timeframe, orderby, startdatetime, enddatetime) {
   startdatetime = moment(startdatetime).format('YYYY-M-D HH:mm');
   enddatetime = moment(enddatetime).format('YYYY-M-D HH:mm');
   if(typeof(timeframe) == "undefined") {
@@ -40,7 +40,7 @@ function getEvents(pagenumber, chosencameras, timeframe, orderby, orderdirection
       type: "POST",
       url: 'index.php?view=fetchevents',
       cache: false,
-      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime, orderby: orderby, orderdirection: orderdirection},
+      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime, orderby: orderby},
       success: function(data) {
         $("#events").html(data);
         $(".init-dynamic-colorbox").colorbox({
@@ -125,13 +125,17 @@ $(document).ready(function() {
       chosencameras.push($(this).attr("value"));
     });
     var timeframe = $("input[name=timeframe]:checked").attr("value");
+    var orderBy = [];
+    orderBy.push({orderField: $("#orderby-1").val(), orderDirection: $("#orderdirection-1").val()});
+    orderBy.push({orderField: $("#orderby-2").val(), orderDirection: $("#orderdirection-2").val()});
+    orderBy.push({orderField: $("#orderby-3").val(), orderDirection: $("#orderdirection-3").val()});
+    orderBy.push({orderField: $("#orderby-4").val(), orderDirection: $("#orderdirection-4").val()});
+    orderBy.push({orderField: $("#orderby-5").val(), orderDirection: $("#orderdirection-5").val()});
     if(timeframe == "custom") {
-      console.log("Calling custom with " + chosencameras + " " + timeframe + " " + $("#startdatetime").val() + " " + $("#enddatetime").val());
-      getEvents(null, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val(), $("#startdatetime").val(), $("#enddatetime").val());
-      
+      getEvents(null, chosencameras, timeframe, orderBy, $("#startdatetime").val(), $("#enddatetime").val());
     }
     else {
-      getEvents(null, chosencameras, timeframe, $("#orderby").val(), $("#orderdirection").val());
+      getEvents(null, chosencameras, timeframe, orderBy);
       
     }
   });
@@ -179,6 +183,14 @@ $(document).ready(function() {
     }
   });
 
+  $(document).on("click", "button#clear-filters", function(event) {
+    event.preventDefault();
+    $("select").prop('selectedIndex', 0);
+    $("input[name=timeframe]:checked").prop('checked', false);
+    $("input[name=timeframe]").first().prop('checked', true);
+    $(".monitor-checkbox").prop("checked", true);
+  });
+
   $(document).on("click", ".delete-event", function(event) {
     event.preventDefault();
     var eventID = $(this).attr("data-eid");
@@ -201,6 +213,19 @@ $(document).ready(function() {
           }
         }
       });
+    }
+  });
+
+  $(document).on("click", "#check-all", function() {
+    if($(this).prop('checked')) {
+      $("input[type=checkbox]").prop('checked', true);
+      $("#delete-selected-events").removeClass("disabled");
+      $("#export-selected-events").removeClass("disabled");
+    }
+    else {
+      $("input[type=checkbox]").prop('checked', false);
+      $("#delete-selected-events").addClass("disabled");
+      $("#export-selected-events").addClass("disabled");
     }
   });
 
