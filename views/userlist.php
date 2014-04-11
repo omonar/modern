@@ -19,12 +19,17 @@
     die("Access denied. <a href=\"?view=login\">Login</a>");
   }
   $query = "SELECT * FROM Groups";
-  $response = dbFetchAll($query);
-  if(!$response) {
-    die("ERROR: Failed to fetch preset list");
+  if(dbNumRows($query) > 1) {
+    $response = dbFetchAll($query);
+    if(!$response) {
+      die("ERROR: Failed to fetch preset list");
+    }
+    foreach($response as $row) {
+      $presets[$row['Id']] = $row['Name'];
+    }
   }
-  foreach($response as $row) {
-    $presets[$row['Id']] = $row['Name'];
+  else {
+    $presets = null;
   }
 ?>
   <div id="user-list-panel" class="panel panel-primary">
@@ -55,7 +60,11 @@
             if(!$response) {
               die("<tr><td>ERROR: Failed to fetch user list!</td></tr>");
             }
+
             foreach($response as $row) {
+              if(!array_key_exists("defaultPreset", $response)) {
+                $row['defaultPreset'] = "N/A";
+              }
               echo "<tr>";
               foreach($row as $key => $value) {
                 if($key === "Id" || $key === "Password" || $key === "MonitorIds") {
@@ -75,7 +84,9 @@
                     $value = "All Cameras";
                   }
                   else {
-                    $value = $presets[$value];
+                    if($presets !== null) {
+                      $value = $presets[$value];
+                    }
                   }
                 }
 
