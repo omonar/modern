@@ -316,6 +316,7 @@ function loadUserDefaultPreset() {
 }
 
 function displayFrame(monitorId, img) {
+    console.log("displayFrame(" + img + ");");
     $("img#liveStream" + monitorId).attr('src', img);
     //$("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }

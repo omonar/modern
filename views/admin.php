@@ -59,7 +59,7 @@
             <th>Most Recent Event</th>
             <td>
               <?php
-                $response = dbFetchOne("SELECT EndTime FROM Events ORDER BY EndTime LIMIT 1");
+                $response = dbFetchOne("SELECT EndTime FROM Events ORDER BY EndTime DESC LIMIT 1");
                 echo "recording ended at " . date("H:i:s \o\\n \\t\h\e jS F Y", strtotime($response['EndTime']));
               ?>
             </td>

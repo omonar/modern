@@ -42,7 +42,7 @@
                   echo " <span style=\"color: orange;\" class=\"fa fa-warning-sign\"></span>";
                   break;
                 case "monitor-ok":
-                  echo " <span style=\"color: green;\" class=\"fa fa-ok-circle\"></span>";
+                  echo " <span style=\"color: green;\" class=\"fa fa-check-circle-o\"></span>";
                   break;
               }
               echo "</a></li>";
