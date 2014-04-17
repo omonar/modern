@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-md-12">
         <h4>System Information</h4>
-        <table class="table">
+        <table class="table table-striped">
           <tr>
             <th>Server Date &amp; Time</th>
             <td>
@@ -76,6 +76,7 @@
         </table>
       </div>
     </div>
+
     <div class="row">
       <div class="col-md-4">
         <h4>Disk Usage</h4>

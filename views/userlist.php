@@ -19,7 +19,7 @@
     die("Access denied. <a href=\"?view=login\">Login</a>");
   }
   $query = "SELECT * FROM Groups";
-  if(dbNumRows($query) > 1) {
+  if(dbNumRows($query) > 0) {
     $response = dbFetchAll($query);
     if(!$response) {
       die("ERROR: Failed to fetch preset list");
@@ -61,8 +61,9 @@
               die("<tr><td>ERROR: Failed to fetch user list!</td></tr>");
             }
 
+            $i = 0;
             foreach($response as $row) {
-              if(!array_key_exists("defaultPreset", $response)) {
+              if(!array_key_exists("defaultPreset", $response[$i])) {
                 $row['defaultPreset'] = "N/A";
               }
               echo "<tr>";
@@ -95,6 +96,7 @@
               echo "<td><a href=\"?skin=classic&view=user&uid=$row[Id]\" data-userid=\"$row[Id]\" class=\"edit-user init-dynamic-colorbox\"><span class=\"glyphicon glyphicon-edit\"></span></a></td>";
               echo "<td><a href=\"#\" id=\"delete-user-$row[Id]\" class=\"delete-user\" data-userid=\"$row[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
               echo "</tr>";
+              $i++;
             }
           ?>
         </tbody>

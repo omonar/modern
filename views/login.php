@@ -18,6 +18,21 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 
+if(isset($_SESSION['user'])) {
+  if(!isset($_POST['view'])) {
+    $_POST['view'] = "playback";
+  }
+  $response = dbFetchOne("SELECT * FROM Users WHERE Id={$_SESSION['user']['Id']} LIMIT 1");
+
+  if(!$response) {
+    $error = "ERROR: Failed to fully autheticate user, please contact your system administrator!";
+  }
+  // potentially insecure code. needs to actually recheck credentials to stop injection.
+  elseif(isset($_SESSION['user']['Username'])) {
+    header("Location: ?view={$_POST['view']}");
+  }
+}
+
 xhtmlHeaders(__FILE__, $SLANG['Login'] );
 ?>
 <body class="zm">
@@ -27,12 +42,19 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
     <div class="container">
     <form name="loginForm" id="loginForm" method="post" class="form-signin" action="<?= $_SERVER['PHP_SELF'] ?>">
         <input type="hidden" name="action" value="login"/>
-        <input type="hidden" name="view" value="playback"/>
+        <?php
+          if(isset($_GET['view']) && ctype_alpha($_GET['view'])) {
+            echo "<input type=\"hidden\" name=\"view\" value=\"{$_GET['view']}\">";
+          }
+          else {
+            echo "<input type=\"hidden\" name=\"view\" value=\"playback\">";
+          }
+        ?>
         <h2 class="form-signin-heading">Please sign in</h2>
         <input name="username" type="text" class="form-control" placeholder="<?= $SLANG['Username'] ?>" autofocus="">
         <input name="password" type="password" class="form-control" placeholder="<?= $SLANG['Password'] ?>">
         <?php
-          if(isset($_SESSION['username'])) {
+          if(!isset($_SESSION['user']) && isset($_SESSION['username'])) {
         ?>
             <div class="alert alert-danger">
               <p>Incorrect username and / or password...</p>
@@ -40,7 +62,7 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
         <?php
           }
         ?>
-        <button name="login" class="btn btn-lg btn-primary btn-block" type="submit">
+        <button name="login" class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
           <span class="glyphicon glyphicon-log-in"></span> 
           <?= $SLANG['Login'] ?>
         </button>

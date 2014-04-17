@@ -23,10 +23,10 @@
             $cameras = dbFetchAll("SELECT * FROM Monitors");
             foreach($cameras as $index => $camera) {
               $monitorClass = "monitor-unknown";
-              if(!daemonStatus("zmc", "-m $camera[Id]")) {
+              if(!zmcStatus($camera)) {
                 $monitorClass = "monitor-down";
               }
-              if(!daemonStatus("zma", "-m $camera[Id]")) {
+              elseif(!zmaStatus($camera)) {
                 $monitorClass = "monitor-warning";
               }
               else {
@@ -36,10 +36,10 @@
               echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"fa fa-edit\"></span> " . $camera['Name'];
               switch($monitorClass) {
                 case "monitor-down":
-                  echo " <span style=\"color: green;\" class=\"fa fa-warning-sign\"></span>";
+                  echo " <span style=\"color: red;\" class=\"fa fa-exclamation-circle\"></span>";
                   break;
                 case "monitor-warning":
-                  echo " <span style=\"color: orange;\" class=\"fa fa-warning-sign\"></span>";
+                  echo " <span style=\"color: orange;\" class=\"fa fa-question-circle\"></span>";
                   break;
                 case "monitor-ok":
                   echo " <span style=\"color: green;\" class=\"fa fa-check-circle-o\"></span>";
