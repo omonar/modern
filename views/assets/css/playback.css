@@ -407,3 +407,11 @@ img.monitor-thumbnail {
 .zm button.ui-datepicker-close, .zm button.ui-datepicker-current {
   color: white;
 }
+
+.zm .hasDatePicker {
+  color: black;
+}
+
+.zm .hasDatePicker:disabled {
+  color: gray;
+}

@@ -81,8 +81,10 @@ function xhtmlHeaders($file, $title) {
     <meta charset="UTF-8">
     <title><?= ZM_WEB_TITLE_PREFIX ?> - <?= validHtmlStr($title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/ico" href="assets/images/favicon.ico"/>
-    <link rel="shortcut icon" href="assets/images/favicon.ico"/>
+    <link rel="icon" type="image/ico" href="skins/<?=$skin?>/views/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="skins/<?=$skin?>/views/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="skins/<?=$skin?>/views/assets/images/apple-touch-icon-precomposed.png">
+
     <!-- jquery -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
 
