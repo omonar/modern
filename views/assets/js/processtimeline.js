@@ -21,10 +21,16 @@ function processTimelineData() {
   };
 
   self.activity.forEach(function(v, i) {
+    self.cameras.forEach(function(camera, index) {
+      if(v.MonitorId == camera.Id) {
+        self.cameraIndex = index;
+      }
+    });
+
     self.timelinedata.push({start: Date.createFromMysql(self.activity[i].StartTime), end: Date.createFromMysql(self.activity[i].EndTime), content: self.activity[i].Id, className: "monitor"+self.activity[i].MonitorId});
 
-    if(typeof(self.myframes[Number(v.MonitorId)-1][Number(v.Id)]) === "undefined") {
-      self.myframes[Number(v.MonitorId)-1][Number(v.Id)] = new Array();
+    if(typeof(self.myframes[Number(self.cameraIndex)][Number(v.Id)]) === "undefined") {
+      self.myframes[Number(self.cameraIndex)][Number(v.Id)] = new Array();
     }
     i++;
   });

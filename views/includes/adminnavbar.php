@@ -16,7 +16,8 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-camera"></span> Cameras <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="#" id="add-new-monitor"><span class="fa fa-plus-circle"></span> Add camera</a></li>
+          <!-- id="add-new-monitor" -->
+          <li><a href="?skin=classic&amp;view=monitor" class="init-colorbox"><span class="fa fa-plus-circle"></span> Add camera</a></li>
           <li class="divider"></li>
           <li class="dropdown-header">Edit Existing</li>
           <?php
@@ -33,7 +34,7 @@
                 $monitorClass = "monitor-ok";
               }
 
-              echo "<li><a href=\"?skin=classic&view=monitor&mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"fa fa-edit\"></span> " . $camera['Name'];
+              echo "<li><a href=\"?skin=classic&amp;view=monitor&amp;mid=" . $camera['Id'] . "\" class=\"init-colorbox\" data-monitorid=\"" . $camera['Id'] . "\"><span class=\"fa fa-edit\"></span> " . $camera['Name'];
               switch($monitorClass) {
                 case "monitor-down":
                   echo " <span style=\"color: red;\" class=\"fa fa-exclamation-circle\"></span>";
@@ -57,7 +58,7 @@
           <?php
             foreach($cameras as $camera) {
           ?>
-            <li><a href="?skin=classic&view=zones&mid=<?=$camera['Id']?>" class="init-colorbox"><span class="fa fa-camera"></span> <?=$camera['Name']?></a></li>
+            <li><a href="?skin=classic&amp;view=zones&amp;mid=<?=$camera['Id']?>" class="init-colorbox"><span class="fa fa-camera"></span> <?=$camera['Name']?></a></li>
           <?php
             }
           ?>
@@ -70,9 +71,9 @@
 
       <li><a href="#" id="userlist"><span class="fa fa-users"></span> Users</a></li>
 
-      <li><a href="?skin=classic&view=log" class="init-colorbox"><span class="fa fa-terminal"></span> Log</a></li>
+      <li><a href="?skin=classic&amp;view=log" class="init-colorbox"><span class="fa fa-terminal"></span> Log</a></li>
 
-      <li><a href="?skin=classic&view=options" class="init-colorbox"><span class="fa fa-cog"></span> Settings</a></li>
+      <li><a href="?skin=classic&amp;view=options" class="init-colorbox"><span class="fa fa-cog"></span> Settings</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
 

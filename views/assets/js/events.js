@@ -218,12 +218,12 @@ $(document).ready(function() {
 
   $(document).on("click", "#check-all", function() {
     if($(this).prop('checked')) {
-      $("input[type=checkbox]").prop('checked', true);
+      $("input.event-checkbox").prop('checked', true);
       $("#delete-selected-events").removeClass("disabled");
       $("#export-selected-events").removeClass("disabled");
     }
     else {
-      $("input[type=checkbox]").prop('checked', false);
+      $("input.event-checkbox").prop('checked', false);
       $("#delete-selected-events").addClass("disabled");
       $("#export-selected-events").addClass("disabled");
     }
@@ -232,8 +232,9 @@ $(document).ready(function() {
   $(document).on("click", ".export-event", function(event) {
     event.preventDefault();
     var eventID = $(this).attr("data-eid");
+    var monitorID = $(this).attr("data-mid");
     if(confirm("Are you sure you want to export event " + eventID + "?") === true) {
-      window.open('index.php?view=exportevents&exportevents=single&eid=' + eventID);
+      window.open('index.php?view=exportevents&exportevents=single&eid=' + eventID + "&mid=" + monitorID);
       noty({text: 'Launched download of events', type: 'success'});
     }
   });

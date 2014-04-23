@@ -1,5 +1,5 @@
 <?php
-  function addEventToZip($eid, $zip) {
+  function addEventToZip($eid, $mid, $zip) {
     $query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE Id={$eid}";
     $results = dbFetchAll($query);
 
@@ -17,29 +17,30 @@
             $rImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-r.jpg", $eventPath, $counter);
             $frames[] = viewImagePath($imagePath);
       }
+      $zip->addDirectory("events/" . $event['MonitorId']);
+      $zip->addDirectory("events/" . $event['MonitorId'] . "/" . $event['Id']);
     }
-    $zip->addDirectory("events/" . $_REQUEST['eid']);
     $i = 0;
     foreach($frames as $frame) {
       $i++;
       if($i<10) {
-        $filesString .= "\nframes.push(\"events/" . $eid . "/00" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/00" . $i . "-capture.jpg");
+        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg");
       }
       elseif ($i>=10 && $i <= 99) {
-        $filesString .= "\nframes.push(\"events/" . $eid . "/0" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/0" . $i . "-capture.jpg");
+        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg");
       }
       else {
-        $filesString .= "\nframes.push(\"events/" . $eid . "/" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/" . $i . "-capture.jpg");
+        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg");
       }
     }
     return $filesString;
   }
 
-  function addEventsToZip($eid, $monitorID, $zip) {
-    $query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE Id={$eid}";
+  function addEventsToZip($eids, $zip) {
+    $query = "SELECT Id, MonitorId, StartTime, Frames FROM Events WHERE Id IN ('" . implode("','", $eids) . "')";
     $results = dbFetchAll($query);
 
     $scale = max( reScale( SCALE_BASE, '100', ZM_WEB_DEFAULT_SCALE ), SCALE_BASE );
@@ -56,8 +57,9 @@
             $rImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-r.jpg", $eventPath, $counter);
             $frames[] = viewImagePath($imagePath);
       }
+      $zip->addDirectory("events/" . $event['MonitorId']);
+      $zip->addDirectory("events/" . $event['MonitorId'] . "/" . $event['Id']);
     }
-    $zip->addDirectory("events/" . $_REQUEST['eid']);
     $i = 0;
     foreach($frames as $frame) {
       $i++;
@@ -65,16 +67,16 @@
         $filesString .= "\nevent{$eid} = [];";
       }
       if($i<10) {
-        $filesString .= "\nevent{$eid}.push(\"events/" . $eid . "/00" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/00" . $i . "-capture.jpg");
+        $filesString .= "\nevent{$eid}.push(\"events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg");
       }
       elseif ($i>=10 && $i <= 99) {
-        $filesString .= "\nevent{$eid}.push(\"events/" . $eid . "/0" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/0" . $i . "-capture.jpg");
+        $filesString .= "\nevent{$eid}.push(\"events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg");
       }
       else {
-        $filesString .= "\nevent{$eid}.push(\"events/" . $eid . "/" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $eid . "/" . $i . "-capture.jpg");
+        $filesString .= "\nevent{$eid}.push(\"events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg");
       }
     }
     return $filesString;
@@ -88,8 +90,8 @@
         $zip = new ZipStream("event-" . $_REQUEST['eid'] . ".zip");
         $zip->addDirectory("events");
         $zip->addDirectory("assets");
-        $filesString = addEventToZip($_REQUEST['eid'], $zip, $filesString);
-        $zip->addLargeFile("skins/modern/views/images/onerror.png", "assets/playback-placeholder.png");
+        $filesString = addEventToZip($_REQUEST['eid'], $_REQUEST['mid'], $zip, $filesString);
+        $zip->addFile(file_get_contents("skins/{$skin}/views/assets/images/onerror.png"), "assets/playback-placeholder.png");
         $playerFile = file_get_contents("skins/{$skin}/views/includes/standalone-event-player.html");
         $playerFile = str_replace("###files###", $filesString, $playerFile);
         $zip->addFile($playerFile, "player.html");
@@ -120,7 +122,7 @@
         }
         $variablesString .= "\nevents['{$eventID}'] = new Array(\"{$monitorID}\", \"{$response[StartTime]}\");";
       }
-      $zip->addLargeFile("skins/modern/views/images/onerror.png", "assets/playback-placeholder.png");
+      $zip->addLargeFile("skins/{$skin}/views/images/onerror.png", "assets/playback-placeholder.png");
       $playerFile = file_get_contents("skins/{$skin}/views/includes/standalone-events-player.html");
       $playerFile = str_replace("###variables###", $variablesString, $playerFile);
       $playerFile = str_replace("###placeholder###", $filesString, $playerFile);

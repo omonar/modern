@@ -130,8 +130,8 @@
             }
           }
           echo "<td><a href=\"?view=playevent&eid=$event[Id]\" class=\"init-dynamic-colorbox\"><span class=\"glyphicon glyphicon-film\"></span></a></td>";
-          echo "<td><a href=\"#\" id=\"export-event-$event[Id]\" class=\"export-event\" data-eid=\"$event[Id]\"><span class=\"glyphicon glyphicon-export\"></span></a></td>";
-          echo "<td><a href=\"#\" id=\"delete-event-$event[Id]\" class=\"delete-event\" data-eid=\"$event[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
+          echo "<td><a href=\"#\" id=\"export-event-$event[Id]\" class=\"export-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"glyphicon glyphicon-export\"></span></a></td>";
+          echo "<td><a href=\"#\" id=\"delete-event-$event[Id]\" class=\"delete-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
           echo "<td><a href=\"#\"><input type=\"checkbox\" data-eid=\"$event[Id]\" data-monitorid=\"$event[MonitorId]\" class=\"event-checkbox\"></td>";
           echo "</tr>";
         }

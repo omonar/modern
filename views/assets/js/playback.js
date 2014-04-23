@@ -133,7 +133,13 @@ function resumeLiveStreams() {
   });
 }
 
-function addMonitor(monitorId, showall) {
+function addMonitor(cameraId, showall) {
+  $.each(cameras, function(index, camera) {
+    if(camera.Id === cameraId) {
+      cameraIndex = index;
+    }
+  });
+
   if(arguments.length === 1) {
     showall = false;
   }
@@ -147,36 +153,36 @@ function addMonitor(monitorId, showall) {
   if(showall === false) {
     noty({text: 'Adding camera...', type: 'info'});
   }
-  if($.inArray(monitorId, chosencameras) === -1) {
-    window["currentevents" + monitorId] = new Array();
-    currenteventarrays.push("currentevents" + monitorId);
+  if($.inArray(cameraId, chosencameras) === -1) {
+    window["currentevents" + cameraId] = new Array();
+    currenteventarrays.push("currentevents" + cameraId);
 
-    chosencameras.push(monitorId);
-    //console.log("Pushed " + monitorId + " / " + cameras[monitorId-1].Name + " to chosencameras");
+    chosencameras.push(cameraId);
+
     if(liveview === true) {
-      $('<!--' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-monitorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + monitorId + '\" class=\"monitor-stream-image\" src=\"' + cameras[monitorId-1].LiveSrc + '\" alt=\"' + monitorId + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
+      $('<!--' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameraId + '\" class=\"monitor-stream-image\" src=\"' + cameras[cameraIndex].LiveSrc + '\" alt=\"' + cameraId + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
     }
     else {
-      $('<!-- ' + cameras[monitorId-1].Name + ' --> <div id=\"monitor-stream-' + monitorId + '\" class=\"monitor-stream\" data-monitorid=\"' + monitorId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[monitorId-1].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameras[monitorId-1].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[monitorId-1].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[monitorId-1].Id + '\" width=\"' + cameras[monitorId-1].Width + '\" height=\"' + cameras[monitorId-1].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
+      $('<!-- ' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameras[cameraIndex].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[cameraIndex].Id + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
     }
-    $("div#monitor-stream-" + monitorId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
-    $("div#monitor-stream-" + monitorId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
-    $("div#monitor-stream-" + monitorId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
-    $("div#monitor-stream-" + monitorId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
+    $("div#monitor-stream-" + cameraId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
+    $("div#monitor-stream-" + cameraId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
+    $("div#monitor-stream-" + cameraId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
+    $("div#monitor-stream-" + cameraId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
 
-    $("#choose-cameras #monitor-stream-thumbnail-" + monitorId).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
-    $("#choose-cameras #monitor-stream-thumbnail-" + monitorId).parent().parent().parent().addClass("monitor-selected");
+    $("#choose-cameras #monitor-stream-thumbnail-" + cameraId).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
+    $("#choose-cameras #monitor-stream-thumbnail-" + cameraId).parent().parent().parent().addClass("monitor-selected");
 
     if((showall === false)&&(liveview===false)) {
       requeryTimeline();
     }
-    if((showall === true)&&(monitorId==cameras[cameras.length-1].Id)&&(liveview===false)) {
+    if((showall === true)&&(cameraId==cameras[cameras.length-1].Id)&&(liveview===false)) {
       requeryTimeline();
     }
 
     if(chosencameras.length > 1) {
-      $("div#monitor-stream-" + monitorId).css("width", $("div.monitor-stream").first().css("width"));
-      $("div#monitor-stream-" + monitorId + " img.monitor-stream-image").css("width", "100%");
+      $("div#monitor-stream-" + cameraId).css("width", $("div.monitor-stream").first().css("width"));
+      $("div#monitor-stream-" + cameraId + " img.monitor-stream-image").css("width", "100%");
     }
   }
 }
@@ -316,13 +322,13 @@ function loadUserDefaultPreset() {
 }
 
 function displayFrame(monitorId, img) {
-    console.log("displayFrame(" + img + ");");
+    //console.log("displayFrame(" + img + ");");
     $("img#liveStream" + monitorId).attr('src', img);
     //$("#monitor-stream-"+monitorId+" .monitor-stream-image").attr('src', img);
 }
 
 function requeryTimeline() {
-  //console.log("Requerying...");
+  console.log("Requerying...");
   if(chosencameras.length > 0) {
     $("div.timeline-frame").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
@@ -369,6 +375,9 @@ function requeryTimeline() {
               timeline.redraw();
               $("div.timeline-frame").css("background-color","");
               noty({text: 'Timeline updated (' + timelinedata.length + " events)", type: 'success'});
+            }
+            else {
+              console.log(e.data);
             }
           }
         }, false);
