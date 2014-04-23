@@ -97,11 +97,11 @@
         <h4>Legend</h4>
         <?php
           foreach($monitors as $MonitorId => $row) {
-            echo "<p><span class=\"glyphicon glyphicon-stop\" style=\"color: " . $row['WebColour'] . ";\"></span> " . $monitors[$MonitorId]['MonitorName'] . "</p>";
+            echo "<p><span class=\"fa fa-stop\" style=\"color: " . $row['WebColour'] . ";\"></span> " . $monitors[$MonitorId]['MonitorName'] . "</p>";
           }
         ?>
-          <p><span class="glyphicon glyphicon-stop" style="color: #47A447;"></span> Available Disk Space</p>
-          <p><span class="glyphicon glyphicon-stop" style="color: #D2322D;"></span> Used Disk Space</p>
+          <p><span class="fa fa-stop" style="color: #47A447;"></span> Available Disk Space</p>
+          <p><span class="fa fa-stop" style="color: #D2322D;"></span> Used Disk Space</p>
       </div>
     </div>
   </div> <!-- end container -->

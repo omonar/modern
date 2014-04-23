@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Event Player</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="assets/vendor/moment-js.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -15,7 +16,7 @@
       ###placeholder###
 
       function displayFrame(id, src) {
-        jQuery("img").attr('src', src);
+        jQuery("#" + id + " img").attr('src', src);
       }
 
       function playbackFrames(imgarray) {
@@ -31,7 +32,10 @@
         }, 200);
       }
       $(document).ready(function() {
-        playbackFrames(frames);
+        window.clock = new Date();
+        window.setInterval(function() {
+
+        }, 1000);
       });
     </script>
   </body>

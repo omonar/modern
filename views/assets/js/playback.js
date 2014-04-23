@@ -160,17 +160,17 @@ function addMonitor(cameraId, showall) {
     chosencameras.push(cameraId);
 
     if(liveview === true) {
-      $('<!--' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameraId + '\" class=\"monitor-stream-image\" src=\"' + cameras[cameraIndex].LiveSrc + '\" alt=\"' + cameraId + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
+      $('<!--' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"fa fa-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"fa fa-times\"></span></button></p><img id=\"liveStream' + cameraId + '\" class=\"monitor-stream-image\" src=\"' + cameras[cameraIndex].LiveSrc + '\" alt=\"' + cameraId + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\""></div></div>').appendTo('div#monitor-streams');
     }
     else {
-      $('<!-- ' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"glyphicon glyphicon-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"glyphicon glyphicon-remove\"></span></button></p><img id=\"liveStream' + cameras[cameraIndex].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[cameraIndex].Id + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
+      $('<!-- ' + cameras[cameraIndex].Name + ' --> <div id=\"monitor-stream-' + cameraId + '\" class=\"monitor-stream\" data-monitorid=\"' + cameraId + '\"><div class=\"col-container\"><div class=\"monitor-stream-info\"><p class=\"monitor-stream-info-name\" data-rel=\"tooltip\" title=\"The name assigned to this camera\">' + cameras[cameraIndex].Name + '</p><p class=\"monitor-stream-info-right\"><button class=\"monitor-stream-info-colour\" data-rel=\"tooltip\" title=\"The colour assigned to this camera on the timeline\"><span class=\"fa fa-stop\"></span></button><button class=\"monitor-stream-info-close\" data-rel=\"tooltip\" title=\"Hide this camera from view\"><span class=\"fa fa-times\"></span></button></p><img id=\"liveStream' + cameras[cameraIndex].Id + '\" class=\"monitor-stream-image\" data-livesrc=\"' + cameras[cameraIndex].LiveSrc + '\" src=\"' + errorImageSrc + '\" alt=\"' + cameras[cameraIndex].Id + '\" width=\"' + cameras[cameraIndex].Width + '\" height=\"' + cameras[cameraIndex].Height + '\" onerror=\"imgError(this);\"></div></div>').appendTo('div#monitor-streams');
     }
     $("div#monitor-stream-" + cameraId + " .monitor-stream-info-events").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + cameraId + " .monitor-stream-info-close").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + cameraId + " .monitor-stream-info-colour").tooltip({placement: 'bottom'});
     $("div#monitor-stream-" + cameraId + " .monitor-stream-info-name").tooltip({placement: 'bottom'});
 
-    $("#choose-cameras #monitor-stream-thumbnail-" + cameraId).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
+    $("#choose-cameras #monitor-stream-thumbnail-" + cameraId).parent().append("<span class=\"fa fa-times-circle-o\"></span>");
     $("#choose-cameras #monitor-stream-thumbnail-" + cameraId).parent().parent().parent().addClass("monitor-selected");
 
     if((showall === false)&&(liveview===false)) {
@@ -192,7 +192,7 @@ function stopPlayback() {
   playing = false;
   timeline.options.showCustomTime = false;
   timeline.draw(null, options);
-  $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+  $("button#pause").html("<span class=\"fa fa-play\"></span>");
   $("button#pause").attr("id", "play");
 }
 
@@ -605,21 +605,21 @@ function toggleShowAllButton(override) {
   if(override === false) {
     if($("button.show-all-cameras").exists()) {
       if(chosencameras.length === cameras.length) {
-        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+        $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"fa fa-eye-slash\"></span></button>");
       }
     }
     else {
       if(chosencameras.length < cameras.length) {
-        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+        $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"fa fa-eye\"></span></button>");
       }
     }
   }
   else {
-    if($("span.glyphicon.glyphicon-eye-close").exists()) {
-      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>");
+    if($("span.fa.fa-eye-slash").exists()) {
+      $("button.hide-all-cameras").replaceWith("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"fa fa-eye\"></span></button>");
     }
     else{
-      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-close\"></span></button>");
+      $("button.show-all-cameras").replaceWith("<button class=\"hide-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"fa fa-eye-slash\"></span></button>");
     }
   }
   $("button.show-hide-cameras").tooltip({ placement: "bottom" });
@@ -627,11 +627,11 @@ function toggleShowAllButton(override) {
 
 function togglePlayPauseButton() {
   if($("button.playpause-button").attr("id") === "play") {
-    $("button#play").html("<span class=\"glyphicon glyphicon-pause\"></span>");
+    $("button#play").html("<span class=\"fa fa-pause\"></span>");
     $("button#play").attr("id", "pause");
   }
   else {
-    $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+    $("button#pause").html("<span class=\"fa fa-play\"></span>");
     $("button#pause").attr("id", "play");
   }
 }
@@ -649,7 +649,7 @@ function toggleMode() {
     }
 
     $("button#playback").tooltip('destroy');
-    $("button#playback").html("<span class=\"glyphicon glyphicon-record\"></span>");
+    $("button#playback").html("<span class=\"fa fa-dot-circle-o\"></span>");
     $("button#playback").attr("title", "Enter Live View Mode");
     $("button#playback").attr("id", "liveview");
     $("button#liveview").tooltip();
@@ -672,7 +672,7 @@ function toggleMode() {
   else {
     liveview = true;
     $("button#liveview").tooltip('destroy');
-    $("button#liveview").html("<span class=\"glyphicon glyphicon-film\"></span>");
+    $("button#liveview").html("<span class=\"fa fa-film\"></span>");
     $("button#liveview").attr("title", "Enter Playback Mode")
     $("button#liveview").attr("id", "playback");
     $("button#playback").tooltip();
@@ -843,7 +843,7 @@ $(document).ready(function() { /* begin document ready */
   });
 
   if(liveview === true || poweruser === true) {
-    $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"glyphicon glyphicon-eye-open\"></span></button>").appendTo($("span#ui-id-1").parent());
+    $("<button class=\"show-all-cameras show-hide-cameras\" data-rel=\"tooltip\" title=\"Click here to show / hide all cameras\"><span class=\"fa fa-eye\"></span></button>").appendTo($("span#ui-id-1").parent());
     $("button.show-hide-cameras").tooltip({ placement: "bottom" });
   }
 
@@ -1030,11 +1030,11 @@ $(document).ready(function() { /* begin document ready */
     if($("#monitor-limit-dialog .monitor-selected").length < 3 || $(this).parent().parent().parent().hasClass("monitor-selected")) {
       if(!$(this).parent().parent().parent().hasClass("monitor-selected")) {
         $(this).parent().parent().parent().addClass("monitor-selected");
-        $(this).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
+        $(this).parent().append("<span class=\"fa fa-check-circle-o\"></span>");
       }
       else {
         $(this).parent().parent().parent().removeClass("monitor-selected");
-        $(this).parent().find(".glyphicon-ok-circle").remove();
+        $(this).parent().find(".fa-check-circle-o").remove();
       }
     }
     else {
@@ -1181,7 +1181,7 @@ $(document).ready(function() { /* begin document ready */
   $(document).on("click", "button#pause", function(event) {
     event.preventDefault();
     window.stop();
-    $("button#pause").html("<span class=\"glyphicon glyphicon-play\"></span>");
+    $("button#pause").html("<span class=\"fa fa-play\"></span>");
     $("button#pause").attr("id", "play");
     pausePlayback();
   });
@@ -1275,7 +1275,6 @@ $(document).ready(function() { /* begin document ready */
         toggleMode();
       }
 
-      $("button.show-hide-cameras").hide();
       $("li.preset-list-item a.show-all-cameras").parent().hide();
       $("button.show-hide-cameras").hide();
       $(".zm .ui-dialog li:nth-child(even)").css("background-color", "#000");
@@ -1294,7 +1293,7 @@ $(document).ready(function() { /* begin document ready */
       toggleShowAllButton();
       $.each(chosencameras, function(i, v) {
         $("#monitor-stream-thumbnail-" + v).parent().parent().parent().addClass("monitor-selected");
-        $("#monitor-stream-thumbnail-" + v).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
+        $("#monitor-stream-thumbnail-" + v).parent().append("<span class=\"fa fa-check-circle-o\"></span>");
       });
       $("div#choose-cameras").dialog("open");
     }
@@ -1330,7 +1329,7 @@ $(document).ready(function() { /* begin document ready */
         var monitorClass = $(this).attr("id");
         var monitorName = $(this).attr("alt");
         var monitorId = monitorClass.substr(monitorClass.length - 1);
-        $(this).parent().append("<span class=\"glyphicon glyphicon-ok-circle\"></span>");
+        $(this).parent().append("<span class=\"fa fa-check-circle-o\"></span>");
         $(this).parent().parent().parent().addClass("monitor-selected");
         if($('#monitor-stream-' + monitorId).length == 0) {
           $.when(

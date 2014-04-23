@@ -86,6 +86,9 @@ function xhtmlHeaders($file, $title) {
     <!-- jquery -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
 
+    <!-- font awesome -->
+    <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/font-awesome.min.css">
+
     <!-- bootstrap -->
     <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/bootstrap.min.css">
@@ -110,17 +113,20 @@ function xhtmlHeaders($file, $title) {
     <!-- main css -->
     <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/main.css">
 
+    <?php if($title == "Options") { ?>
+      <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap-responsive-tabs.js"></script>
+    <?php } ?>
+
     <?php
-     if ($title == "Admin" || $title == "Events") {
+     if ($title == "Admin" || $title == "Events" || $title == "Console") {
     ?>
         <script type="text/javascript">
           var skinVersion = "<?=file_get_contents('skins/modern/VERSION');?>";
         </script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.cookie.js"></script>
-        <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/vendor/css/font-awesome.min.css">
         <?php
-          if($title == "Events") {
+          if($title == "Events" || $title = "Console") {
         ?>
             <script src="skins/<?=$skin?>/views/assets/js/admin.js"></script>
             <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/admin.css">
@@ -141,7 +147,7 @@ function xhtmlHeaders($file, $title) {
           <?php
             foreach(dbFetchAll("SELECT Monitors.Id, Monitors.WebColour FROM Monitors") as $monitor) {
               echo ".timeline-event.monitor" . $monitor['Id'] . " { background: " . $monitor['WebColour'] . "; }\n";
-              echo "#monitor-stream-" . $monitor['Id'] . " .glyphicon-stop { color: " . $monitor['WebColour'] . "; }\n";
+              echo "#monitor-stream-" . $monitor['Id'] . " .fa-stop { color: " . $monitor['WebColour'] . "; }\n";
             }
           ?>
           </style>

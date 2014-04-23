@@ -170,7 +170,7 @@ color: #567;
   background-color: #333;
 }
 
-.zm .glyphicon-stop {
+.zm .fa-stop {
   line-height: 1.4rem;
 }
 
@@ -387,7 +387,7 @@ p.monitor-limit-dialog-message {
   font-size: 1.2rem;
 }
 
-.monitor-selected .glyphicon-ok-circle {
+.monitor-selected .fa-check-circle-o {
   position: absolute;
   left: 115px;
   top: 0;
@@ -402,4 +402,8 @@ img.monitor-thumbnail {
 
 .monitor-selected img.monitor-thumbnail {
   opacity: 1;
+}
+
+.zm button.ui-datepicker-close, .zm button.ui-datepicker-current {
+  color: white;
 }

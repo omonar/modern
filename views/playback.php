@@ -35,9 +35,9 @@
 
     <div class="view-wrapper">
         <div class="top-toolbar">
-          <button id="scale-decrease" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reduce camera sizes"><span class="glyphicon glyphicon-minus"></span></button>
-          <button id="scale-reset" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reset camera sizes"><span class="glyphicon glyphicon-th-large"></span></button>
-          <button id="scale-increase" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Increase camera sizes"><span class="glyphicon glyphicon-plus"></span></button>
+          <button id="scale-decrease" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reduce camera sizes"><span class="fa fa-minus"></span></button>
+          <button id="scale-reset" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Reset camera sizes"><span class="fa fa-th-large"></span></button>
+          <button id="scale-increase" class="btn btn-default" data-rel="tooltip" data-placement="bottom" title="Increase camera sizes"><span class="fa fa-plus"></span></button>
         </div>
 
         <div id="monitor-streams" class="monitor-streams"></div>
@@ -46,8 +46,8 @@
           <div class="controls-timeline controls ui-corner-tr"> <!-- begin controls-timeline -->
             <ul class="controls-list">
               <li class="controls-timeline-playback-buttons">
-                <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="glyphicon glyphicon-film"></span></button>
-                <button class="btn btn-default playback-button playpause-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="glyphicon glyphicon-play"></span></button>
+                <button class="btn btn-default playback-button" id="playback" data-rel="tooltip" title="Enter Playback Mode"><span class="fa fa-film"></span></button>
+                <button class="btn btn-default playback-button playpause-button" id="play" data-rel="tooltip" title="Play / Pause" disabled style="display: none"><span class="fa fa-play"></span></button>
                 <select class="form-control" id="speed" data-rel="tooltip" title="Change playback speed" style="display: none;">
                   <option value="400">0.5x</option>
                   <option value="200" selected>1x</option>
@@ -64,7 +64,7 @@
                 <input id="rangeend" type="text" class="hasDatePicker" disabled>
               </li>
               <li class="controls-timeline-playback-load" data-rel="tooltip" title="Load event data for the selected range">
-                <button id="load-events" class="btn btn-default btn-sm load-events" disabled><span class="glyphicon glyphicon-screenshot"></span> Load Events</button>
+                <button id="load-events" class="btn btn-default btn-sm load-events" disabled><span class="fa fa-crosshairs"></span> Load Events</button>
               </li>
             </ul>
           </div> <!-- end controls-timeline -->
@@ -74,12 +74,12 @@
           <div class="controls-misc controls ui-corner-tl">
             <ul class="controls-list">
               <li>
-                <button id="choose-cameras-opener" class="btn btn-default" data-rel="tooltip" title="Add and remove individual cameras from view"><span class="glyphicon glyphicon-camera"></span></button>
-                <button id="preset-selection-opener" class="btn btn-default" data-rel="tooltip" title="Quickly show and hide cameras in groups"><span class="glyphicon glyphicon-th"></span></button>
+                <button id="choose-cameras-opener" class="btn btn-default" data-rel="tooltip" title="Add and remove individual cameras from view"><span class="fa fa-camera"></span></button>
+                <button id="preset-selection-opener" class="btn btn-default" data-rel="tooltip" title="Quickly show and hide cameras in groups"><span class="fa fa-th"></span></button>
                 <?php if(canEdit('System')===true) { ?>
-                  <a href="?view=admin" class="btn btn-default playback-button" data-rel="tooltip" title="Edit System Settings"><span class="glyphicon glyphicon-cog"></span></a>
+                  <a href="?view=admin" class="btn btn-default playback-button" data-rel="tooltip" title="Edit System Settings"><span class="fa fa-cog"></span></a>
                 <?php } ?>
-                <a href="?view=logout" class="btn btn-default playback-button" data-rel="tooltip" title="Logout"><span class="glyphicon glyphicon-log-out"></span></a>
+                <a href="?view=logout" class="btn btn-default playback-button" data-rel="tooltip" title="Logout"><span class="fa fa-sign-out"></span></a>
               </li>
               <li>
                 <p style="visibility: hidden;" class="currently-playing">playback date & time</p>
@@ -87,8 +87,8 @@
                 <p style="visibility: hidden;" class="playback-time">00:00:00</p>
               </li>
               <li>
-                <button id="page-refresh" class="btn btn-default" data-rel="tooltip" title="Refresh this page. May fix sporadic behaviour."><span class="glyphicon glyphicon-refresh"></span></button>
-                <button id="fullscreen" class="btn btn-default" data-rel="tooltip" title="Make this page fullscreen"><span class="glyphicon glyphicon-fullscreen"></span></button>
+                <button id="page-refresh" class="btn btn-default" data-rel="tooltip" title="Refresh this page. May fix sporadic behaviour."><span class="fa fa-refresh"></span></button>
+                <button id="fullscreen" class="btn btn-default" data-rel="tooltip" title="Make this page fullscreen"><span class="fa fa-arrows-alt"></span></button>
               </li>
             </ul>
           </div>

@@ -63,7 +63,7 @@ xhtmlHeaders(__FILE__, $SLANG['Login'] );
           }
         ?>
         <button name="login" class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
-          <span class="glyphicon glyphicon-log-in"></span> 
+          <span class="fa fa-sign-in"></span> 
           <?= $SLANG['Login'] ?>
         </button>
       </form>

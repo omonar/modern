@@ -32,13 +32,13 @@
             foreach($preset['presetCameras'] as $monitorId) {
               echo "<p>$monitors[$monitorId] ($monitorId)</p>";
             }
-            echo "</td><td><a href=\"#\" class=\"btn btn-primary edit-preset\" data-presetid=\"$preset[presetID]\"><span class=\"glyphicon glyphicon-edit\"></span></a></td>";
-            echo "<td><a href=\"#\" class=\"btn btn-danger delete-preset\" data-presetid=\"$preset[presetID]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td></tr>";
+            echo "</td><td><a href=\"#\" class=\"btn btn-primary edit-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-edit\"></span></a></td>";
+            echo "<td><a href=\"#\" class=\"btn btn-danger delete-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-times-circle\"></span></a></td></tr>";
           }
         ?>
       </tbody>
     </table>
-    <a href="#" id="add-new-preset" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add New Preset</a>
+    <a href="#" id="add-new-preset" class="btn btn-primary"><span class="fa fa-plus-circle"></span> Add New Preset</a>
   </div>
 </div>
 
@@ -64,8 +64,8 @@
           </select>
         </td>
     </table>
-    <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="presetmanagement"><span class="glyphicon glyphicon-chevron-left"></span> Back To Preset Mangement</a>
-    <a href="#" id="save-new-preset" class="btn btn-success"><span class="glyphicon glyphicon-save"></span> Save New Preset</a>
+    <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="presetmanagement"><span class="fa fa-chevron-circle-left"></span> Back To Preset Mangement</a>
+    <a href="#" id="save-new-preset" class="btn btn-success"><span class="fa fa-save"></span> Save New Preset</a>
   </div>
 </div>
 
@@ -91,7 +91,7 @@
           </select>
         </td>
     </table>
-    <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="presetmanagement"><span class="glyphicon glyphicon-chevron-left"></span> Back To Preset Mangement</a>
-    <a href="#" id="save-preset" class="btn btn-success"><span class="glyphicon glyphicon-save"></span> Save Preset</a>
+    <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="presetmanagement"><span class="fa fa-chevron-circle-left"></span> Back To Preset Mangement</a>
+    <a href="#" id="save-preset" class="btn btn-success"><span class="fa fa-save"></span> Save Preset</a>
   </div>
 </div>

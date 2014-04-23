@@ -93,15 +93,15 @@
 
                 echo "<td>$value</td>";
               }
-              echo "<td><a href=\"?skin=classic&view=user&uid=$row[Id]\" data-userid=\"$row[Id]\" class=\"edit-user init-dynamic-colorbox\"><span class=\"glyphicon glyphicon-edit\"></span></a></td>";
-              echo "<td><a href=\"#\" id=\"delete-user-$row[Id]\" class=\"delete-user\" data-userid=\"$row[Id]\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a></td>";
+              echo "<td><a href=\"?skin=classic&view=user&uid=$row[Id]\" data-userid=\"$row[Id]\" class=\"edit-user init-dynamic-colorbox\"><span class=\"fa fa-edit\"></span></a></td>";
+              echo "<td><a href=\"#\" id=\"delete-user-$row[Id]\" class=\"delete-user\" data-userid=\"$row[Id]\"><span class=\"fa fa-times-circle\"></span></a></td>";
               echo "</tr>";
               $i++;
             }
           ?>
         </tbody>
       </table>
-      <button id="add-new-user-opener" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Add New User</button>
+      <button id="add-new-user-opener" class="btn btn-primary"><span class="fa fa-plus-circle"></span> Add New User</button>
     </div>
   </div>
 
@@ -241,7 +241,7 @@
           </tr>
         </tbody>
       </table>
-      <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="userlist"><span class="glyphicon glyphicon-chevron-left"></span> Back To Preset Mangement</a>
-      <button id="add-new-user" class="btn btn-success"><span class="glyphicon glyphicon-save"></span> Save User</button>
+      <a href="#" class="btn btn-primary back-to-preset-management" data-calledfrom="userlist"><span class="fa fa-arrow-circle-left"></span> Back To Preset Mangement</a>
+      <button id="add-new-user" class="btn btn-success"><span class="fa fa-save"></span> Save User</button>
     </div>
   </div>
