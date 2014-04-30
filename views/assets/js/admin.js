@@ -362,10 +362,27 @@ $(document).ready(function() { /* begin document ready */
           }
         });
         if(skinUpdateAvailable === true) {
-          $("#skinVersionMessage").replaceWith("<li><a href=\"https://github.com/kjvarley/modern/archive/master.zip\"><span class=\"fa fa-picture-o\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
+          $("#skinVersionMessage").replaceWith("<li id=\"skinVersionMessage\"><a href=\"https://github.com/kjvarley/modern/archive/master.zip\"><span class=\"fa fa-picture-o\"></span> Skin Update Available <span class=\"badge\">" + data + "</span></a></li>");
         }
         else {
-          $("#skinVersionMessage").replaceWith("<li><a href=\"#\"><span class=\"fa fa-picture-o\"></span> Skin Up-To-Date</a></li>");
+          $("#skinVersionMessage").replaceWith("<li id=\"skinVersionMessage\"><a href=\"#\"><span class=\"fa fa-picture-o\"></span> Skin Up-To-Date</a></li>");
+        }
+      }
+    });
+    $.ajax({
+      url: "index.php?view=version",
+      cache: false,
+      success: function(data) {
+        switch(data) {
+          case "mismatch":
+            $("#zmVersionMessage").replaceWith("<li id=\"zmVersionMessage\"><a href=\"?skin=classic&view=version\" class=\"init-colorbox\"><span class=\"fa fa-camera\"></span> ZoneMinder Version Mismatch!</a></li>");
+            break;
+          case "noupdate":
+            $("#zmVersionMessage").replaceWith("<li id=\"zmVersionMessage\"><a href=\"#\"><span class=\"fa fa-camera\"></span> ZoneMinder Up-To-Date</a></li>");
+            break;
+          case "update":
+            $("#zmVersionMessage").replaceWith("<li id=\"zmVersionMessage\"><a href=\"?skin=classic&view=version\" class=\"init-colorbox\"><span class=\"fa fa-camera\"></span> ZoneMinder Update Available</a></li>");
+            break;
         }
       }
     });

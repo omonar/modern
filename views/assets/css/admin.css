@@ -25,6 +25,8 @@ body { padding-top: 50px; }
 
 .purple { background-color: #892E65; }
 
+.teal { background-color: #006A6A; }
+
 .dropdown.colour.blue .dropdown-toggle span {
   border-top-color: #FFFFFF;
   border-bottom-color: #FFFFFF;

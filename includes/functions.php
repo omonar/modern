@@ -115,10 +115,6 @@ function xhtmlHeaders($file, $title) {
     <!-- main css -->
     <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/main.css">
 
-    <?php if($title == "Options") { ?>
-      <script src="skins/<?=$skin?>/views/assets/vendor/js/bootstrap-responsive-tabs.js"></script>
-    <?php } ?>
-
     <?php
      if ($title == "Admin" || $title == "Events" || $title == "Console") {
     ?>
@@ -128,7 +124,7 @@ function xhtmlHeaders($file, $title) {
         <script src="skins/<?=$skin?>/views/assets/vendor/js/chartjs/chart.min.js"></script>
         <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.cookie.js"></script>
         <?php
-          if($title == "Events" || $title = "Console") {
+          if($title == "Events" || $title == "Console") {
         ?>
             <script src="skins/<?=$skin?>/views/assets/js/admin.js"></script>
             <link rel="stylesheet" href="skins/<?=$skin?>/views/assets/css/admin.css">

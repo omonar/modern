@@ -4,6 +4,16 @@
 <body class="zm"> <!-- begin body -->
 
   <?php
+    if(!canView('System')) {
+  ?>
+      <div class="container">
+        <div class="alert alert-danger"><p><strong>ERROR:</strong> You do not have the required permissions to access this page, please contact your system administrator. <a href="?view=playback">Return to playback mode?</a></p></div>
+      </div>
+    </body>
+  <?php
+    die();
+    }
+
     include('includes/adminnavbar.php');
 
     $query = "SELECT Id, Name AS 'MonitorName', WebColour FROM Monitors";

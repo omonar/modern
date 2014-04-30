@@ -77,12 +77,21 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
 
-      <li class="colour red"><a href="#"><span class="fa fa-hdd-o"></span> <?=getDiskPercent();?>%</a></li>
+      <?php
+        $diskUsage = getDiskPercent();
+        $diskColour = "teal";
+        if($diskUsage >= 90) {
+          $diskColour = "red";
+        }
+      ?>
+
+      <li class="colour <?=$diskColour?>"><a href="?view=events"><span class="fa fa-hdd-o"></span> <?=$diskUsage?>%</a></li>
 
       <li class="dropdown colour yellow">
         <a href="#" id="updates" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-arrow-circle-up"></span> Updates</a>
         <ul class="dropdown-menu">
-          <li id="skinVersionMessage"><a href="#"><span class="fa fa-picture-o"></span> Checking for updates...</a></li>
+          <li id="skinVersionMessage"><a href="#"><span class="fa fa-picture-o"></span> Checking for skin updates...</a></li>
+          <li id="zmVersionMessage"><a href="#"><span class="fa fa-camera"></span> Checking for ZoneMinder updates...</a></li>
         </ul>
       </li>
 
