@@ -107,6 +107,30 @@ $(document).ready(function() { /* begin document ready */
     });
   });
 
+  $(document).on("click", "#zm-new-zone-opener", function(event) {
+    event.preventDefault();
+    jQuery.ajax({
+      type: "POST",
+      url: 'index.php?view=newzone',
+      success: function(data) {
+        $(".container").html(data); 
+      }
+    });
+  });
+
+  $(document).on("click", "#zm-new-zone", function(event) {
+    event.preventDefault();
+    $.colorbox({
+      href: "?skin=classic&view=zone&mid=" + $("select#newzone").val() + "&zid=0",
+      iframe: true,
+      innerWidth: $(window).width() - 100,
+      innerHeight: $(window).height() - 100,
+      onClosed: function() {
+        $.cookie('zmSkin', 'modern', { expires: 365   });
+      }
+    });
+  });
+
   $(document).on("click", "#zm-change-state-opener", function(event) {
     event.preventDefault();
     jQuery.ajax({

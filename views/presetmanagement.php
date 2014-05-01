@@ -16,28 +16,37 @@
     <h3 class="panel-title">Preset Management</h3>
   </div>
   <div class="panel-body">
-    <table id="preset-table" class="table table-striped">
-      <thead>
-        <tr>
-          <th>Preset Name</th>
-          <th>Cameras</th>
-          <th>Edit Preset</th>
-          <th>Delete Preset</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-          foreach($presets as $preset) {
-            echo "<tr id=\"preset-" . $preset['presetID'] . "\" data-monitorids=\"" . implode(",", $preset['presetCameras']) . "\" data-presetname=\"" . $preset['presetName'] . "\"><td>" . $preset['presetName'] . "</td><td>";
-            foreach($preset['presetCameras'] as $monitorId) {
-              echo "<p>$monitors[$monitorId] ($monitorId)</p>";
-            }
-            echo "</td><td><a href=\"#\" class=\"btn btn-primary edit-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-edit\"></span></a></td>";
-            echo "<td><a href=\"#\" class=\"btn btn-danger delete-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-times-circle\"></span></a></td></tr>";
-          }
-        ?>
-      </tbody>
-    </table>
+    <?php
+      if(sizeof($presets) >= 1) {
+    ?>
+        <table id="preset-table" class="table table-striped">
+          <thead>
+            <tr>
+              <th>Preset Name</th>
+              <th>Cameras</th>
+              <th>Edit Preset</th>
+              <th>Delete Preset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              foreach($presets as $preset) {
+                echo "<tr id=\"preset-" . $preset['presetID'] . "\" data-monitorids=\"" . implode(",", $preset['presetCameras']) . "\" data-presetname=\"" . $preset['presetName'] . "\"><td>" . $preset['presetName'] . "</td><td>";
+                foreach($preset['presetCameras'] as $monitorId) {
+                  echo "<p>$monitors[$monitorId] ($monitorId)</p>";
+                }
+                echo "</td><td><a href=\"#\" class=\"btn btn-primary edit-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-edit\"></span></a></td>";
+                echo "<td><a href=\"#\" class=\"btn btn-danger delete-preset\" data-presetid=\"$preset[presetID]\"><span class=\"fa fa-times-circle\"></span></a></td></tr>";
+              }
+            ?>
+          </tbody>
+        </table>
+    <?php
+      }
+      else {
+        echo "<div class=\"alert alert-warning\"><p>No presets defined. Add a new preset by click on the button below.</p></div>";
+      }
+    ?>
     <a href="#" id="add-new-preset" class="btn btn-primary"><span class="fa fa-plus-circle"></span> Add New Preset</a>
   </div>
 </div>
