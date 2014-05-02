@@ -432,7 +432,7 @@ function playbackFrames(monitorId, eventId, imgarray) {
             //jumpToNearestEvent(timeline.getCurrentTime());
             window.setTimeout(function() {
               jumpToNearestEvent(timeline.getCustomTime());
-            }, 5000);
+            }, 2000);
           }
         }
         x++;
