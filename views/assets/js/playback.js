@@ -328,7 +328,7 @@ function displayFrame(monitorId, img) {
 }
 
 function requeryTimeline() {
-  console.log("Requerying...");
+  console.log("INFO: Requerying timeline...");
   if(chosencameras.length > 0) {
     $("div.timeline-frame").css("background-color","red");
     var startformatted = moment(start).format('YYYY-MM-DD HH:mm') + ':00';
@@ -487,7 +487,7 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
     addMonitor(monitorId);
   }
   window["currentevents" + monitorId].push(eventId);
-  console.log("playing event: " + eventId + " on monitor " + monitorId + " with speed " + playbackspeed + " and playheadtimer speed " + playheadspeed);
+  console.log("INFO: Playing event" + eventId + " on monitor " + monitorId + " at " + $("#speed option:selected").text() + ".");
   liveview = false;
   shouldbeplaying = true;
 
@@ -508,13 +508,13 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
     }
 
   if(preloadFrames(frames[monitorId-1][eventId]) === true) {
-    console.log("Preloaded event " + eventId + " on " + monitorId);
+    //console.log("Preloaded event " + eventId + " on " + monitorId);
     playbackFrames(monitorId, eventId, frames[monitorId-1][eventId]);
   }
 }
 
 function jumpToNearestEvent(datetime, direction) {
-  //console.log("jumpToNearestEvent called at " + timeline.getCustomTime());
+  //console.log("jumpToNearestEvent called at " + datetime);
   direction = (typeof direction === "undefined") ? "forward" : direction;
   var matchFound = false;
   $.each(activity, function(i, v) {
@@ -858,7 +858,10 @@ $(document).ready(function() { /* begin document ready */
     closeText: "Select",
     showOn: "button",
     buttonImage: "skins/modern/views/assets/vendor/images/calendar.png",
-    buttonImageOnly: true
+    buttonImageOnly: true,
+    onClose: function() {
+      $("input#rangeend").val(moment($("input#rangestart").val(), "DD/MM/YYYY HH:mm").add(12, "hours").format("DD/MM/YYYY HH:mm"));
+    }
   }).next(".ui-datepicker-trigger").addClass("range-datepicker-opener");
 
   $('input#rangeend').datetimepicker({

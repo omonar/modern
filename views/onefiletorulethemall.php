@@ -66,7 +66,7 @@
 		$numRows = $numRows['NUMROWS'];
 		$cameras = "'" . implode("','", explode(",", $_REQUEST['cameras'])) . "'";
 		if(is_numeric($numRows)) {
-			$query = "SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "' LIMIT 0, {$numRows}";
+			$query = "SELECT Events.Id, Events.MonitorId, Monitors.Name, Events.StartTime, Events.EndTime AS Date, Events.StartTime, Events.EndTime, Events.Frames, Events.MaxScore FROM Events, Monitors WHERE Events.MonitorId=Monitors.Id AND Events.MonitorId IN (" . $cameras . ") AND StartTime BETWEEN '" . $_REQUEST['start'] . "' AND '" . $_REQUEST['end'] . "' ORDER BY Events.StartTime LIMIT 0, {$numRows}";
 			echo json_encode(dbFetchAll($query));
 		}
 		else {
