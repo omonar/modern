@@ -415,3 +415,24 @@ img.monitor-thumbnail {
 .zm .hasDatePicker:disabled {
   color: gray;
 }
+
+.controls-timeline-playback-rangestart button, .controls-timeline-playback-rangeend button {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+}
+
+.controls-timeline-playback-rangestart label, .controls-timeline-playback-rangeend label {
+  margin-bottom: 0;
+}
+
+.controls-timeline-playback-rangestart img, .controls-timeline-playback-rangeend img {
+  float: right;
+  position: absolute;
+  right: 2px;
+  margin-top: 3px;
+}
+
+.range-datepicker-opener {
+  visibility: hidden;
+}

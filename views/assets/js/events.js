@@ -27,8 +27,6 @@ jQuery.noty.defaults = {
 };
 
 function getEvents(pagenumber, chosencameras, timeframe, orderby, startdatetime, enddatetime) {
-  startdatetime = moment(startdatetime).format('YYYY-M-D HH:mm');
-  enddatetime = moment(enddatetime).format('YYYY-M-D HH:mm');
   if(typeof(timeframe) == "undefined") {
     timeframe = "all";
   }
@@ -36,19 +34,34 @@ function getEvents(pagenumber, chosencameras, timeframe, orderby, startdatetime,
     chosencameras = null;
   }
   if(arguments.length > 2) {
-    jQuery.ajax({
-      type: "POST",
-      url: 'index.php?view=fetchevents',
-      cache: false,
-      data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime, orderby: orderby},
-      success: function(data) {
-        $("#events").html(data);
-        $(".init-dynamic-colorbox").colorbox({
-          iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100
-        });
-        noty({text: "Loaded events data", type: "success"});
+    if(startdatetime.length > 0 && enddatetime.length > 0) {
+      var validDateTimeRegex = new RegExp("^[0-3][0-9]\/[0-1][0-9]\/[0-9][0-9][0-9][0-9] [0-2][0-9]:[0-5][0-9]$");
+      if(validDateTimeRegex.test(startdatetime) && validDateTimeRegex.test(enddatetime)) {
+        if(moment(startdatetime, "DD/MM/YYYY HH:mm").isValid() && moment(enddatetime, "DD/MM/YYYY HH:mm").isValid()) {
+          startdatetime = moment(startdatetime, "DD/MM/YYYY HH:mm").format('YYYY-MM-DD HH:mm');
+          enddatetime = moment(enddatetime, "DD/MM/YYYY HH:mm").format('YYYY-MM-DD HH:mm');
+          $.ajax({
+            type: "POST",
+            url: 'index.php?view=fetchevents',
+            cache: false,
+            data: {page: pagenumber, chosencameras: JSON.stringify(chosencameras), timeframe: timeframe, startdatetime: startdatetime, enddatetime: enddatetime, orderby: orderby},
+            success: function(data) {
+              $("#events").html(data);
+              $(".init-dynamic-colorbox").colorbox({
+                iframe: true, innerWidth: $(window).width() - 100, innerHeight: $(window).height() - 100
+              });
+              noty({text: "Loaded events data", type: "success"});
+            }
+          });
+        }
+        else {
+          noty({ text: "ERROR: Invalid start or end date", type: "error" });  
+        }
       }
-    });
+      else {
+        noty({ text: "ERROR: Invalid start or end date time. Please use the format DD/MM/YYYY HH:mm.", type: "error" });
+      }
+    }
   }
   else {
     jQuery.ajax({
