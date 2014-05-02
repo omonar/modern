@@ -430,8 +430,18 @@ function playbackFrames(monitorId, eventId, imgarray) {
           // if gaplessPlayback enabled & the event finishes tidily
           if(gaplessPlayback === true) {
             //jumpToNearestEvent(timeline.getCurrentTime());
+            var ctr = currenteventarrays.length;
+            var skip = true;
             window.setTimeout(function() {
-              jumpToNearestEvent(timeline.getCustomTime());
+              $(currenteventarrays).each(function(k,v) {
+                if(window[v].length > 0) {
+                  skip = false;
+                }
+                ctr--;
+                if(ctr == 0 && skip === true) {
+                  jumpToNearestEvent(timeline.getCustomTime());
+                }
+              });
             }, 2000);
           }
         }
