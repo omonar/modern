@@ -66,6 +66,9 @@
         }
         $query .= "$orderString LIMIT $limit";
         $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events";
+        if(isset($chosencameras)) {
+          $paginationQuery .= " WHERE MonitorId IN ('" . implode("','", $chosencameras) . "')";
+        }
         break;
       case "today":
         $query = "SELECT * FROM Events WHERE";
@@ -73,7 +76,11 @@
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
         }
         $query .= " DATE(StartTime) = CURDATE() $orderString LIMIT $limit";
-        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) = CURDATE()";
+        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE";
+        if(isset($chosencameras)) {
+          $paginationQuery .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
+        }
+        $paginationQuery .= " DATE(StartTime) = CURDATE()";
         break;
       case "week":
         $query = "SELECT * FROM Events WHERE";
@@ -81,7 +88,11 @@
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
         $query .= " DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY $orderString LIMIT $limit";
-        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY";
+        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE";
+        if(isset($chosencameras)) {
+          $paginationQuery .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
+        }
+        $paginationQuery .= " DATE(StartTime) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())+6 DAY AND DATE(StartTime) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY";
         break;
       case "month":
         $query = "SELECT * FROM Events WHERE";
@@ -89,7 +100,11 @@
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
         $query .= " DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH) $orderString LIMIT $limit";
-        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH)";
+        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE";
+        if(isset($chosencameras)) {
+          $paginationQuery .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
+        }
+        $paginationQuery .= " DATE(StartTime) >= SUBDATE(CURDATE(), INTERVAL 1 MONTH)";
         break;
       case "custom":
         $query = "SELECT * FROM Events WHERE";
@@ -97,7 +112,11 @@
           $query .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND ";
         }
         $query .= " StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]' $orderString LIMIT $limit";
-        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]'";
+        $paginationQuery = "SELECT COUNT(Id) AS NUMROWS FROM Events WHERE";
+        if(isset($chosencameras)) {
+          $paginationQuery .= " MonitorId IN ('" . implode("','", $chosencameras) . "') AND";
+        }
+        $paginationQuery .= " StartTime >= '$_REQUEST[startdatetime]' AND StartTime <= '$_REQUEST[enddatetime]'";
         break;
     }
     if(dbNumRows($query) < 1) {
@@ -110,6 +129,8 @@
       }
       else {
         $skipColumns = array(0 => "Archived", 1 => "Videoed", 2 => "Uploaded", 3 => "Emailed", 4 => "Messaged", 5 => "Executed", 6 => "Width", 7 => "Height", 8 => "Notes", 9 => "Frames", 10 => "AlarmFrames", 11 => "TotScore", 12 => "AvgScore", 13 => "MaxScore", 14 => "Cause");
+        echo "<hr>$query<hr>";
+        echo "<hr>$paginationQuery<hr>";
         echo "<table class=\"table table-striped\">";
         echo "<thead><tr><td>Event Id</td><td>Camera</td><td>Name</td><td>Start Time</td><td>End Time</td><td>Length</td><td></td><td></td><td></td><td><input id=\"check-all\" type=\"checkbox\"></td></tr></thead>";
         foreach($response as $event) {

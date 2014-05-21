@@ -33,7 +33,7 @@ function getEvents(pagenumber, chosencameras, timeframe, orderby, startdatetime,
   if(chosencameras.length < 1) {
     chosencameras = null;
   }
-  if(arguments.length > 2) {
+  if(arguments.length > 5) {
     if(startdatetime.length > 0 && enddatetime.length > 0) {
       var validDateTimeRegex = new RegExp("^[0-3][0-9]\/[0-1][0-9]\/[0-9][0-9][0-9][0-9] [0-2][0-9]:[0-5][0-9]$");
       if(validDateTimeRegex.test(startdatetime) && validDateTimeRegex.test(enddatetime)) {
