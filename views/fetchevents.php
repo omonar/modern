@@ -129,8 +129,6 @@
       }
       else {
         $skipColumns = array(0 => "Archived", 1 => "Videoed", 2 => "Uploaded", 3 => "Emailed", 4 => "Messaged", 5 => "Executed", 6 => "Width", 7 => "Height", 8 => "Notes", 9 => "Frames", 10 => "AlarmFrames", 11 => "TotScore", 12 => "AvgScore", 13 => "MaxScore", 14 => "Cause");
-        echo "<hr>$query<hr>";
-        echo "<hr>$paginationQuery<hr>";
         echo "<table class=\"table table-striped\">";
         echo "<thead><tr><td>Event Id</td><td>Camera</td><td>Name</td><td>Start Time</td><td>End Time</td><td>Length</td><td></td><td></td><td></td><td><input id=\"check-all\" type=\"checkbox\"></td></tr></thead>";
         foreach($response as $event) {
