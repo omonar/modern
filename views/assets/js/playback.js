@@ -505,14 +505,14 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
 
   for(var counter = 1; counter <= Number(numberofframes); counter++) {
      if(counter<=9) {
-        frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
+        frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
       }
       else {
         if(counter<=99) {
-          frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
+          frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
         }
         else {
-         frames[Number(monitorId)-1][Number(eventId)].push("/zm/events/" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
+         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
         }
       }
     }
