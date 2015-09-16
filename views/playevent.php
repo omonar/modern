@@ -5,7 +5,7 @@
   </head>
   <body>
     <main class="playback">
-      <img src="/zm/skins/modern/views/images/onerror.png">
+      <img src="/zm/skins/modern/views/assets/images/onerror.png">
     </main>
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
     <script>
@@ -45,7 +45,7 @@
             displayFrame(imgarray[x]);
           }
           else {
-            displayFrame('/zm/skins/modern/views/images/onerror.png');
+            displayFrame('/zm/skins/modern/views/assets/images/onerror.png');
           }
           x++;
         }, 200);

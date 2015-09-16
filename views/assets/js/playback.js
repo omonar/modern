@@ -504,18 +504,18 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
   frames[Number(monitorId)-1][Number(eventId)] = [];
 
   for(var counter = 1; counter <= Number(numberofframes); counter++) {
-     if(counter<=9) {
-        frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
-      }
-      else {
-        if(counter<=99) {
-          frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
-        }
-        else {
-         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
-        }
-      }
-    }
+     if (counter<=9) {
+        frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0000" + counter + "-capture.jpg");
+     } else if (counter<=99) {
+          frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/000" + counter + "-capture.jpg");
+     } else if (counter<=999) {
+         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
+     } else if (counter<=9999) {
+         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
+     } else {
+         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + counter + "-capture.jpg");
+     }
+  }
 
   if(preloadFrames(frames[monitorId-1][eventId]) === true) {
     //console.log("Preloaded event " + eventId + " on " + monitorId);
