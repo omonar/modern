@@ -52,7 +52,7 @@
         <h3 class="panel-title">Change Password</h3>
       </div>
       <div class="panel-body">
-        <form action="?skin=modern&view=changepassword" method="post" class="form-horizontal">
+        <form action="?skin=modern&amp;view=changepassword" method="post" class="form-horizontal">
           <fieldset>
             <div class="form-group required-control">
               <label class="col-md-3 control-label" for="currentpassword">Current Password</label>
