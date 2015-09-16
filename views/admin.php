@@ -129,6 +129,9 @@
     ];
     var ctx = document.getElementById("disk-usage-chart").getContext("2d");
     new Chart(ctx).Pie(data);
+  </script>
+
+  <script>
 
     <?php
       //$query = "SELECT Date(StartTime) AS Date, MonitorId, COUNT(Id) AS NumberOfEvents FROM Events WHERE DATE(StartTime)>=DATE(NOW() - INTERVAL 7 DAY) GROUP BY MonitorId, DAY(StartTime)";
