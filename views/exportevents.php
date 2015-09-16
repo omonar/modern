@@ -24,15 +24,19 @@
     foreach($frames as $frame) {
       $i++;
       if($i<10) {
-        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg\");";
+        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/0000" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0000" . $i . "-capture.jpg");
+      } else if ($i<100) {
+        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/000" . $i . "-capture.jpg\");";
+        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/000" . $i . "-capture.jpg");
+      } else if ($i<1000) {
+        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg\");";
         $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg");
-      }
-      elseif ($i>=10 && $i <= 99) {
-        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg\");";
+      } else if ($i<10000) {
+        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg\");";
         $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg");
-      }
-      else {
-        $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg\");";
+      } else {
+        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg\");";
         $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg");
       }
     }
@@ -46,7 +50,7 @@
         $zip = new ZipStream("event-" . $_REQUEST['eid'] . ".zip");
         $zip->addDirectory("events");
         $zip->addDirectory("assets");
-        $filesString = addEventToZip($_REQUEST['eid'], $_REQUEST['mid'], $zip, $filesString);
+        $filesString = addEventToZip($_REQUEST['eid'], $_REQUEST['mid'], $zip);
         $zip->addFile(file_get_contents("skins/{$skin}/views/assets/images/onerror.png"), "assets/playback-placeholder.png");
         $playerFile = file_get_contents("skins/{$skin}/views/includes/standalone-event-player.html");
         $playerFile = str_replace("###files###", $filesString, $playerFile);

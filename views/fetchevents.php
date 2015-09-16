@@ -15,9 +15,11 @@
       $chosencameras = json_decode($_REQUEST['chosencameras']);
     }
     $orderFields = Array();
+    if(isset($_REQUEST['orderby'])) {
     foreach($_REQUEST['orderby'] as $index => $value) {
       switch($value['orderField']) {
         case "null":
+          $orderFields[] = "Events.Id";
           break;
         case "eventid":
           $orderFields[] = "Events.Id";
@@ -37,12 +39,16 @@
         case "length":
           $orderFields[] = "Events.Length";
           break;
+        }
       }
+    } else {
+          $orderFields[] = "Events.Id";
     }
     if(sizeof($orderFields) > 0) {
       $orderString = " ORDER BY";
       $i = 0;
       foreach($orderFields as $index => $field) {
+        if(isset($_REQUEST['orderby'])) {
         switch($_REQUEST['orderby'][$i]['orderDirection']) {
           case "desc":
             $orderDirections[] = "DESC";
@@ -50,6 +56,9 @@
           default:
             $orderDirections[] = "ASC";
             break;
+        }
+        } else {
+            $orderDirections[] = "ASC";
         }
         $orderString .= " {$field} {$orderDirections[$i]}";
         if(($i + 1) < sizeof($orderFields)) {
@@ -163,21 +172,26 @@
         }
         else {
           echo "<p>$response[NUMROWS] events</p>";
-          if($response[NUMROWS] > 50) {
+          if($response['NUMROWS'] > 50) {
             echo "<ul class=\"pagination\">";
             echo "<li";
             if((!isset($_REQUEST['page']))||($_REQUEST['page']=="1")) {
               echo " class=\"disabled\"";
             }
             echo "><a id=\"events-previous-page\" href=\"#\">&laquo;</a></li>";
-            for($i=1; ($i <= $response['NUMROWS'] / 50); $i++) {
+            $imax = floor(($response['NUMROWS'] + 49)/ 50);
+            for($i=1; $i <= $imax; $i++) {
               echo "<li";
               if($i == $_REQUEST['page']) {
                 echo " class=\"active\"";
               }
               echo "><a href=\"#\">$i</a></li>";
             }
-            echo "<li><a id=\"events-next-page\" href=\"#\">&raquo;</a></li>";
+            echo "<li";
+            if((!isset($_REQUEST['page']))||($_REQUEST['page']==strval($imax))) {
+              echo " class=\"disabled\"";
+            }
+            echo "><a id=\"events-next-page\" href=\"#\">&raquo;</a></li>";
             echo "</ul>";
           }
         }
