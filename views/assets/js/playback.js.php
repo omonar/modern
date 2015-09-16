@@ -1,6 +1,6 @@
 <?php
  require('skins/modern/views/framefetcher.php');
-  $monitors = dbFetchAll("SELECT Monitors.Id, Monitors.Name, Monitors.Protocol, Monitors.Host, Monitors.Port, Monitors.Path, Monitors.Width, Monitors.Height FROM Monitors");
+  $monitors = dbFetchAll("SELECT Monitors.Id, Monitors.Name, Monitors.Protocol, Monitors.Host, Monitors.Port, Monitors.Path, Monitors.Width, Monitors.Height, Monitors.DefaultScale, Monitors.StreamReplayBuffer FROM Monitors");
   foreach($monitors as $index => $monitor) {
     $monitors[$index]['LiveSrc'] = outputLiveStreamSrcModern($monitor, 640, 480);
   }
