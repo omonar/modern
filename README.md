@@ -1,6 +1,9 @@
-This is a fork of the work-in-progress skin for ZoneMinder version >= 1.24 by Kyle Johnson. This skin is currently being developed by Emergent Ltd. Any suggestions of features, comments and code are welcome =)
+#Modern theme for Zoneminder 1.24+
+This is a fork of the work-in-progress skin for ZoneMinder version >= 1.24 by [https://github.com/kylejohnson/modern](Kyle Johnson). 
 
-FEATURES
+This skin is currently being developed by Emergent Ltd. Any suggestions of features, comments and code are welcome =)
+
+##FEATURES
 
 * Single page for live view and playback
 * Timeline of events
@@ -9,7 +12,7 @@ FEATURES
 * Valid HTML5
 * No need for Java, Flash, etc - just a decent browser
 
-FUTURE
+##FUTURE
 
 * Exporting of multiple events
 * Improved backend (No dropping back to classic)
