@@ -5,7 +5,7 @@
   </head>
   <body>
     <main class="playback">
-      <img src="/zm/skins/modern/views/images/onerror.png">
+      <img src="skins/modern/views/images/onerror.png">
     </main>
     <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
     <script>
@@ -27,7 +27,7 @@
                 $eventPath = $imageData['eventPath'];
                 $dImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-d.jpg", $eventPath, $counter);
                 $rImagePath = sprintf("%s/%0".ZM_EVENT_IMAGE_DIGITS."d-diag-r.jpg", $eventPath, $counter);
-                $frames[] = "/zm/" . viewImagePath($imagePath);
+                $frames[] = viewImagePath($imagePath);
           }
         }
         echo "var unprocessed = '" . implode(',', $frames) . "';";
@@ -45,7 +45,7 @@
             displayFrame(imgarray[x]);
           }
           else {
-            displayFrame('/zm/skins/modern/views/images/onerror.png');
+            displayFrame('skins/modern/views/images/onerror.png');
           }
           x++;
         }, 200);
