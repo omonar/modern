@@ -1,5 +1,5 @@
 #Modern theme for Zoneminder 1.24+
-This is a fork of the work-in-progress skin for ZoneMinder version >= 1.24 by [https://github.com/kylejohnson/modern](Kyle Johnson). 
+This is a fork of the work-in-progress skin for ZoneMinder version >= 1.24 by [Kyle Johnson](https://github.com/kylejohnson/modern). 
 
 This skin is currently being developed by Emergent Ltd. Any suggestions of features, comments and code are welcome =)
 
