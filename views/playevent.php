@@ -5,9 +5,9 @@
   </head>
   <body>
     <main class="playback">
-      <img src="skins/modern/views/images/onerror.png">
+      <img src="skins/<?php echo $skin; ?>/views/assets/images/onerror.png">
     </main>
-    <script src="skins/<?=$skin?>/views/assets/vendor/js/jquery.min.js"></script>
+    <script src="skins/<?php echo $skin; ?>/views/assets/vendor/js/jquery.min.js"></script>
     <script>
       var eid = <?=$_REQUEST['eid']?>;
 
@@ -45,7 +45,7 @@
             displayFrame(imgarray[x]);
           }
           else {
-            displayFrame('skins/modern/views/images/onerror.png');
+            displayFrame('skins/<?php echo $skin; ?>/views/assets/images/onerror.png');
           }
           x++;
         }, 200);
