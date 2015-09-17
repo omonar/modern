@@ -513,7 +513,7 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
      } else if (counter<10000) {
          frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
      } else {
-         frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + counter + "-capture.jpg");
+         frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
      }
   }
 
