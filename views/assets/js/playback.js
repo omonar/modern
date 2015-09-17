@@ -345,7 +345,7 @@ function requeryTimeline() {
       success: function(data) {
         noty({ text: "Processing data", type: "info" });
         activity = JSON.parse(data);
-        var timelineWorker = new Worker("/zm/skins/modern/views/assets/js/processtimeline.js");
+        var timelineWorker = new Worker("skins/modern/views/assets/js/processtimeline.js");
         noty({ text: "Updating timeline...", type: "info" });
 
         timelineWorker.addEventListener('message', function(e) {
@@ -505,14 +505,14 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
 
   for(var counter = 1; counter <= Number(numberofframes); counter++) {
      if(counter<=9) {
-        frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
+        frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
       }
       else {
         if(counter<=99) {
-          frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
+          frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
         }
         else {
-         frames[Number(monitorId)-1][Number(eventId)].push("/zm?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
+         frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
         }
       }
     }
