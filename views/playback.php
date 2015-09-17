@@ -82,7 +82,7 @@
                 <a href="?view=logout" class="btn btn-default playback-button" data-rel="tooltip" title="Logout"><span class="fa fa-sign-out"></span></a>
               </li>
               <li>
-                <p style="visibility: hidden;" class="currently-playing">playback date & time</p>
+                <p style="visibility: hidden;" class="currently-playing">playback date &amp; time</p>
                 <p style="visibility: hidden;" class="playback-date" data-rel="tooltip" title="The exact date and time being monitored">0000-00-00</p>
                 <p style="visibility: hidden;" class="playback-time">00:00:00</p>
               </li>

@@ -152,10 +152,10 @@
 
           <div id="custom-range-filters" style="display: none;" class="col-md-3">
             <div class="well well-sm">
-              <label for="startdatetime">Start Date & Time</label>
+              <label for="startdatetime">Start Date &amp; Time</label>
               <input id="startdatetime" name="startdatetime" type="text" class="form-control hasDatePicker">
 
-              <label for="enddatetime">End Date & Time</label>
+              <label for="enddatetime">End Date &amp; Time</label>
               <input id="enddatetime" name="enddatetime" type="text" class="form-control hasDatePicker">
 
             </div>
