@@ -21,24 +21,14 @@
       $zip->addDirectory("events/" . $event['MonitorId'] . "/" . $event['Id']);
     }
     $i = 0;
+    $filesString = "";
     foreach($frames as $frame) {
       $i++;
-      if($i<10) {
-        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/0000" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0000" . $i . "-capture.jpg");
-      } else if ($i<100) {
-        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/000" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/000" . $i . "-capture.jpg");
-      } else if ($i<1000) {
-        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/00" . $i . "-capture.jpg");
-      } else if ($i<10000) {
-        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/0" . $i . "-capture.jpg");
-      } else {
-        $filesString = "\nframes.push(\"events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg\");";
-        $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/" . $i . "-capture.jpg");
-      }
+
+      $filesName = sprintf("%0".ZM_EVENT_IMAGE_DIGITS."d-capture.jpg", $i);
+
+      $filesString .= "\nframes.push(\"events/" . $mid . "/" . $eid . "/" . $filesName . "\");";
+      $zip->addLargeFile($frame, "events/" . $mid . "/" . $eid . "/" . $filesName);
     }
     return $filesString;
   }
