@@ -180,7 +180,7 @@
       datasets : [
 
 
-        <?
+        <?php
           foreach($monitors as $index => $row) {
             echo "{ fillColor: \"" . $row['WebColour'] . "\", strokeColor: \"" . $row['WebColour'] . "\", pointColor: \"" . $row['WebColour'] . "\", pointStrokeColor: \"#FFF\", data: dataformonitor{$index} },\n";
           }

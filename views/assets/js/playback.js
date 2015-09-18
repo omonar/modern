@@ -504,18 +504,10 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
   frames[Number(monitorId)-1][Number(eventId)] = [];
 
   for(var counter = 1; counter <= Number(numberofframes); counter++) {
-     if(counter<=9) {
-        frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/00" + counter + "-capture.jpg");
-      }
-      else {
-        if(counter<=99) {
-          frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/0" + counter + "-capture.jpg");
-        }
-        else {
-         frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + counter + "-capture.jpg");
-        }
-      }
-    }
+     var s = "00000" + counter;
+
+     frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + s.substring(s.length - 5) + "-capture.jpg");
+  }
 
   if(preloadFrames(frames[monitorId-1][eventId]) === true) {
     //console.log("Preloaded event " + eventId + " on " + monitorId);
