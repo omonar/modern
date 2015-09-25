@@ -504,9 +504,9 @@ function playEvent(monitorId, eventId, startdatetime, numberofframes) {
   frames[Number(monitorId)-1][Number(eventId)] = [];
 
   for(var counter = 1; counter <= Number(numberofframes); counter++) {
-     var s = "00000" + counter;
+     var s = zerocounter + counter;
 
-     frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + s.substring(s.length - 5) + "-capture.jpg");
+     frames[Number(monitorId)-1][Number(eventId)].push("index.php?view=image&path=" + monitorId + "/" + moment(startdatetime, "YYYY-MM-DD HH:mm:ss").format("YY/MM/DD/HH/mm/ss") + "/" + s.substring(s.length - imagedigits) + "-capture.jpg");
   }
 
   if(preloadFrames(frames[monitorId-1][eventId]) === true) {
