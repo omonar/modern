@@ -119,7 +119,7 @@
       <li class="colour <?=$colour?>"><a href="#" id="zm-change-state-opener"><span class="fa <?=$icon?>"></span> ZM <?=lcfirst($status)?></a></li>
 
       <li class="dropdown colour blue">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> <?=ucfirst($_SESSION['user']['Username'])?> <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> <?php if(isset($_SESSION['user'])) { echo ucfirst($_SESSION['user']['Username']); } ?> <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a id="changepassword-opener" href="#"><span class="fa fa-edit"></span> Change Password</a></li>
           <li><a href="?view=logout"><span class="fa fa-sign-out"></span> Log Out</a></li>
