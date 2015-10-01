@@ -95,10 +95,13 @@
 
           <div id="preset-selection" class="preset-selection dialog-modal" title="Preset Selection">
             <?php
-              $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
-              if($defaultPresetId===false) {
-                $defaultPresetId = "-1";
+              if(isset($_SESSION['user'])) {
+                $defaultPresetId = getUserDefaultPresetId($_SESSION['user']['Id']);
+                if($defaultPresetId===false) {
+                  $defaultPresetId = "-1";
+                }
               }
+              else { $defaultPresetId = false; } //using functions.php line 28 for this assumption
               echo "<ul class=\"preset-list\">";
               echo "<li class=\"preset-list-item\"><input type=\"radio\" class=\"preset-list-default-preset\" name=\"defaultpreset\" value=\"-1\"";
               if($defaultPresetId === "-1") {

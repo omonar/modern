@@ -157,9 +157,9 @@
               echo "<td>$value</td>";
             }
           }
-          echo "<td><a href=\"?view=playevent&eid=$event[Id]\" class=\"init-dynamic-colorbox\"><span class=\"fa fa-film\"></span></a></td>";
-          echo "<td><a href=\"#\" id=\"export-event-$event[Id]\" class=\"export-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"fa fa-save\"></span></a></td>";
-          echo "<td><a href=\"#\" id=\"delete-event-$event[Id]\" class=\"delete-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"fa fa-times-circle\"></span></a></td>";
+          echo "<td><a title=\"View event\" href=\"?view=playevent&eid=$event[Id]\" class=\"init-dynamic-colorbox\"><span class=\"fa fa-film\"></span></a></td>";
+          echo "<td><a title=\"Export event\" href=\"#\" id=\"export-event-$event[Id]\" class=\"export-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"fa fa-save\"></span></a></td>";
+          echo "<td><a title=\"Delete event\" href=\"#\" id=\"delete-event-$event[Id]\" class=\"delete-event\" data-eid=\"$event[Id]\" data-mid=\"$camera[Id]\"><span class=\"fa fa-times-circle\"></span></a></td>";
           echo "<td><a href=\"#\"><input type=\"checkbox\" data-eid=\"$event[Id]\" data-monitorid=\"$event[MonitorId]\" class=\"event-checkbox\"></td>";
           echo "</tr>";
         }
