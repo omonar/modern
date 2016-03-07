@@ -304,7 +304,8 @@ function setTime(element, refresh, formatting) {
 }
 
 function loadUserDefaultPreset() {
-  if($("div#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
+  if( typeof $("div#preset-selection input[name=defaultpreset]:checked").val() !== 'undefined' && 
+      $("div#preset-selection input[name=defaultpreset]:checked").val()!=="-1") {
     var presetName = $("div#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").text();
     var presetMonitorIds = $("div#preset-selection input[name=defaultpreset]:checked").parent().find(".preset-list-link").attr("data-value");
     var presetMonitorIds = presetMonitorIds.split(",");
